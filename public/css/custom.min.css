@@ -229,7 +229,7 @@ table.tile_info td p {
 }
 .nav-sm .menu_section h3,
 .nav-sm .profile,
-.nav-sm .menu_section span.fa {
+.nav-sm span.fa {
     display: none
 }
 .nav-sm .nav.side-menu li a i {
@@ -1827,18 +1827,18 @@ h4.graph_title {
     transition: all .3s ease-in-out
 }
 .tile-stats:hover .icon i {
-    animation-name: transformAnimation;
+    animation-name: tansformAnimation;
     animation-duration: .5s;
     animation-iteration-count: 1;
     color: rgba(58, 58, 58, .41);
     animation-timing-function: ease;
     animation-fill-mode: forwards;
-    -webkit-animation-name: transformAnimation;
+    -webkit-animation-name: tansformAnimation;
     -webkit-animation-duration: .5s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease;
     -webkit-animation-fill-mode: forwards;
-    -moz-animation-name: transformAnimation;
+    -moz-animation-name: tansformAnimation;
     -moz-animation-duration: .5s;
     -moz-animation-iteration-count: 1;
     -moz-animation-timing-function: ease;
@@ -2123,7 +2123,8 @@ span.section {
     width: 100%
 }
 .form-horizontal .control-label {
-    padding-top: 8px
+    padding-top: 8px;
+    color: #73879c !important;
 }
 .form-control:focus {
     border-color: #CCD0D7;
@@ -2138,7 +2139,7 @@ legend {
     margin-left: 0
 }
 .form-control-feedback {
-    margin-top: 8px;
+    margin-top: 4px;
     height: 23px;
     color: #bbb;
     line-height: 24px;
@@ -2146,17 +2147,17 @@ legend {
 }
 .form-control-feedback.left {
     border-right: 1px solid #ccc;
-    left: 13px
+    left: 13px !important;
 }
 .form-control-feedback.right {
     border-left: 1px solid #ccc;
-    right: 13px
+    right: 13px !important;
 }
 .form-control.has-feedback-left {
-    padding-left: 45px
+    padding-left: 45px !important;
 }
 .form-control.has-feedback-right {
-    padding-right: 45px
+    padding-right: 45px !important;
 }
 .form-group {
     margin-bottom: 10px
@@ -3165,10 +3166,6 @@ ul.project_files li a i {
 }
 .input-group-btn .btn {
     margin-bottom: 0
-}
-.input-group.date .input-group-addon {
-    border-radius: 0px!important;
-    background-color: #ffff!important
 }
 /*!
  * bootstrap-vertical-tabs - v1.2.1

@@ -6756,21 +6756,27 @@ body {
 .icono-orange {
   color: orangered;
 }
-.table tr:nth-child(even) {
-  background: #e2edff;
+.table {
+  color: #73879c;
 }
-.table tr th {
-  background: #5A738E;
-  color: #fff;
+.table thead {
+  vertical-align: middle !important;
 }
-.table-bordered > tbody > tr > td,
-.table-bordered > tbody > tr > th,
-.table-bordered > tfoot > tr > td,
-.table-bordered > tfoot > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > thead > tr > th {
-  border: 1px solid #aaa!important;
+/*.table{
+    tr:nth-child(even) {
+        background: #e2edff;
+    }
+    tr{
+        th{
+            background: #5A738E;
+            color: #fff;
+        }
+    }
 }
+
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
+    border: 1px solid #aaa!important;
+}*/
 .right_col .panel {
   box-shadow: 3px 3px 7px 3px #888888;
 }
@@ -7654,10 +7660,14 @@ div > .contenedor-lista > .search-ul-div {
   box-shadow: 4px 4px 4px #73879c;
 }
 .select2-selection__choice {
-  background-color: #1ABB9C !important;
+  background-color: #1abb9c !important;
   color: white;
-  border-color: #1ABB9C !important;
+  border-color: #1abb9c !important;
 }
 .select2-selection__choice__remove {
   color: white !important;
+}
+.input-hg-12 {
+  height: 38px !important;
+  border-radius: 4px !important;
 }

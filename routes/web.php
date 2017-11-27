@@ -12,9 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+//    return view('welcome');
+    if(\Illuminate\Support\Facades\Auth::check()){
+        return redirect('dash');
+    }else{
+        return redirect('login');
+    }
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => 'auth'], function (){
+    Route::get('/dash', 'HomeController@index');
+
+    Route::resource('/pedidos', 'PedidosController');
+});
+
+//Route::get('/home', 'HomeController@index');
+Route::get('chau',function (){
+   \Illuminate\Support\Facades\Auth::logout();
+});
