@@ -68,26 +68,70 @@ $( document ).ready(function() {
             options_categorias = "";
             for(var i=0;i<categorias.length;i++){
                 if(selected_op == categorias[i].tipo_categoria_id){
-                    console.log(categorias[i]);
+                    // console.log(categorias[i]);
                     options_categorias += "<option value='"+categorias[i].id+"'>"+categorias[i].nombre+"</option>";
                 }
             }
             $('.items-select2').prop('disabled', false);
-            $('.items-select2').select2({
-                allowClear: true,
-                placeholder: "Seleccione...",
-                width: '100%'
-            }).val('').trigger('change');
+            $('#btnAgregarItem').prop('disabled', false);
+            $('#btnAgregarItem').prop('title','Agregar item');
+
+            $('.btnCambiarEditSelect').removeClass('disabled');
 
             $('.items-select2').empty();
             $('.items-select2').append(options_categorias);
+
+            console.log($('.items-select2').parent());
+            console.log($('.items-select2').parent().length);
+
+            for(var i=0;i<$('.items-select2').parent().length;i++){
+                // console.log( $('.items-select2').parent()[i] );
+                // console.log( $($('.items-select2').parent()[i]).data('content') );
+
+                if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
+                    console.log($('.items-select2').parent()[i].id);
+                    console.log($('.items-select2').parent()[i].id.slice(2));
+                    var num = $('.items-select2').parent()[i].id.slice(2);
+                    $('#item_id'+num).select2({
+                        allowClear: true,
+                        placeholder: "Seleccione...",
+                        width: '100%'
+                    }).val('').trigger('change');
+                }
+            }
+
+            $('.items-txt').prop('disabled', false);
+
         }else{
-            $('.items-select2').select2({
+            for(var i=0;i<$('.items-select2').parent().length;i++){
+                // console.log( $('.items-select2').parent()[i] );
+                // console.log( $($('.items-select2').parent()[i]).data('content') );
+
+                if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
+                    console.log($('.items-select2').parent()[i].id);
+                    console.log($('.items-select2').parent()[i].id.slice(2));
+                    var num = $('.items-select2').parent()[i].id.slice(2);
+                    $('#item_id'+num).select2({
+                        allowClear: true,
+                        placeholder: "Primero seleccione una categoria...",
+                        width: '100%'
+                    }).val('').trigger('change');
+                }
+            }
+
+            /*$('.items-select2').select2({
                 allowClear: true,
                 placeholder: "Primero seleccione una categoria...",
                 width: '100%'
-            }).val('').trigger('change');
+            }).val('').trigger('change');*/
+
             $('.items-select2').prop('disabled', true);
+            $('#btnAgregarItem').prop('disabled', true);
+            $('#btnAgregarItem').prop('title','Primero seleccione un tipo de categoria');
+
+            $('.btnCambiarEditSelect').addClass('disabled');
+
+            $('.items-txt').prop('disabled', true);
         }
 
 
@@ -149,24 +193,78 @@ function getEmpresas() {
 function getUnidades() {
     var unidades = config.variables[0].unidades;
     for(var i = 0; i<unidades.length ; i++){
-        console.log(unidades[i]);
-        option_unidades += "<option value='"+unidades[i].id+"'>"+unidades[i].nombre+"("+unidades[i].descripcion+")</option>"
+        // console.log(unidades[i]);
+        option_unidades += "<option value='"+unidades[i].id+"'>"+unidades[i].nombre+" ("+unidades[i].descripcion+")</option>"
     }
     // console.log(option_unidades);
 }
+
+var auxU = 1;
 function agregarItem() {
     // console.log("Agregando...");
     var tr = "<tr>";
-        tr+="<td scope='row'>2</td>"+
-            "<td><select name='unidad_id[]' class='js-placeholder-single'>"+option_unidades+"</select></td>"+
-            "<td><input name='cantidad[]' type='number' step='0.1' class='form-control'></td>"+
-            "<td><select name='item_id[]' class='items-select2'>"+options_categorias+"</select></td>"+
-            "<td><i class='fa fa-close' onclick='javascript:eliminarFila(this);'></i></td>";
+        tr+="<td scope='row'>"+(auxU+1)+"</td>"+
+            "<td><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required>"+option_unidades+"</select></td>"+
+            "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' required></td>"+
+            "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
+            "<td>" +
+            "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
+            "<a class='eliminar' onclick='javascript:eliminarFila(this);'><i class='fa fa-close'></i></a>"+
+            "</td>";
     tr += "</tr>";
     $('#tbodyItems').append(tr);
+
+    $('#unidad_id'+auxU).select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
+    }).val('').trigger('change');
+    $('#item_id'+auxU).select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
+    }).val('').trigger('change');
+
+    auxU++;
 }
 
 function eliminarFila(obj) {
     console.log(obj);
     $(obj).parent().parent().remove();
+}
+
+function editarCampo(id) {
+    var select_td = "#td"+id;
+    // console.log($(select_td).data("content"));
+
+    if($(select_td).data("content")==0){ //ES SELECT - CAMBIAR A TEXTO
+        $('#item_id'+id).prop("required", false);
+        $('#item_id'+id).select2({
+            containerCssClass: "hidden"
+            // dropdownCssClass: "test"
+        }).val('').trigger('change');
+
+        $('#txtItem'+id).prop("required",true);
+        $('#txtItem'+id).removeClass("hidden");
+
+        $(select_td).data("content",1);
+
+        $('#i'+id).removeClass("fa-edit");
+        $('#i'+id).addClass("fa-chevron-circle-down");
+    }else { //ES TEXTO - CAMBIAR A SELECT
+        $('#item_id' + id).prop("required", true);
+        $('#item_id' + id).select2({
+            allowClear: true,
+            placeholder: "Seleccione...",
+            width: '100%'
+        }).val('').trigger('change');
+
+        $('#txtItem' + id).prop("required", false);
+        $('#txtItem' + id).addClass("hidden");
+
+        $(select_td).data("content", 0);
+
+        $('#i' + id).removeClass("fa-chevron-circle-down");
+        $('#i' + id).addClass("fa-edit");
+    }
 }

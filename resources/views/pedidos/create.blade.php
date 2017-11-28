@@ -64,7 +64,7 @@
 @endsection
 
 @section('footerScripts')
-    {{ Html::script('/js/select2.min.js') }}
+    {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/create-p.js') }}
 
     <script type="text/javascript">

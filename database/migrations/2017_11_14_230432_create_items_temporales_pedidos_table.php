@@ -24,8 +24,8 @@ class CreateItemsTemporalesPedidosTable extends Migration
             $table->foreign('pedido_id')->references('id')->on('pedidos')
                 ->onDelete('cascade');
 
-            $table->integer('item_id')->unsigned();
-            $table->foreign('item_id')->references('id')->on('items_temporales')
+            $table->integer('item_temp_id')->unsigned();
+            $table->foreign('item_temp_id')->references('id')->on('items_temporales')
                 ->onDelete('cascade');
 
             $table->timestamps();

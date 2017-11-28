@@ -7671,3 +7671,29 @@ div > .contenedor-lista > .search-ul-div {
   height: 38px !important;
   border-radius: 4px !important;
 }
+a.editar {
+  color: #337ab7;
+  font-size: 24px;
+  text-decoration: none !important;
+}
+a.editar:hover {
+  color: #094c83;
+}
+a.editar:visited {
+  text-decoration: none;
+}
+a.eliminar {
+  color: #d9534f;
+  font-size: 24px;
+  text-decoration: none !important;
+}
+a.eliminar:hover {
+  color: #961512;
+}
+a.eliminar:visited {
+  text-decoration: none;
+}
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}

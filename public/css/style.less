@@ -1119,3 +1119,32 @@ div{
     border-radius: 4px !important;
 }
 
+//********************ICONOS DE TABLA
+a.editar{
+    color: @info;
+    font-size: 24px;
+    text-decoration: none !important;
+    &:hover{
+        color: @info-oscuro;
+    }
+    &:visited{
+        text-decoration: none;
+    }
+}
+a.eliminar{
+    color: @danger;
+    font-size: 24px;
+    text-decoration: none !important;
+    &:hover{
+        color: @danger-oscuro;
+    }
+    &:visited{
+        text-decoration: none;
+    }
+}
+
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}

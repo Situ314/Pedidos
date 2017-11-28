@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProyectosTable extends Migration
+class CreateEmpresasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateProyectosTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyectos', function (Blueprint $table) {
+        Schema::create('empresas', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             //******************************************************************************SOLICITUDES
@@ -21,10 +21,6 @@ class CreateProyectosTable extends Migration
             //******************************************************************************
             $table->string('nombres');
             $table->string('descripcion')->nullable()->default(null);
-
-            $table->integer('empresa_id')->unsigned();
-            $table->foreign('empresa_id')->references('id')->on('empresas')
-                ->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +33,6 @@ class CreateProyectosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyectos');
+        Schema::dropIfExists('empresas');
     }
 }

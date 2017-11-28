@@ -19,7 +19,6 @@ class CreateItemsTemporalesTable extends Migration
             $table->increments('id');
 
             $table->string('nombre');
-            $table->string('descripcion')->nullable()->default(null);
 
             $table->integer('unidad_id')->unsigned();
             $table->foreign('unidad_id')->references('id')->on('unidades')
