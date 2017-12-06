@@ -20,10 +20,6 @@ class CreateItemsTemporalesTable extends Migration
 
             $table->string('nombre');
 
-            $table->integer('unidad_id')->unsigned();
-            $table->foreign('unidad_id')->references('id')->on('unidades')
-                ->onDelete('cascade');
-
             $table->timestamps();
         });
     }

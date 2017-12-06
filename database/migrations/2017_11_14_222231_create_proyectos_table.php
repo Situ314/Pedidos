@@ -19,7 +19,7 @@ class CreateProyectosTable extends Migration
             //******************************************************************************SOLICITUDES
             $table->integer('id')->primary()->unsigned();
             //******************************************************************************
-            $table->string('nombres');
+            $table->string('nombre');
             $table->string('descripcion')->nullable()->default(null);
 
             $table->integer('empresa_id')->unsigned();

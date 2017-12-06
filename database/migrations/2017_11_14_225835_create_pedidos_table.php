@@ -26,8 +26,8 @@ class CreatePedidosTable extends Migration
             $table->foreign('proyecto_id')->references('id')->on('proyectos')
                 ->onDelete('cascade');
 
-            $table->integer('categoria_id')->unsigned();
-            $table->foreign('categoria_id')->references('id')->on('categorias')
+            $table->integer('tipo_categoria_id')->unsigned();
+            $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')
                 ->onDelete('cascade');
 
             $table->timestamps();

@@ -20,6 +20,11 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/check',function (){
+    echo "<p>asdsadasd</p>";
+    exit();
+})->middleware('admin');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function (){

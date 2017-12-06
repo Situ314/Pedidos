@@ -4,21 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Empresa extends Model
+class Log extends Model
 {
-    public $incrementing = false;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'empresas';
+    protected $table = 'logs';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'descripcion'
+        'tabla', 'tipo', 'tabla_id','tabla_campo', 'valor_anterior', 'valor_nuevo', 'ip', 'user_id'
     ];
 }

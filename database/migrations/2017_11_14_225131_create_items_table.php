@@ -22,10 +22,6 @@ class CreateItemsTable extends Migration
             $table->string('descripcion')->nullable()->default(null);
             $table->float('precio_unitario');
 
-            $table->integer('unidad_id')->unsigned();
-            $table->foreign('unidad_id')->references('id')->on('unidades')
-                ->onDelete('cascade');
-
             $table->integer('tipo_categoria_id')->unsigned();
             $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')
                 ->onDelete('cascade');

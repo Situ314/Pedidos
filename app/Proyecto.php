@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Empresa extends Model
+class Proyecto extends Model
 {
     public $incrementing = false;
     /**
@@ -12,13 +12,13 @@ class Empresa extends Model
      *
      * @var string
      */
-    protected $table = 'empresas';
+    protected $table = 'proyectos';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'descripcion'
+        'id', 'nombre', 'descripcion', 'empresa_id'
     ];
 }
