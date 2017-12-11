@@ -20,6 +20,11 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/buscar',[
+    'uses'=>'PedidosController@getPedido',
+    'as'=>'pedidos.buscar'
+]);
+
 Route::get('/check',function (){
     echo "<p>asdsadasd</p>";
     exit();
@@ -31,6 +36,16 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/dash', 'HomeController@index');
 
     Route::resource('/pedidos', 'PedidosController');
+
+    Route::post('post.pedidos',[
+        'uses'=>'PedidosController@postPedidos',
+        'as'=>'pedidos.estados'
+    ]);
+
+    Route::post('post.pedidos.cantidad',[
+        'uses'=>'PedidosController@postCantidad',
+        'as'=>'pedidos.cantidad'
+    ]);
 });
 
 //Route::get('/home', 'HomeController@index');

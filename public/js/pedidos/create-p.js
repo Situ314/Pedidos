@@ -1,8 +1,10 @@
 /**
  * Created by djauregui on 24/11/2017.
  */
-var options_categorias = "";
+// var options_categorias = "";
 var option_unidades = "";
+var options_items = "";
+
 $( document ).ready(function() {
     $('.js-placeholder-single').select2({
         allowClear: true,
@@ -20,6 +22,8 @@ $( document ).ready(function() {
     getEmpresas();
 
     getUnidades();
+
+    getEmpleados();
 
     $('select[name=empresa_id]').change(function () {
         var select_proyectos = $('select[name=proyecto_id]');
@@ -60,16 +64,19 @@ $( document ).ready(function() {
 
     });
 
-
     $('select[name=tipo_cat_id]').change(function () {
         var selected_op = $(this).find('option:selected').val();
         if(typeof selected_op != "undefined"){
-            var categorias = config.variables[0].categorias;
-            options_categorias = "";
-            for(var i=0;i<categorias.length;i++){
-                if(selected_op == categorias[i].tipo_categoria_id){
-                    // console.log(categorias[i]);
-                    options_categorias += "<option value='"+categorias[i].id+"'>"+categorias[i].nombre+"</option>";
+            // var categorias = config.variables[0].categorias;
+            var items = config.variables[0].items;
+            // options_categorias = "";
+            options_items = "";
+            // for(var i=0;i<categorias.length;i++){
+            for(var i=0;i<items.length;i++){
+                if(selected_op == items[i].tipo_categoria_id){
+                    // console.log(items[i]);
+                    // options_categorias += "<option value='"+categorias[i].id+"'>"+categorias[i].nombre+"</option>";
+                    options_items += "<option value='"+items[i].id+"' data-unidad='"+items[i].unidad_id+"'>"+items[i].nombre+"</option>";
                 }
             }
             $('.items-select2').prop('disabled', false);
@@ -79,7 +86,8 @@ $( document ).ready(function() {
             $('.btnCambiarEditSelect').removeClass('disabled');
 
             $('.items-select2').empty();
-            $('.items-select2').append(options_categorias);
+            // $('.items-select2').append(options_categorias);
+            $('.items-select2').append(options_items);
 
             console.log($('.items-select2').parent());
             console.log($('.items-select2').parent().length);
@@ -199,14 +207,48 @@ function getUnidades() {
     // console.log(option_unidades);
 }
 
+function getEmpleados(){
+    $.ajax({
+        url: 'http://rrhh.pragmainvest.com.bo/servicios/get.empleados',
+        method: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(e){
+            $("select#solicitante_id").select2({
+                allowClear: true,
+                placeholder: "Cargando destinos ...",
+                width: '100%'
+            }).val('').trigger('change');
+
+            $('select#solicitante_id').prop('disabled', true);
+        }
+    }).done(function (response){
+        var selectDestinos = $('select#solicitante_id');
+        selectDestinos.empty();
+
+        $.each(response['empleados'], function(key, value){
+            selectDestinos.append("<option value='"+value['id']+"|"+value['nombres']+" "+value['ap']+" "+value['am']+"|"+value['email_corporativo']+"'>"+value['nombres']+" "+value['ap']+" "+value['am']+"</option>");
+        });
+        $('select#solicitante_id').prop('disabled', false);
+        $("select#solicitante_id").select2({
+            allowClear: true,
+            placeholder: "Seleccione empleado ...",
+            width: '100%'
+        }).val('').trigger('change');
+
+    }).fail(function (response){
+        console.log(response);
+    });
+}
+
 var auxU = 1;
 function agregarItem() {
     // console.log("Agregando...");
     var tr = "<tr>";
         tr+="<td scope='row'>"+(auxU+1)+"</td>"+
-            "<td><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required>"+option_unidades+"</select></td>"+
+            "<td><input name='txtUnidad[]' id='txtUnidad"+auxU+"' class='hidden'/><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required disabled onchange='javascript:cambiarTextoUnidad("+auxU+");'>"+option_unidades+"</select></td>"+
             "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' required></td>"+
-            "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
+            // "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
+            "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required onchange='javascript:cambiarUnidad("+auxU+");'>"+options_items+"</select></td>"+
             "<td>" +
             "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
             "<a class='eliminar' onclick='javascript:eliminarFila(this);'><i class='fa fa-close'></i></a>"+
@@ -251,6 +293,9 @@ function editarCampo(id) {
 
         $('#i'+id).removeClass("fa-edit");
         $('#i'+id).addClass("fa-chevron-circle-down");
+
+        $('#unidad_id'+id).prop('disabled', false);
+
     }else { //ES TEXTO - CAMBIAR A SELECT
         $('#item_id' + id).prop("required", true);
         $('#item_id' + id).select2({
@@ -266,5 +311,38 @@ function editarCampo(id) {
 
         $('#i' + id).removeClass("fa-chevron-circle-down");
         $('#i' + id).addClass("fa-edit");
+
+        $('#unidad_id'+id).prop('disabled', true);
+    }
+}
+
+function cambiarUnidad(id) {
+    // console.log("Select: "+id);
+    if(typeof $('#item_id'+id).find('option:selected').val()!="undefined"){
+
+        $('#unidad_id'+id).prop('disabled', true);
+        $('#unidad_id'+id).select2({
+            allowClear: true,
+            placeholder: "Primero seleccione una categoria...",
+            width: '100%'
+        }).val($('#item_id'+id).find('option:selected').data('unidad')).trigger('change');
+    }else{
+        $('#unidad_id'+id).prop('disabled', true);
+        $('#unidad_id'+id).select2({
+            allowClear: true,
+            placeholder: "Primero seleccione una categoria...",
+            width: '100%'
+        }).val('').trigger('change');
+    }
+}
+
+function cambiarTextoUnidad(id) {
+    console.log("Select item: "+id);
+
+    if(typeof $('#unidad_id'+id).find('option:selected').val()!="undefined"){
+        console.log($('#item_id'+id).find('option:selected').data('unidad'));
+        $('#txtUnidad'+id).val($('#unidad_id'+id).find('option:selected').val());
+    }else{
+        $('#txtUnidad'+id).val(0);
     }
 }

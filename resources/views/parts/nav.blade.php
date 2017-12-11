@@ -42,6 +42,7 @@
                             </span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{route('pedidos.create')}}">Crear</a></li>
+                            <li><a href="{{route('pedidos.index')}}">Pedidos realizados</a></li>
                         </ul>
                     </li>
 

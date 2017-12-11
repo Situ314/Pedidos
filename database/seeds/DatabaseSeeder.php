@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
          $this->call(AreasTableSeeder::class);
          $this->call(UnidadesTableSeeder::class);
 
+         $this->call(ItemsTableSeeder::class);
+         $this->call(EstadosTableSeeder::class);
     }
 }

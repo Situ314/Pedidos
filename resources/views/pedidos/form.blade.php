@@ -1,5 +1,18 @@
 <div class="form-group">
     <div class="col-md-12 col-sm-12 col-xs-12">
+        <label for="empresa_id" class="control-label">Solicitante *</label>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        {{ Form::select('solicitante_id', array(null), null, ['class' => 'js-placeholder-single', 'required','id'=>'solicitante_id']) }}
+        @if ($errors->has('solicitante_id'))
+            <span class="help-block">
+                <strong>{{ $errors->first('solicitante_id') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <label for="empresa_id" class="control-label">Empresa *</label>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12">

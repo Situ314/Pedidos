@@ -18,6 +18,8 @@ class CreatePedidosTable extends Migration
 
             $table->increments('id');
 
+            $table->string('codigo',8)->unique();
+
             $table->integer('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('areas')
                 ->onDelete('cascade');
@@ -28,6 +30,10 @@ class CreatePedidosTable extends Migration
 
             $table->integer('tipo_categoria_id')->unsigned();
             $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')
+                ->onDelete('cascade');
+
+            $table->integer('solicitante_id')->unsigned();
+            $table->foreign('solicitante_id')->references('id')->on('empleados')
                 ->onDelete('cascade');
 
             $table->timestamps();

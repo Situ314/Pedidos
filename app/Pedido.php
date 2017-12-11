@@ -18,6 +18,26 @@ class Pedido extends Model
      * @var array
      */
     protected $fillable = [
-        'area_id', 'proyecto_id', 'tipo_categoria_id'
+        'codigo','area_id', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id'
     ];
+
+    public function solicitante(){
+        return $this->hasOne('App\Empleado','id','solicitante_id');
+    }
+
+    public function items(){
+        return $this->belongsToMany('App\Item','items_pedidos','pedido_id','item_id');
+    }
+
+    public function items_pedido(){
+        return $this->hasMany('App\ItemPedido','pedido_id','id');
+    }
+
+    public function items_temp_pedido(){
+        return $this->hasMany('App\ItemTemporalPedido','pedido_id','id');
+    }
+
+    public function estados_pedido(){
+        return $this->hasMany('App\EstadoPedido','pedido_id','id');
+    }
 }

@@ -3424,7 +3424,7 @@ form:after {
 }
 .login_content {
     margin: 0 auto;
-    padding: 25px 0 0;
+    padding: 0px 0 0;
     position: relative;
     text-align: center;
     text-shadow: 0 1px 0 #fff;
@@ -4082,4 +4082,12 @@ ul.notifications {
 }
 .dataTables_wrapper>.row {
     overflow: auto!important
+}
+
+/*************MIOS*/
+.content-wrapper {
+    right: 0;
+    margin: 5% auto 0;
+    max-width: 350px;
+    position: relative
 }

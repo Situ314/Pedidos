@@ -24,7 +24,6 @@
 
                     <div class="ln_solid"></div>
 
-
                 </div>
             </div>
 
@@ -45,7 +44,7 @@
                 <div class="x_content">
                     <br>
                     <div class="table-responsive">
-                        @include('pedidos.items-table')
+                        @include('pedidos.parts.items-table')
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
@@ -78,7 +77,8 @@
             variables:[
                 {
                     categorias: {!! json_encode($categroias->toArray()) !!},
-                    unidades: {!! json_encode($unidades->toArray()) !!}
+                    unidades: {!! json_encode($unidades->toArray()) !!},
+                    items: {!! json_encode($items->toArray()) !!}
                 }
             ]
         };

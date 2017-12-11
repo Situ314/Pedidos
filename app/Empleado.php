@@ -4,24 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class Empleado extends Model
 {
+    public $incrementing = false;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'items';
+    protected $table = 'empleados';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'nombre', 'descripcion', 'precio_unitario', 'tipo_categoria_id','unidad_id'
+        'id','nombres'
     ];
-
-    public function unidad(){
-        return $this->hasOne('App\Unidad','id','unidad_id');
-    }
 }

@@ -69,10 +69,8 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}" data-parsley-validate>
                     {{ csrf_field() }}
-
                     <h1>Inicio de Sesión</h1>
                     <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                         <input type="text" name="username" class="form-control" placeholder="Usuario" required="true" autofocus>
@@ -93,23 +91,59 @@
                     <div>
                         <button class="btn btn-default submit" type="submit">Iniciar Sesión</button>
                     </div>
-
-                    <div class="clearfix"></div>
-
-                    <div class="separator">
-
-                        <div class="clearfix"></div>
-                        <br>
-
-                        <div>
-                            <h1><i class="fa fa-location-arrow"></i> Pedidos!</h1>
-                            <p>©2017 Todos los derechos reservados. Pragma Invest S.A.</p>
-                        </div>
-                    </div>
                 </form>
+            </section>
+            <section class="login_content">
+                <h1>Consulte su pedido</h1>
+                <div class="row">
+                    <div class="col-lg-12">
+                        {{ Form::open( array('route' => 'pedidos.buscar', 'method' => 'GET','data-parsley-validate' => '','class'=>'form-group validate-form','id'=>'formBuscar') ) }}
+                        <div class="input-group">
+                            <input name="codigo" type="text" class="form-control {{ $errors->has('codigo') ? ' has-error' : '' }}" required placeholder="Codigo">
+                            <span class="input-group-btn">
+                                <button id="btnBuscar" class="btn btn-success-custom" type="submit" style="margin-top: -20px;"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                        {{ Form::close() }}
+                    </div>
+                </div>
+
+                <div class="separator">
+                    <div class="clearfix"></div>
+                    <br>
+                    <div>
+                        <h1><i class="fa fa-location-arrow"></i> Pedidos!</h1>
+                        <p>©2017 Todos los derechos reservados. Pragma Invest S.A.</p>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            console.log( "ready!" );
+
+            $(".validate-form").parsley({
+                successClass: "has-success",
+                errorClass: "has-error",
+                classHandler: function (el) {
+                    return el.$element.closest(".form-group");
+                },
+                errorsContainer: function (el) {
+                    return el.$element.closest(".form-group");
+                },
+            });
+
+            $('#btnBuscar').on('click',function (e) {
+               e.preventDefault();
+               var action = $('#formBuscar').attr('action').replace(':buscar',$('input[name=codigo]').val());
+                $('#formBuscar').attr('action',action).submit();
+            });
+        });
+    </script>
 @endsection

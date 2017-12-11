@@ -103,6 +103,8 @@
 {{ Html::script('/js/parsley.min.js') }}
 {{ Html::script('/js/i18n/es.js') }}
 
+    @yield('scripts')
+
 </body>
 </html>
 

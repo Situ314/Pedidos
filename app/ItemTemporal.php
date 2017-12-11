@@ -4,21 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class ItemTemporal extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'items';
+    protected $table = 'items_temporales';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'nombre', 'descripcion', 'precio_unitario', 'tipo_categoria_id','unidad_id'
+        'nombre', 'unidad_id'
     ];
 
     public function unidad(){
