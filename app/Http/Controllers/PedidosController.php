@@ -16,6 +16,7 @@ use App\Pedido;
 use App\Proyecto;
 use App\TipoCategoria;
 use App\Unidad;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,10 +34,12 @@ class PedidosController extends Controller
     {
         $pedidos = Pedido::all();
         $estados = Estado::all();
+        $usuarios = User::all();
 
         return view('pedidos.index')
             ->withPedidos($pedidos)
-            ->withEstados($estados);
+            ->withEstados($estados)
+            ->withUsuarios($usuarios);
     }
 
     /**
@@ -198,7 +201,9 @@ class PedidosController extends Controller
      */
     public function show($id)
     {
-        //
+        $pedido = Pedido::find($id);
+
+        return $pedido;
     }
 
     /**
@@ -252,6 +257,22 @@ class PedidosController extends Controller
             ->withEstadosp($estados_pedido);
     }
 
+    public function postItemsPedido(Request $request){
+        $pedido = Pedido::find($request->id);
+
+        foreach ($pedido->items_pedido as $item){
+            $item->item->unidad;
+        }
+
+        foreach ($pedido->items_temp_pedido as $item){
+            $item->item->unidad;
+        }
+
+        return Response::json(
+            $pedido
+        );
+    }
+
     public function postPedidos(Request $request){
         $estados_pedidos_id_array = Pedido::select('pedidos.id')
             ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
@@ -260,9 +281,12 @@ class PedidosController extends Controller
             ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
             ->get();
 
-        $pedidos = Pedido::whereIn('id',$estados_pedidos_id_array)
-            ->join('proyectos','pedidos.proyecto_id','=','proyectos.id')
+        $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
             ->get();
+
+        foreach ($pedidos as $pedido){
+            $pedido->proyecto->empresa;
+        }
 
         return Response::json(
             $pedidos

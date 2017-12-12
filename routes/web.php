@@ -46,6 +46,11 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'PedidosController@postCantidad',
         'as'=>'pedidos.cantidad'
     ]);
+
+    Route::post('post.pedidos.id',[
+        'uses'=>'PedidosController@postItemsPedido',
+        'as'=>'pedidos.items'
+    ]);
 });
 
 //Route::get('/home', 'HomeController@index');

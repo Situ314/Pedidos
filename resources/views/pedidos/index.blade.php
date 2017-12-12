@@ -43,6 +43,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Modales -->
+    @include('pedidos.modals.modal-ver')
 @endsection
 
 @section('footerScripts')
@@ -51,6 +54,7 @@
         var rutas = {
             pedidos: "{{route('pedidos.estados')}}",
             cantidad: "{{route('pedidos.cantidad')}}",
+            getPedido: "{{route('pedidos.items')}}",
             token: "{{Session::token()}}"
         };
         var variables = {

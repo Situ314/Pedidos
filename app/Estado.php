@@ -4,25 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Proyecto extends Model
+class Estado extends Model
 {
-    public $incrementing = false;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'proyectos';
+    protected $table = 'estados';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'nombre', 'descripcion', 'empresa_id'
+        'nombre', 'descripcion'
     ];
-
-    public function empresa(){
-        return $this->hasOne('App\Empresa','id','empresa_id');
-    }
 }

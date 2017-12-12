@@ -1026,9 +1026,9 @@ h2 {
     font-size: 20px
 }
 .accordion .panel {
-    margin-bottom: 5px;
-    border-radius: 0;
-    border-bottom: 1px solid #efefef
+    margin-bottom: 5px !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #efefef !important;
 }
 .x_panel,
 .x_title {

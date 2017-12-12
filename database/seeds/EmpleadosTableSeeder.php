@@ -15,5 +15,20 @@ class EmpleadosTableSeeder extends Seeder
             'id' => 637,
             'nombres' => 'Diego Jauregui Salvatierra'
         ]);
+
+        DB::table('empleados')->insert([
+            'id' => 272,
+            'nombres' => 'Ruben Fuentes'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 1541,
+            'nombres' => 'Justina Paredes'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 1542,
+            'nombres' => 'Justina Pari'
+        ]);
     }
 }

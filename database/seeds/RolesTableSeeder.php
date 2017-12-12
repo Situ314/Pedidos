@@ -20,8 +20,18 @@ class RolesTableSeeder extends Seeder
         ]);
 
         DB::table('roles')->insert([
+            'nombre' => 'ASIGNADOR',
+            'descripcion' => 'ENCARGADO DE LA ASIGNACION DE PEDIDOS'
+        ]);
+
+        DB::table('roles')->insert([
+            'nombre' => 'RESPONSABLE',
+            'descripcion' => 'RESPONABLE DEL CUMPLIMIENTO DEL PEDIDO'
+        ]);
+
+        DB::table('roles')->insert([
             'nombre' => 'USUARIO',
-            'descripcion' => 'RECEPTOR DE CORRESPONDENCIA Y EMISOR'
+            'descripcion' => 'USUARIO QUE REALIZA PEDIDOS'
         ]);
     }
 }
