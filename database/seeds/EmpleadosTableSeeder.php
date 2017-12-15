@@ -12,23 +12,53 @@ class EmpleadosTableSeeder extends Seeder
     public function run()
     {
         DB::table('empleados')->insert([
+            'id' => 0,
+            'nombres' => 'Root'
+        ]);
+
+        DB::table('empleados')->insert([
             'id' => 637,
             'nombres' => 'Diego Jauregui Salvatierra'
         ]);
 
         DB::table('empleados')->insert([
-            'id' => 272,
-            'nombres' => 'Ruben Fuentes'
+            'id' => 1,
+            'nombres' => 'Autorizador 1'
         ]);
 
         DB::table('empleados')->insert([
-            'id' => 1541,
-            'nombres' => 'Justina Paredes'
+            'id' => 2,
+            'nombres' => 'Autorizador 2'
         ]);
 
         DB::table('empleados')->insert([
-            'id' => 1542,
-            'nombres' => 'Justina Pari'
+            'id' => 3,
+            'nombres' => 'Usuario 1'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 4,
+            'nombres' => 'Usuario 2'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 5,
+            'nombres' => 'Usuario 3'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 6,
+            'nombres' => 'Usuario 4'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 7,
+            'nombres' => 'Usuario 5'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 8,
+            'nombres' => 'Usuario 6'
         ]);
     }
 }

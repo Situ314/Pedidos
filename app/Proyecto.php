@@ -25,4 +25,8 @@ class Proyecto extends Model
     public function empresa(){
         return $this->hasOne('App\Empresa','id','empresa_id');
     }
+
+    public function users(){
+        return $this->belongsToMany('App\User','proyectos_users','proyecto_id','user_id');
+    }
 }

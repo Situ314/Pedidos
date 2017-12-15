@@ -13,11 +13,15 @@ class EstadosTableSeeder extends Seeder
     {
         DB::table('estados')->insert([
             'nombre' => 'REALIZADO',
-            'descripcion' => 'Pedido generado'
+            'descripcion' => 'Pedidos generado'
         ]);
         DB::table('estados')->insert([
-            'nombre' => 'EN PROCESO',
-            'descripcion' => 'Pedido verificandose'
+            'nombre' => 'AUTORIZADO',
+            'descripcion' => 'Pedidos autorizados'
+        ]);
+        DB::table('estados')->insert([
+            'nombre' => 'PROCESO',
+            'descripcion' => 'Pedidos verificandose'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'COMPROBADO',

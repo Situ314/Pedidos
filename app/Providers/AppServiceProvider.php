@@ -2,15 +2,18 @@
 
 namespace App\Providers;
 
+use App\Asignacion;
 use App\Empleado;
 use App\Empresa;
 use App\EstadoPedido;
+use App\Item;
 use App\ItemPedido;
 use App\ItemTemporal;
 use App\ItemTemporalPedido;
 use App\Log;
 use App\Pedido;
 use App\Proyecto;
+use App\Responsable;
 use function foo\func;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -54,6 +57,18 @@ class AppServiceProvider extends ServiceProvider
 
         Empleado::created(function ($emp){
             $this->CreateLog($emp,"empleados");
+        });
+
+        Asignacion::created(function ($asig){
+            $this->CreateLog($asig, "asignaciones");
+        });
+
+        Item::created(function ($item){
+           $this->CreateLog($item,"items");
+        });
+
+        Responsable::created(function ($resp){
+           $this->CreateLog($resp,"responsables");
         });
     }
 

@@ -11,7 +11,7 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Creación de Pedido <small>formulario para la realización de un pedido</small></h2>
+                    <h2>Creación de Pedido <small>Formulario para la realización de un pedido</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -34,7 +34,7 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Items <small>tabla con los items a pedir</small></h2>
+                    <h2>Items <small>Tabla con los items a pedir</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -47,11 +47,9 @@
                         @include('pedidos.parts.items-table')
                     </div>
                     <div class="ln_solid"></div>
-                    <div class="form-group">
-                        <div class="text-center">
-                            <a href="{{URL::previous()}}" class="btn btn-primary"><span class="fa fa-arrow-left"> Volver</span></a>
-                            <button type="submit" class="btn btn-success"><span class="fa fa-save"> Guardar</span></button>
-                        </div>
+                    <div class="row text-center">
+                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
                     </div>
                 </div>
             </div>

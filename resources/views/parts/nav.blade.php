@@ -1,18 +1,11 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-
-            {{--<img src="/images/logo3.png" style="width: 100%;">--}}
-{{--            <a href="{{route('dash.index')}}" class="site_title"><i class="fa fa-envelope" style="margin-left: -6px;"></i> <span>SICC</span></a>--}}
+            <a class="site_title"><i class="fa fa-location-arrow" style="margin-left: -6px;"></i> <span>SPT</span></a>
         </div>
 
         <div class="clearfix"></div>
-
-
-        <!-- /menu profile quick info -->
-
         <br />
-
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <!-- ADMINISTRADOR -->
@@ -23,14 +16,29 @@
                         <li>
                             <a><i class="fa fa-group"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                {{--<li><a href="{{ route('usuarios.index') }}">Listado</a></li>--}}
+                                <li><a href="#">Listado</a></li>
+                                <li><a href="#">Responsables</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-        @endif
-
+            @endif
         <!-- END ADMINISTRADOR -->
+            <!-- AUTORIZADOR -->
+            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 5)
+                <div class="menu_section">
+                    <h3>AUTORIZADOR</h3>
+                    <ul class="nav side-menu">
+                        <li>
+                            <a><i class="fa fa-group"></i> Mis usuarios <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{{route('autorizador.index')}}">Listado</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+            <!-- -->
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">

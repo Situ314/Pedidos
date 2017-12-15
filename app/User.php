@@ -30,4 +30,8 @@ class User extends Authenticatable
     public function empleado(){
         return $this->belongsTo('App\Empleado','empleado_id','id');
     }
+
+    public function proyectos(){
+        return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id');
+    }
 }

@@ -19,13 +19,13 @@ $( document ).ready(function() {
     }).val('').trigger('change');
     $('.items-select2').prop('disabled', true);
 
-    getEmpresas();
+    // getEmpresas();
 
     getUnidades();
 
-    getEmpleados();
+    // getEmpleados();
 
-    $('select[name=empresa_id]').change(function () {
+    /*$('select[name=empresa_id]').change(function () {
         var select_proyectos = $('select[name=proyecto_id]');
 
         console.log($(this).find('option:selected').data('foo'));
@@ -62,7 +62,7 @@ $( document ).ready(function() {
             }).val('').trigger('change');
         }
 
-    });
+    });*/
 
     $('select[name=tipo_cat_id]').change(function () {
         var selected_op = $(this).find('option:selected').val();

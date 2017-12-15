@@ -18,11 +18,11 @@ class Pedido extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo','area_id', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id'
+        'codigo', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id'
     ];
 
     public function solicitante(){
-        return $this->hasOne('App\Empleado','id','solicitante_id');
+        return $this->hasOne('App\User','id','solicitante_id');
     }
 
     public function items(){

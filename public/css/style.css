@@ -6756,11 +6756,21 @@ body {
 .icono-orange {
   color: orangered;
 }
-.table {
-  color: #73879c;
-}
 .table thead {
   vertical-align: middle !important;
+}
+.table td {
+  color: #73879c;
+}
+.table td .label-success,
+.table td .label-danger {
+  color: white;
+  padding: 2px 4px 2px 4px;
+  border-radius: 3px;
+}
+.table th {
+  color: #73879c;
+  font-weight: bold;
 }
 /*.table{
     tr:nth-child(even) {
@@ -7524,7 +7534,7 @@ span.subtitulo-numero {
   cursor: pointer;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-primary {
-  background-color: #303641;
+  background-color: #1a3147;
   color: #fff;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-secondary {
@@ -7696,4 +7706,10 @@ a.eliminar:visited {
 a.disabled {
   pointer-events: none;
   cursor: default;
+}
+.count_top {
+  color: #73879c;
+}
+.count_bottom {
+  color: #73879c;
 }

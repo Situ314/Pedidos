@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Area;
 use App\Categoria;
 use App\Empleado;
 use App\Empresa;
@@ -14,6 +13,7 @@ use App\ItemTemporal;
 use App\ItemTemporalPedido;
 use App\Pedido;
 use App\Proyecto;
+use App\Responsable;
 use App\TipoCategoria;
 use App\Unidad;
 use App\User;
@@ -49,7 +49,6 @@ class PedidosController extends Controller
      */
     public function create()
     {
-        $areas = Area::orderBy('nombre');
         $tipos = TipoCategoria::orderBy('nombre');
         $categorias = Categoria::all();
         $unidades = Unidad::all();
@@ -57,7 +56,6 @@ class PedidosController extends Controller
 
 //        dd($areas->pluck('nombre','id'));
         return view('pedidos.create')
-            ->withAreas($areas)
             ->withTipos($tipos)
             ->withCategroias($categorias)
             ->withUnidades($unidades)
@@ -72,7 +70,7 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
-        $array_empresas = explode('|',$request->empresa_id);
+        /*$array_empresas = explode('|',$request->empresa_id);
         $empresa_id = $array_empresas[0];
         if(Empresa::find($empresa_id)==null){
             $array_empresas = [
@@ -109,14 +107,14 @@ class PedidosController extends Controller
             ];
             $empleado = new Empleado($array_empleado);
             $empleado->save();
-        }
+        }*/
 
         $array_pedido = [
             'codigo'=>$this->codigo_aleatorio(),
             'area_id'=>$request->area_id,
-            'proyecto_id'=>$proyecto_id,
+            'proyecto_id'=>$request->proyecto_id,
             'tipo_categoria_id'=>$request->tipo_cat_id,
-            'solicitante_id'=>$solicitante
+            'solicitante_id'=>Auth::id()
         ];
         $pedido = new Pedido($array_pedido);
         $pedido->save();
@@ -274,18 +272,55 @@ class PedidosController extends Controller
     }
 
     public function postPedidos(Request $request){
-        $estados_pedidos_id_array = Pedido::select('pedidos.id')
-            ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
-            ->where('estados_pedidos.user_id','=',Auth::id())
-            ->groupBy('pedidos.id')
-            ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-            ->get();
+        switch (Auth::user()->rol_id){
+            case 1:
+            case 2:
+            $estados_pedidos_id_array = Pedido::select('pedidos.id')
+
+                ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
+
+                ->groupBy('pedidos.id')
+                ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
+                ->get();
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
+                $estados_pedidos_id_array = Pedido::select('pedidos.id')
+
+                    ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
+
+                    ->whereIn('estados_pedidos.user_id',$usuarios_responsable_array)
+                    ->orWhere('estados_pedidos.user_id',Auth::id())
+                    ->groupBy('pedidos.id')
+                    ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
+                    ->get();
+
+                break;
+            case 6:
+                $estados_pedidos_id_array = Pedido::select('pedidos.id')
+
+                    ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
+
+                    ->where('estados_pedidos.user_id','=',Auth::id())
+                    ->groupBy('pedidos.id')
+                    ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
+                    ->get();
+                break;
+        }
 
         $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
             ->get();
 
         foreach ($pedidos as $pedido){
             $pedido->proyecto->empresa;
+            $pedido->solicitante->empleado;
         }
 
         return Response::json(
@@ -298,4 +333,13 @@ class PedidosController extends Controller
 
         echo $cantidad;
     }
+
+    /*public function getVerificaion($id){
+        $pedido = Pedido::find($id);
+        $unidades = Unidad::all();
+
+        return view('pedidos.verificar')
+            ->withPedido($pedido)
+            ->withUnidades($unidades);
+    }*/
 }

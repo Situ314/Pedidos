@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePedidosTable extends Migration
+class CreateProyectosUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,30 +13,21 @@ class CreatePedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('proyectos_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-
-            $table->string('codigo',8)->unique();
-
-            /*$table->integer('area_id')->unsigned();
-            $table->foreign('area_id')->references('id')->on('areas')
-                ->onDelete('cascade');*/
 
             $table->integer('proyecto_id')->unsigned();
             $table->foreign('proyecto_id')->references('id')->on('proyectos')
                 ->onDelete('cascade');
 
-            $table->integer('tipo_categoria_id')->unsigned();
-            $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')
-                ->onDelete('cascade');
-
-            $table->integer('solicitante_id')->unsigned();
-            $table->foreign('solicitante_id')->references('id')->on('users')
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -47,6 +38,6 @@ class CreatePedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('proyectos_users');
     }
 }

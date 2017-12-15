@@ -1,12 +1,17 @@
 /**
  * Created by djauregui on 8/12/2017.
  */
-
-var usuarios = "";
+var verificacion = "";
 $( document ).ready(function(){
+    $(".js-placeholder-single").select2({
+        allowClear: true,
+        placeholder: "Seleccione ...",
+        width: '100%'
+    }).val('').trigger('change');
 
+    verificacion = rutas.verificacion.replace(":id","");
+    // console.log(verificacion);
     getRealizado();
-
     getCantidadEstados();
 });
 
@@ -37,7 +42,7 @@ $('ul#myTab li a').click(function (e) {
         if(response.length!=0){
             for(var i=0;i<response.length;i++){
                 var opciones = '';
-                if(estado==1){
+                if(estado==1 && variables.uR < 4){
                     opciones ='<td>' +
                         '<div class="btn-group" role="group">' +
                         '<button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
@@ -77,13 +82,17 @@ function getRealizado() {
     var route = rutas.pedidos;
     var token = rutas.token;
 
+    console.log($('#myTab').children().first().children().prop('id').split('-tab'));
+    // console.log(this.id.split('-tab'));
+    var estado = $('#myTab').children().first().children().prop('id').split('-tab')[0];
+
     console.log(route);
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
         type: 'POST',
         data:{
-            estado_id: 1
+            estado_id: estado
         },
         dataType: 'JSON',
         beforeSend: function(e){
@@ -93,23 +102,96 @@ function getRealizado() {
                                         '</div>');
         }
     }).done(function (response){
-        $('#contenido-tab').empty();
-        var body = "";
-        for(var i=0;i<response.length;i++){
-            body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                '<td>'+response[i].codigo+'</td>' +
-                '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                '<td>'+response[i].proyecto.nombre+'</td>' +
-                '<td><div class="btn-group" role="group"><button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button><button type="button" class="btn btn-secondary" title="Asignar responsable" onclick="javascript:asignarResponsable('+response[i].id+');"><i class="fa fa-mail-forward"></i></button></div></td>'+
-                '</tr>';
-        }
+        console.log(response);
 
-        $('#contenido-tab').append(
-            '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Opciones</th></tr></thead>'+
-                '<tbody>'+
+        $('#contenido-tab').empty();
+        var head = "";
+        var body = "";
+        if(response.length != 0){
+            switch ( parseInt(variables.uR)){
+                case 1:
+                case 2:
+                case 3:
+                    console.log("d");
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+                case 6:
+                    break;
+            }
+
+            for(var i=0;i<response.length;i++){
+                switch (parseInt(variables.uR)){
+                    case 1:
+                    case 2:
+                    case 3:
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                            '<td>'+response[i].proyecto.nombre+'</td>' +
+                            '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            '<button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
+                            '<button type="button" class="btn btn-secondary" title="Asignar responsable" onclick="javascript:asignarResponsable('+response[i].id+');"><i class="fa fa-mail-forward"></i></button></div></td>'+
+                            '</tr>';
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                            '<td>'+response[i].proyecto.nombre+'</td>' +
+                            '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            '<button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
+                            '<button type="button" class="btn btn-secondary" title="Verificar pedido '+response[i].codigo+'" onclick="javascript:verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></button></div></td>'+
+                            '</tr>';
+                        break;
+                    case 6:
+                        break;
+                }
+                /*if(variables.uR < 4){
+
+                }else{
+                    if(variables.uR == 4 && estado == 2){
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                            '<td>'+response[i].proyecto.nombre+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            '<button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
+                            '<a class="btn btn-secondary" title="Verificar '+response[i].codigo+'" href="'+verificacion+response[i].id+'"><i class="fa fa-edit"></i></a>' +
+                            '</div></td>'+
+                            '</tr>';
+                    }else{
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                            '<td>'+response[i].proyecto.nombre+'</td>' +
+                            '<td><div class="btn-group" role="group"><button type="button" class="btn btn-secondary" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button></div></td>'+
+                            '</tr>';
+                    }
+                }*/
+            }
+
+            $('#contenido-tab').append(
+                head+
                 body+
                 '</tbody>'+
-            '</table>');
+                '</table>');
+        }else{
+            $('#contenido-tab').append(
+                '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
+                '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
+                '</div>');
+        }
     });
 }
 
@@ -187,5 +269,10 @@ function verItems(id) {
 }
 
 function asignarResponsable(id) {
+    $('#modalAsignacion').modal('show');
+    $('input[name=pedido_responsable_id]').val(id);
+}
+
+function verificarPedido(id) {
     console.log(id);
 }

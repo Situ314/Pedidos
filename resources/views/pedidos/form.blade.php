@@ -1,4 +1,4 @@
-<div class="form-group">
+{{--<div class="form-group">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <label for="empresa_id" class="control-label">Solicitante *</label>
     </div>
@@ -36,22 +36,25 @@
             </span>
         @endif
     </div>
-</div>
+</div>--}}
 
-<div class="form-group">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        <label for="area_id" class="control-label">Area *</label>
-    </div>
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        {{Form::select('area_id', $areas->pluck('nombre','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
-        @if ($errors->has('area_id'))
-            <span class="help-block">
-                <strong>{{ $errors->first('area_id') }}</strong>
+@if(count(\Illuminate\Support\Facades\Auth::user()->proyectos)==1)
+    <input name="proyecto_id" hidden value="{{\Illuminate\Support\Facades\Auth::user()->proyectos[0]->id}}">
+@else
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <label for="proyecto_id" class="control-label">Proyecto *</label>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            {{Form::select('proyecto_id', \Illuminate\Support\Facades\Auth::user()->proyectos->pluck('nombre','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+            @if ($errors->has('proyecto_id'))
+                <span class="help-block">
+                <strong>{{ $errors->first('proyecto_id') }}</strong>
             </span>
-        @endif
+            @endif
+        </div>
     </div>
-</div>
-
+@endif
 <div class="form-group">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <label for="tipo_cat_id" class="control-label">Tipo Categroia*</label>

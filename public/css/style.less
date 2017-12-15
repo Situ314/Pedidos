@@ -55,9 +55,20 @@ body{
 }
 
 .table{
-    color: @side-gray-color;
     thead{
         vertical-align: middle !important;
+    }
+    td{
+        color: @side-gray-color;
+        .label-success, .label-danger{
+            color: white;
+            padding: 2px 4px 2px 4px;
+            border-radius: 3px;
+        }
+    }
+    th{
+        color: @side-gray-color;
+        font-weight: bold;
     }
 }
 /*.table{
@@ -929,7 +940,7 @@ span{
 }
 
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-primary {
-    background-color: #303641;
+    background-color: @primary-oscuro;
     color: #fff;
 }
 
@@ -1147,4 +1158,13 @@ a.eliminar{
 a.disabled {
     pointer-events: none;
     cursor: default;
+}
+
+.count_top{
+    color: @side-gray-color;
+}
+
+.count_bottom{
+    color: @side-gray-color;
+
 }

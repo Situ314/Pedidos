@@ -47,9 +47,25 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.cantidad'
     ]);
 
-    Route::post('post.pedidos.id',[
+    Route::post('post.pedidos.item',[
         'uses'=>'PedidosController@postItemsPedido',
         'as'=>'pedidos.items'
+    ]);
+
+    /*Route::get('/verificacion/{pedido}',[
+        'uses'=>'PedidosController@getVerificaion',
+        'as'=>'pedidos.verificar'
+    ]);*/
+
+    Route::resource('/asignaciones','AsignacionesController');
+
+    Route::resource('/verificacion','VerificacionController');
+
+    Route::resource('/autorizador','AutorizadorController');
+
+    Route::get('/get.cambiarUsu/{usu}/{opcion}',[
+        'uses'=>'AutorizadorController@getCambiarRango',
+        'as'=>'autorizador.cambiar'
     ]);
 });
 
