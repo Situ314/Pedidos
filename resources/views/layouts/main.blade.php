@@ -33,5 +33,15 @@
 @include('parts.javascript')
 @yield('footerScripts')
 
+<script type="text/javascript">
+    var configGlobal = {
+        rutas:[
+            {
+                getCantidades: "{{route('pedidos.cantidad')}}",
+                token: "{{Session::token()}}"
+            }
+        ]
+    };
+</script>
 </body>
 </html>

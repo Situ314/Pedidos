@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{ Form::open( array('route' => 'pedidos.store', 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask') ) }}
+    {{ Form::open( array('route' => ['pedidos.update',$pedido->id], 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask') ) }}
 
     <div class="row">
         <div class="col-md-12 col-xs-12">

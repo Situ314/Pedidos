@@ -29,4 +29,9 @@ class Proyecto extends Model
     public function users(){
         return $this->belongsToMany('App\User','proyectos_users','proyecto_id','user_id');
     }
+
+    public function getProyectoEmpresaAttribute()
+    {
+        return $this->nombre.' ('.$this->empresa->nombre.')';
+    }
 }

@@ -12,24 +12,41 @@ class EstadosTableSeeder extends Seeder
     public function run()
     {
         DB::table('estados')->insert([
-            'nombre' => 'REALIZADO',
-            'descripcion' => 'Pedidos generado'
+            'nombre' => 'CREADO',
+            'descripcion' => 'PEDIDO GENERADO'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'AUTORIZADO',
-            'descripcion' => 'Pedidos autorizados'
+            'descripcion' => 'PEDIDO AUTORIZADO'
         ]);
         DB::table('estados')->insert([
-            'nombre' => 'PROCESO',
-            'descripcion' => 'Pedidos verificandose'
+            'nombre' => 'EN PROCESO',
+            'descripcion' => 'PEDIDO VERIFICANDOSE'
+        ]);
+        DB::table('estados')->insert([
+            'nombre' => 'ESPERA',
+            'descripcion' => 'PEDIDO EN ESPERA'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'COMPROBADO',
-            'descripcion' => 'Paso el registro y se realizara el pedido'
+            'descripcion' => 'REALIZACIÓN DEL PEDIDO'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'ENTREGADO',
-            'descripcion' => 'Se entrego el pedido al personal'
+            'descripcion' => 'PEDIDO ENTREGADO'
         ]);
+
+
+        DB::table('estados')->insert([
+            'nombre' => 'OBSERVADO',
+            'descripcion' => 'OBSERVADO, SE PUEDE EDITAR'
+        ]);
+
+
+        DB::table('estados')->insert([
+            'nombre' => 'RECHAZADO',
+            'descripcion' => 'RECHAZADO, EL PEDIDO SE ANULO'
+        ]);
+
     }
 }

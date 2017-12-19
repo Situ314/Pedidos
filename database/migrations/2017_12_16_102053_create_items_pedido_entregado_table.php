@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstadosPedidosTable extends Migration
+class CreateItemsPedidoEntregadoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,20 @@ class CreateEstadosPedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('estados_pedidos', function (Blueprint $table) {
+        Schema::create('items_pedido_entregado', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
 
-            $table->text('motivo')->nullable()->default(null);
-
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('cascade');
-
-            $table->integer('estado_id')->unsigned();
-            $table->foreign('estado_id')->references('id')->on('estados')
-                ->onDelete('cascade');
+            $table->float('cantidad');
+            $table->float('precio_unitario');
 
             $table->integer('pedido_id')->unsigned();
             $table->foreign('pedido_id')->references('id')->on('pedidos')
+                ->onDelete('cascade');
+
+            $table->integer('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('items')
                 ->onDelete('cascade');
 
             $table->timestamps();
@@ -43,6 +40,6 @@ class CreateEstadosPedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estados_pedidos');
+        Schema::dropIfExists('items_pedido_entregado');
     }
 }

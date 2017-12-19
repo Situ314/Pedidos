@@ -91,4 +91,22 @@ class AppServiceProvider extends ServiceProvider
             'user_id'=>Auth::id()
         ]);
     }
+
+    public function UpdateLog($obj, $tabla){
+        $diff = array_diff_assoc($obj['attributes'], $obj['original']);
+        foreach ($diff as $key => $value){
+            if($key != 'id' && $key != 'created_at' && $key != 'updated_at') {
+                Log::create([
+                    'tabla'=>$tabla,
+                    'tipo'=>'U',
+                    'tabla_id'=>$obj->id,
+                    'tabla_campo'=>$key,
+                    'valor_anterior'=>($obj['original'][$key]!='')?$obj['original'][$key]:null,
+                    'valor_nuevo'=>($value != '')?$value:null,
+                    'ip'=>\Request::ip(),
+                    'user_id'=>Auth::id()
+                ]);
+            }
+        }
+    }
 }

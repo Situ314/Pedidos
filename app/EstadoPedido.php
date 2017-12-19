@@ -18,7 +18,7 @@ class EstadoPedido extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'estado_id', 'pedido_id'
+        'user_id', 'estado_id', 'pedido_id', 'motivo'
     ];
 
     public function usuario(){

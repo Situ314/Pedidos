@@ -24,4 +24,4 @@
 {{ Html::script('/js/custom.min.js') }}
 
 <!-- Mis scripts -->
-{{--{{ Html::script('/js/main.js') }}--}}
+{{ Html::script('/js/main.js') }}

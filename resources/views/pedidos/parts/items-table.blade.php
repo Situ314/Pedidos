@@ -5,11 +5,7 @@
         <th>Unidad</th>
         <th>Cant. Solicitada</th>
         <th>Descripción</th>
-        <th>
-            <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom" disabled="true" title="Primero seleccione un tipo de categoria">
-                <i class="fa fa-plus"></i>
-            </button>
-        </th>
+        <th>Opciones</th>
     </tr>
     </thead>
     <tbody id="tbodyItems">
@@ -22,4 +18,5 @@
     </tr>
     </tbody>
 </table>
+
 

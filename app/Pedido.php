@@ -44,4 +44,8 @@ class Pedido extends Model
     public function proyecto(){
         return $this->hasOne('App\Proyecto','id','proyecto_id');
     }
+
+    public function estados(){
+        return $this->belongsToMany('App\Estado','estados_pedidos','pedido_id','estado_id');
+    }
 }

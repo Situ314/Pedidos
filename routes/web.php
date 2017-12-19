@@ -52,6 +52,11 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.items'
     ]);
 
+    Route::post('post.pedidos.estados',[
+        'uses'=>'PedidosController@postEstadosPedido',
+        'as'=>'pedidos.progreso'
+    ]);
+
     /*Route::get('/verificacion/{pedido}',[
         'uses'=>'PedidosController@getVerificaion',
         'as'=>'pedidos.verificar'
@@ -62,6 +67,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('/verificacion','VerificacionController');
 
     Route::resource('/autorizador','AutorizadorController');
+
+    Route::resource('/devolucion','DevolucionesController');
 
     Route::get('/get.cambiarUsu/{usu}/{opcion}',[
         'uses'=>'AutorizadorController@getCambiarRango',

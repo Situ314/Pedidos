@@ -65,61 +65,71 @@
         </div>
     </div>
 </div>--}}
-<div>
-    <div class="login_wrapper">
-        <div class="animate form login_form">
-            <section class="login_content">
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}" data-parsley-validate>
-                    {{ csrf_field() }}
-                    <h1>Inicio de Sesión</h1>
-                    <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
-                        <input type="text" name="username" class="form-control" placeholder="Usuario" required="true" autofocus>
-                        @if ($errors->has('username'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('username') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-                        <input type="password" name="password" class="form-control" placeholder="Contraseña" required="true">
-                        @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <div>
-                        <button class="btn btn-default submit" type="submit">Iniciar Sesión</button>
-                    </div>
-                </form>
-            </section>
-            <section class="login_content">
-                <h1>Consulte su pedido</h1>
-                <div class="row">
-                    <div class="col-lg-12">
-                        {{ Form::open( array('route' => 'pedidos.buscar', 'method' => 'GET','data-parsley-validate' => '','class'=>'form-group validate-form','id'=>'formBuscar') ) }}
-                        <div class="input-group">
-                            <input name="codigo" type="text" class="form-control {{ $errors->has('codigo') ? ' has-error' : '' }}" required placeholder="Codigo">
-                            <span class="input-group-btn">
-                                <button id="btnBuscar" class="btn btn-success-custom" type="submit" style="margin-top: -20px;"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                        {{ Form::close() }}
-                    </div>
-                </div>
 
-                <div class="separator">
-                    <div class="clearfix"></div>
-                    <br>
-                    <div>
-                        <h1><i class="fa fa-location-arrow"></i> Pedidos!</h1>
-                        <p>©2017 Todos los derechos reservados. Pragma Invest S.A.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-md-offset-2">
+            <div class="panel panel-default login-panel">
+                <div class="panel-heading">Bienvenido</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                            <img src="{{ asset('images/avatar.png') }}">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                            <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+                                {{ csrf_field() }}
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+
+                                            <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus placeholder="Usuario">
+                                            @if ($errors->has('username'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('username') }}</strong>
+                                                </span>
+                                            @endif
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                            <input id="password" type="password" class="form-control" name="password" required placeholder="Contraseña">
+
+                                            @if ($errors->has('password'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group pull-left">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember"> Recuerdame
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary-custom btn-block">
+                                        Iniciar Sesión
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
+
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </div>
+
 
 @endsection
 

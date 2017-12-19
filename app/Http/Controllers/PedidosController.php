@@ -20,6 +20,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\DB;
 use Session;
 use Response;
 
@@ -152,6 +153,7 @@ class PedidosController extends Controller
         }
 
         $array_estado_pedido = [
+            'motivo'=>strtoupper($request->motivo),
             'user_id'=>Auth::id(),
             'estado_id'=>1,
             'pedido_id'=>$pedido->id
@@ -171,11 +173,9 @@ class PedidosController extends Controller
         $bandera = true;
         do{
             if( count(Pedido::where('codigo','=',$codigo)->first())==0 ){
-//                echo "no hay";
                 $bandera = false;
 
             }else{
-//                echo "hay";
                 $letras = str_random(3);
                 $numeros = mt_rand(0,999);
                 $codigo = $letras.'-'.$numeros;
@@ -212,7 +212,27 @@ class PedidosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pedido = Pedido::find($id);
+
+        if(Auth::user()->rol_id > 3){
+            if($pedido->solicitante_id != Auth::id()){
+                return redirect()->back()
+                    ->withErrors(array('error'=>'No puede editar un pedido que no solicito'));
+            }
+        }
+
+        $tipos = TipoCategoria::orderBy('nombre');
+        $categorias = Categoria::all();
+        $unidades = Unidad::all();
+        $items = Item::all();
+
+        return view('pedidos.edit')
+            ->withTipos($tipos)
+            ->withCategroias($categorias)
+            ->withUnidades($unidades)
+            ->withItems($items)
+
+            ->withPedido($pedido);
     }
 
     /**
@@ -275,13 +295,22 @@ class PedidosController extends Controller
         switch (Auth::user()->rol_id){
             case 1:
             case 2:
-            $estados_pedidos_id_array = Pedido::select('pedidos.id')
+            /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
 
                 ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
 
                 ->groupBy('pedidos.id')
                 ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-                ->get();
+                ->get();*/
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+
+                    ->whereNull('t2.id')
+                    ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 3:
                 break;
@@ -291,8 +320,7 @@ class PedidosController extends Controller
                 $usuarios_responsable_array = Responsable::select('solicitante_id')
                     ->where('autorizador_id','=',Auth::id())
                     ->get();
-
-                $estados_pedidos_id_array = Pedido::select('pedidos.id')
+                /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
 
                     ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
 
@@ -300,18 +328,36 @@ class PedidosController extends Controller
                     ->orWhere('estados_pedidos.user_id',Auth::id())
                     ->groupBy('pedidos.id')
                     ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-                    ->get();
-
+                    ->get();*/
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('t1.user_id',$usuarios_responsable_array)
+                    ->whereNull('t2.id')
+                    ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 6:
-                $estados_pedidos_id_array = Pedido::select('pedidos.id')
+                /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
 
                     ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
 
                     ->where('estados_pedidos.user_id','=',Auth::id())
                     ->groupBy('pedidos.id')
                     ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-                    ->get();
+                    ->get();*/
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.solicitante_id',Auth::id())
+                    ->whereNull('t2.id')
+                    ->where('t1.estado_id','=',$request->estado_id);
                 break;
         }
 
@@ -329,9 +375,76 @@ class PedidosController extends Controller
     }
 
     public function postCantidad(){
-        $cantidad = Pedido::groupBy('estados_pedidos.estado_id');
+        $cantidad = null;
+        switch (Auth::user()->rol_id){
+            case 1:
+            case 2:
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
 
-        echo $cantidad;
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('t1.user_id',$usuarios_responsable_array)
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
+                break;
+            case 6:
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+//                    ->where('t1.user_id',Auth::id())
+                    ->where('pedidos.solicitante_id',Auth::id())
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
+                break;
+        }
+
+
+        return Response::json(
+            $cantidad
+        );
+    }
+
+    public function postEstadosPedido(Request $request){
+        $pedido = Pedido::find($request->id);
+
+        $pedido->estados;
+        $pedido->estados_pedido;
+
+        foreach ($pedido->estados_pedido as $estado){
+            $estado->usuario->empleado;
+        }
+
+        return Response::json(
+            $pedido
+        );
     }
 
     /*public function getVerificaion($id){

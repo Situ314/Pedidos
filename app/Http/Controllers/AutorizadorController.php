@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Pedido;
 use App\Responsable;
+use App\Unidad;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +60,32 @@ class AutorizadorController extends Controller
      */
     public function show($id)
     {
-        //
+        if(Auth::user()->rol_id > 3){
+            $usuarios_responsable_array = Responsable::select('solicitante_id')
+                ->where('autorizador_id','=',Auth::id())
+                ->get();
+
+            $estados_pedidos_id_array = Pedido::select('pedidos.id')
+
+                ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
+
+                ->where('pedidos.id','=',$id)
+                ->whereIn('estados_pedidos.user_id',$usuarios_responsable_array)
+                ->orWhere('estados_pedidos.user_id',Auth::id())
+                ->get();
+
+
+            if(count($estados_pedidos_id_array)==0){
+                return redirect()->back()
+                    ->withErrors(array('error'=>'No puede autorizar este pedido'));
+            }
+        }
+
+        $unidades = Unidad::all();
+        $pedido = Pedido::find($id);
+        return view('autorizador.verificacion')
+            ->withPedido($pedido)
+            ->withUnidades($unidades);
     }
 
     /**
@@ -95,6 +122,9 @@ class AutorizadorController extends Controller
         //
     }
 
+    /**
+     * METODO QUE CAMBIA DE USUARIO A AUTORIZADOR Y VICEVERSA
+     */
     public function getCambiarRango($id, $opcion){
         $user = User::find($id);
         switch ($opcion){
@@ -126,5 +156,4 @@ class AutorizadorController extends Controller
         Session::flash('success', "Usuario ".$user->empleado->nombres." cambiado correctamente...");
         return redirect()->back();
     }
-
 }
