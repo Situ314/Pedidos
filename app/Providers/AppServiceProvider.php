@@ -35,21 +35,44 @@ class AppServiceProvider extends ServiceProvider
             $this->CreateLog($proyecto, "proyectos");
         });
 
+        //**************************************PEDIDO
         Pedido::created(function ($pedido){
             $this->CreateLog($pedido, "pedido");
         });
+        Pedido::updated(function ($pedido){
+           $this->UpdateLog($pedido,"pedidos");
+        });
+        //**************************************
 
+        //**************************************ITEM TEMPORAL
         ItemTemporal::created(function ($item){
             $this->CreateLog($item,"items_temporales");
         });
+        ItemTemporal::updated(function ($item){
+            $this->UpdateLog($item, "items_temporales");
+        });
+        //**************************************
 
+        //**************************************ITEM TEMPORAL PEDIDO
         ItemTemporalPedido::created(function ($item_pedido){
            $this->CreateLog($item_pedido,"items_temporales_pedidos");
         });
+        ItemTemporalPedido::updated(function ($item_pedido){
+            $this->UpdateLog($item_pedido,"items_temporales_pedidos");
+        });
+        /*ItemTemporalPedido::deleted(function ($item_pedido){
+            $this->DeleteLog($item_pedido,"items_temporales_pedidos");
+        });*/
+        //**************************************
 
+        //**************************************ITEM PEDIDO
         ItemPedido::created(function ($item_pedido){
            $this->CreateLog($item_pedido,"items_pedidos");
         });
+        ItemPedido::updated(function ($item_pedido){
+            $this->UpdateLog($item_pedido,"items_pedidos");
+        });
+        //**************************************
 
         EstadoPedido::created(function ($estado_pedido){
            $this->CreateLog($estado_pedido,"estados_pedidos");

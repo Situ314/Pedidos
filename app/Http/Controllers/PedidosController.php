@@ -205,7 +205,7 @@ class PedidosController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * METODO QUE PERMITE LA EDICION DE UN PEDIDO
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -244,7 +244,130 @@ class PedidosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pedido = Pedido::find($id);
+
+        //VERIFICANDO SI ALGUN VALOR CAMBIO EN EL PEDIDO
+        if($pedido->proyecto_id != $request->proyecto_id){
+            $pedido->proyecto_id = $request->proyecto_id;
+        }
+
+        if($pedido->tipo_categoria_id != $request->tipo_cat_id){
+            $pedido->tipo_categoria_id = $request->tipo_cat_id;
+        }
+        $pedido->save();
+
+        $aux_item_pedido = 0;
+
+        $arrayItemsTemporales = [];
+        $arrayItems = [];
+
+        for($i=0 ; $i<count($request->txtItem) ; $i++){
+            if($request->item_id_edit[$i]!=0){ //ES ANTIGUO - VERIFICAR
+                if($request->txtItem[$i]!=""){ //ES UN ITEM ESCRITO
+                    //GUARDANDO ITEM TEMPORAL PARA VERIFICAR LA ELIMINACION
+                    array_push($arrayItemsTemporales,$request->item_id_edit[$i]);
+
+                    $item_temp_pedido = ItemTemporalPedido::find($request->item_id_edit[$i]);
+
+                    //VERIFICANDO CAMBIOS EN EL LISTADO DE ITEMS TEMPORALES-PEDIDO
+                    if($request->cantidad[$i] != $item_temp_pedido->cantidad){
+                        $item_temp_pedido->cantidad = $request->cantidad[$i];
+                    }
+                    $item_temp_pedido->save();
+                    //***********************************************************
+
+                    //VERIFICANDO CAMBIOS EN ITEMS TEMPORALES
+                    $item_temp = ItemTemporal::find($item_temp_pedido->item_temp_id);
+                    if(strtoupper($request->txtItem[$i]) != $item_temp->nombre){
+                        $item_temp->nombre = strtoupper($request->txtItem[$i]);
+                    }
+
+                    if($request->txtUnidad != $item_temp->unidad_id){
+                        $item_temp->unidad_id = $request->txtUnidad[$i];
+                    }
+                    $item_temp->save();
+                    //***********************************************************
+
+                }else{ //ES UN ITEM EN BASE DE DATOS
+                    //GUARDANDO ITEM VERIFICAR LA ELIMINACION
+                    array_push($arrayItems, $request->item_id_edit[$i]);
+
+                    $item_pedido = ItemPedido::find($request->item_id_edit[$i]);
+                    //VERIFICANDO CAMBIOS EN EL LISTADO DE ITEMS-PEDIDO
+                    if($request->item_id[$aux_item_pedido] != $item_pedido->item_id){
+                        $item_pedido->item_id = $request->item_id[$aux_item_pedido];
+                    }
+
+                    if($request->cantidad[$i] != $item_pedido->cantidad){
+                        $item_pedido->cantidad = $request->cantidad[$i];
+                    }
+
+                    $item_pedido->save();
+                    $aux_item_pedido++;
+                }
+            }else{ //ES NUEVO - CREAR
+                if($request->txtItem[$i]!=""){ //ES UN ITEM ESCRITO
+                    //CREANDO ITEM TEMPORAL
+                    $array_item_temp = [
+                        'nombre'=>strtoupper($request->txtItem[$i]),
+                        'unidad_id'=>$request->txtUnidad[$i]
+                    ];
+
+                    $item_temp = new ItemTemporal($array_item_temp);
+                    $item_temp->save();
+
+                    //AGREGANDO ITEM A LA RELACION DEL PEDIDO
+                    $array_item_temp_pedido = [
+                        'cantidad'=>$request->cantidad[$i],
+                        'pedido_id'=>$id,
+                        'item_temp_id'=>$item_temp->id
+                    ];
+
+                    $item_temp_pedido = new ItemTemporalPedido($array_item_temp_pedido);
+                    $item_temp_pedido->save();
+
+                    array_push($arrayItemsTemporales, $item_temp_pedido->id);
+                }else{ //ES UN ITEM EN BASE DE DATOS
+//                    echo Item::find($request->item_id[$aux_item_pedido])->precio_unitario;
+                    $array_item_pedido = [
+                        'cantidad'=>$request->cantidad[$i],
+                        'precio_unitario'=>Item::find($request->item_id[$aux_item_pedido])->precio_unitario,
+                        'pedido_id'=>$id,
+                        'item_id'=>$request->item_id[$aux_item_pedido]
+                    ];
+
+                    $item_pedido = new ItemPedido($array_item_pedido);
+                    $item_pedido->save();
+
+                    array_push($arrayItems, $item_pedido->id);
+                    $aux_item_pedido++;
+                }
+            }
+        }
+
+//        print_r($arrayItems);
+        if(count($arrayItems) > 0){
+            ItemPedido::whereNotIn('id',$arrayItems)
+                ->delete();
+        }
+
+        if(count($arrayItemsTemporales)>0){
+            ItemTemporalPedido::whereNotIn('id',$arrayItemsTemporales)
+                ->delete();
+        }
+
+        $array_estado_pedido = [
+            'motivo'=>strtoupper($request->motivo),
+            'user_id'=>Auth::id(),
+            'estado_id'=>1,
+            'pedido_id'=>$id
+        ];
+
+        $estado_pedido = new EstadoPedido($array_estado_pedido);
+        $estado_pedido->save();
+
+        Session::flash('success', "Pedido con codigo ".$pedido->codigo." actualizado correctamente...");
+        return redirect()->action('PedidosController@index');
     }
 
     /**

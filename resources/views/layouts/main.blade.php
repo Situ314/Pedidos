@@ -31,8 +31,6 @@
 </div>
 
 @include('parts.javascript')
-@yield('footerScripts')
-
 <script type="text/javascript">
     var configGlobal = {
         rutas:[
@@ -43,5 +41,7 @@
         ]
     };
 </script>
+
+@yield('footerScripts')
 </body>
 </html>
