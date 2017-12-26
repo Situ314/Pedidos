@@ -48,6 +48,16 @@
                                     case 2:
                                         break;
                                     case 3:
+
+                                        foreach ($estados as $estado){
+                                            if($estado->id!=1){
+                                                if($estado->id == 2){
+                                                echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                }else{
+                                                echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                }
+                                            }
+                                        }
                                         break;
                                     case 4:
                                         break;
@@ -138,6 +148,7 @@
             editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
             verificacion: "{{route('verificacion.show',['id'=>':id'])}}",
             verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
+            asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
             token: "{{Session::token()}}"
         };
         var variables = {

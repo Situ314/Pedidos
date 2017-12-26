@@ -152,10 +152,16 @@ class PedidosController extends Controller
             }
         }
 
+        $estado = null;
+        if(Auth::user()->rol_id < 5){
+            $estado = 2;
+        }else{
+            $estado = 1;
+        }
         $array_estado_pedido = [
             'motivo'=>strtoupper($request->motivo),
             'user_id'=>Auth::id(),
-            'estado_id'=>1,
+            'estado_id'=>$estado,
             'pedido_id'=>$pedido->id
         ];
         $estado_pedido = new EstadoPedido($array_estado_pedido);
@@ -348,11 +354,13 @@ class PedidosController extends Controller
 //        print_r($arrayItems);
         if(count($arrayItems) > 0){
             ItemPedido::whereNotIn('id',$arrayItems)
+                ->where('pedido_id','=',$id)
                 ->delete();
         }
 
         if(count($arrayItemsTemporales)>0){
             ItemTemporalPedido::whereNotIn('id',$arrayItemsTemporales)
+                ->where('pedido_id','=',$id)
                 ->delete();
         }
 
@@ -436,6 +444,15 @@ class PedidosController extends Controller
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 3:
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+
+                    ->whereNull('t2.id')
+                    ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 4:
                 break;
@@ -514,6 +531,16 @@ class PedidosController extends Controller
                     ->get();
                 break;
             case 3:
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
                 break;
             case 4:
                 break;

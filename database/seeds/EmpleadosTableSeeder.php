@@ -60,5 +60,20 @@ class EmpleadosTableSeeder extends Seeder
             'id' => 8,
             'nombres' => 'Usuario 6'
         ]);
+
+        DB::table('empleados')->insert([
+            'id' => 9,
+            'nombres' => 'Asignador 1'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 10,
+            'nombres' => 'Responsable 1'
+        ]);
+
+        DB::table('empleados')->insert([
+            'id' => 11,
+            'nombres' => 'Responsable 2'
+        ]);
     }
 }

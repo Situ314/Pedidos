@@ -34,4 +34,9 @@ class User extends Authenticatable
     public function proyectos(){
         return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id');
     }
+
+    public function getEmpleadoUsuarioAttribute()
+    {
+        return $this->empleado->nombres.' ('.$this->username.')';
+    }
 }

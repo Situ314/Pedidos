@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Asignacion;
+use App\Categoria;
 use App\EstadoPedido;
+use App\Item;
+use App\Pedido;
+use App\TipoCategoria;
+use App\Unidad;
+use App\User;
 use Illuminate\Http\Request;
 
 use Session;
 class AsignacionesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('asig');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,14 +40,14 @@ class AsignacionesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Metodo que guardara el pedido en la tabla de items_entregado que es la ultima tabla de pedidos
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $array_estado_pedido = [
+        /*$array_estado_pedido = [
             'user_id'=>$request->responsable_id,
             'estado_id'=>2,
             'pedido_id'=>$request->pedido_responsable_id
@@ -55,7 +65,9 @@ class AsignacionesController extends Controller
         $asignado->save();
 
         Session::flash('success', "Asignacion realizada correctamente...");
-        return redirect()->back();
+        return redirect()->back();*/
+
+        dd($request->all());
 
     }
 
@@ -78,7 +90,23 @@ class AsignacionesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pedido = Pedido::find($id);
+
+        $tipos = TipoCategoria::orderBy('nombre');
+        $categorias = Categoria::all();
+        $unidades = Unidad::all();
+        $items = Item::all();
+        $usuarios = User::all()
+            ->where('rol_id','=',4);
+
+        return view('asignador.edit')
+            ->withTipos($tipos)
+            ->withCategroias($categorias)
+            ->withUnidades($unidades)
+            ->withItems($items)
+            ->withUsers($usuarios)
+
+            ->withPedido($pedido);
     }
 
     /**
@@ -90,7 +118,7 @@ class AsignacionesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all(),$id);
     }
 
     /**

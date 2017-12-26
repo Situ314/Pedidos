@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EstadoPedido;
 use App\Pedido;
 use App\Responsable;
 use App\Unidad;
@@ -49,7 +50,7 @@ class AutorizadorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -100,7 +101,7 @@ class AutorizadorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * METODO QUE SE USA PARA CAMBIA EL ESTADO DEL PEDIDO A AUTORIZADO
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -108,7 +109,32 @@ class AutorizadorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pedido = Pedido::find($id);
+
+        if(Auth::user()->rol_id > 3){
+            $usuarios_responsable_array = Responsable::select('solicitante_id')
+                ->where('autorizador_id','=',Auth::id())
+                ->get();
+
+
+            $pedido->whereIn('solicitante_id',$usuarios_responsable_array);
+
+            if(count($pedido)==0){
+                return redirect()->back()
+                    ->withErrors(array('error'=>'No puede autorizar este pedido'));
+            }
+        }
+        $array_estado_pedido = [
+            'user_id'=>Auth::id(),
+            'estado_id'=>2,
+            'pedido_id'=>$id
+        ];
+
+        $estado_pedido = new EstadoPedido($array_estado_pedido);
+        $estado_pedido->save();
+
+        Session::flash('success', "Pedido ".$pedido->codigo." autorizado correctamente...");
+        return redirect()->action('PedidosController@index');
     }
 
     /**
