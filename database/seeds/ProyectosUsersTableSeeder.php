@@ -64,11 +64,6 @@ class ProyectosUsersTableSeeder extends Seeder
         ]);
 
         DB::table('proyectos_users')->insert([
-            'proyecto_id' => 92,
-            'user_id' =>11
-        ]);
-
-        DB::table('proyectos_users')->insert([
             'proyecto_id' => 100,
             'user_id' =>12
         ]);

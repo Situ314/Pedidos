@@ -364,10 +364,17 @@ class PedidosController extends Controller
                 ->delete();
         }
 
+        $estado = null;
+        if(Auth::user()->rol_id < 5){
+            $estado = 2;
+        }else{
+            $estado = 1;
+        }
+
         $array_estado_pedido = [
             'motivo'=>strtoupper($request->motivo),
             'user_id'=>Auth::id(),
-            'estado_id'=>1,
+            'estado_id'=>$estado,
             'pedido_id'=>$id
         ];
 

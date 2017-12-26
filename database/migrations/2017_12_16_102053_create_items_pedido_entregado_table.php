@@ -19,7 +19,7 @@ class CreateItemsPedidoEntregadoTable extends Migration
             $table->increments('id');
 
             $table->float('cantidad');
-            $table->float('precio_unitario');
+            $table->float('precio_unitario')->nullable()->default(null);
 
             $table->integer('pedido_id')->unsigned();
             $table->foreign('pedido_id')->references('id')->on('pedidos')

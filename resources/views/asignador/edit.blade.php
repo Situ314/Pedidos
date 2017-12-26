@@ -6,7 +6,7 @@
 
 @section('content')
     {{ Form::open( array('route' => 'asignaciones.store', 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask') ) }}
-    <input name="pedido_id" value="{{$pedido->id}}">
+    <input name="pedido_id" value="{{$pedido->id}}" hidden>
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
@@ -60,9 +60,15 @@
                     </button>
                     <br>
                     <div class="ln_solid"></div>
-                    <div class="row text-center">
-                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
+                    <div class="form-group">
+                        <div class="pull-left">
+                            <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
+                            <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"> Asignar</i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,6 +77,9 @@
     </div>
     {{Form::close()}}
 
+    <!-- MODAL DEVOLUCION -->
+    @include('modals.modal-devolucion')
+
 @endsection
 
 @section('footerScripts')
@@ -78,6 +87,7 @@
     {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/agregar-item-boton-asignador.js') }}
+    {{ Html::script('/js/devolucion.js') }}
 
     <script type="text/javascript">
 

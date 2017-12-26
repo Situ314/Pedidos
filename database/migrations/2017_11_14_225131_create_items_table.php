@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
 
             $table->string('nombre');
             $table->string('descripcion')->nullable()->default(null);
-            $table->float('precio_unitario');
+            $table->float('precio_unitario')->nullable()->default(null);
 
             $table->integer('tipo_categoria_id')->unsigned();
             $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')

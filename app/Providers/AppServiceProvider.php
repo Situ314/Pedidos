@@ -8,6 +8,7 @@ use App\Empresa;
 use App\EstadoPedido;
 use App\Item;
 use App\ItemPedido;
+use App\ItemPedidoEntregado;
 use App\ItemTemporal;
 use App\ItemTemporalPedido;
 use App\Log;
@@ -74,6 +75,15 @@ class AppServiceProvider extends ServiceProvider
         });
         //**************************************
 
+        //**************************************ITEM PEDIDO-ENTREGADO
+        ItemPedidoEntregado::created(function ($item_pedido_entre){
+           $this->CreateLog($item_pedido_entre, "items_pedido_entregado");
+        });
+        ItemPedidoEntregado::updated(function ($item_pedido_entre){
+           $this->UpdateLog($item_pedido_entre,"items_pedido_entregado");
+        });
+        //**************************************
+
         EstadoPedido::created(function ($estado_pedido){
            $this->CreateLog($estado_pedido,"estados_pedidos");
         });
@@ -82,9 +92,11 @@ class AppServiceProvider extends ServiceProvider
             $this->CreateLog($emp,"empleados");
         });
 
+        //**************************************ASIGNACION
         Asignacion::created(function ($asig){
             $this->CreateLog($asig, "asignaciones");
         });
+        //**************************************
 
         Item::created(function ($item){
            $this->CreateLog($item,"items");

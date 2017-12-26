@@ -122,6 +122,13 @@ $( document ).ready(function() {
             width: '100%'
         }).val(config.variables[0].item_pedido_temp[i].item.unidad_id).trigger('change');
     }
+
+    //<<<----UNICAMENTE PARA EL ASIGNADOR
+    $('select[name=responsable_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
+    }).val('').trigger('change');
 });
 
 var options_proyectos = "";

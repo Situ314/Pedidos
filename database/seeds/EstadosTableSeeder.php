@@ -20,16 +20,16 @@ class EstadosTableSeeder extends Seeder
             'descripcion' => 'PEDIDO AUTORIZADO'
         ]);
         DB::table('estados')->insert([
+            'nombre' => 'ASIGNADO',
+            'descripcion' => 'PEDIDO ASIGNADO'
+        ]);
+        DB::table('estados')->insert([
             'nombre' => 'EN PROCESO',
             'descripcion' => 'PEDIDO VERIFICANDOSE'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'ESPERA',
             'descripcion' => 'PEDIDO EN ESPERA'
-        ]);
-        DB::table('estados')->insert([
-            'nombre' => 'COMPROBADO',
-            'descripcion' => 'REALIZACIÓN DEL PEDIDO'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'ENTREGADO',
@@ -41,8 +41,6 @@ class EstadosTableSeeder extends Seeder
             'nombre' => 'OBSERVADO',
             'descripcion' => 'OBSERVADO, SE PUEDE EDITAR'
         ]);
-
-
         DB::table('estados')->insert([
             'nombre' => 'RECHAZADO',
             'descripcion' => 'RECHAZADO, EL PEDIDO SE ANULO'

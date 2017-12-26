@@ -150,7 +150,7 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
                             <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
-                                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Autorizar</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Autorizar</button>
                         </div>
                     </div>
                     {{ Form::close() }}
@@ -160,11 +160,11 @@
         </div>
     </div>
 
-    <!-- MODAL RECHAZAR -->
+    <!-- MODAL DEVOLUCION -->
     @include('modals.modal-devolucion')
 @endsection
 
 @section('footerScripts')
     @parent
-    {{ Html::script('/js/verific.js') }}
+    {{ Html::script('/js/devolucion.js') }}
 @endsection
