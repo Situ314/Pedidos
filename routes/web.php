@@ -74,6 +74,13 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'AutorizadorController@getCambiarRango',
         'as'=>'autorizador.cambiar'
     ]);
+
+    Route::resource('/responsable','ResponsableController');
+
+    Route::post('/post.responsableProceso',[
+        'uses'=>'ResponsableController@postProceso',
+        'as'=>'pedidos.proceso'
+    ]);
 });
 
 //Route::get('/home', 'HomeController@index');

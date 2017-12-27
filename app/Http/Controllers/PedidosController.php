@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Asignacion;
 use App\Categoria;
 use App\Empleado;
 use App\Empresa;
@@ -462,20 +463,31 @@ class PedidosController extends Controller
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 4:
+                //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
+                $pedidos_asignados_array = DB::table('asignaciones as t1')
+                    ->select('t1.pedido_id')
+                    ->leftJoin('asignaciones as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->where('t1.asignado_id','=',Auth::id())
+                    ->whereNull('t2.id');
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+                    ->whereNull('t2.id')
+                    ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 5:
                 $usuarios_responsable_array = Responsable::select('solicitante_id')
                     ->where('autorizador_id','=',Auth::id())
                     ->get();
-                /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
 
-                    ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
-
-                    ->whereIn('estados_pedidos.user_id',$usuarios_responsable_array)
-                    ->orWhere('estados_pedidos.user_id',Auth::id())
-                    ->groupBy('pedidos.id')
-                    ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-                    ->get();*/
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -550,6 +562,26 @@ class PedidosController extends Controller
                     ->get();
                 break;
             case 4:
+                //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
+                $pedidos_asignados_array = DB::table('asignaciones as t1')
+                    ->select('t1.pedido_id')
+                    ->leftJoin('asignaciones as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->where('t1.asignado_id','=',Auth::id())
+                    ->whereNull('t2.id');
+
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
                 break;
             case 5:
                 $usuarios_responsable_array = Responsable::select('solicitante_id')
@@ -603,13 +635,4 @@ class PedidosController extends Controller
             $pedido
         );
     }
-
-    /*public function getVerificaion($id){
-        $pedido = Pedido::find($id);
-        $unidades = Unidad::all();
-
-        return view('pedidos.verificar')
-            ->withPedido($pedido)
-            ->withUnidades($unidades);
-    }*/
 }

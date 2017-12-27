@@ -48,7 +48,6 @@
                                     case 2:
                                         break;
                                     case 3:
-
                                         foreach ($estados as $estado){
                                             if($estado->id!=1){
                                                 if($estado->id == 2){
@@ -60,13 +59,24 @@
                                         }
                                         break;
                                     case 4:
+                                        foreach ($estados as $estado){
+                                            if($estado->id>2){
+                                                if($estado->id == 3){
+                                                    echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                }else{
+                                                    echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                }
+                                            }
+                                        }
                                         break;
                                     case 5:
                                         foreach ($estados as $estado){
                                             if($estado->id == 1){
                                             echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
                                             }else{
-                                            echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                if($estado->id != 3){
+                                                    echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                }
                                             }
                                         }
                                         break;
@@ -135,6 +145,7 @@
     @include('pedidos.modals.modal-items')
     @include('pedidos.modals.modal-asignar')
     @include('pedidos.modals.modal-estados')
+    @include('responsable.modal-en-proceso')
 @endsection
 
 @section('footerScripts')
@@ -146,8 +157,10 @@
             getItem: "{{route('pedidos.items')}}",
             getEstado: "{{route('pedidos.progreso')}}",
             editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
+            procesoPedido: "{{route('pedidos.proceso')}}",
             verificacion: "{{route('verificacion.show',['id'=>':id'])}}",
             verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
+            verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
             asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
             token: "{{Session::token()}}"
         };
