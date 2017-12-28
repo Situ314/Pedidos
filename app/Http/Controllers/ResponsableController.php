@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Categoria;
 use App\EstadoPedido;
 use App\Item;
+use App\ItemPedidoEntregado;
 use App\Pedido;
 use App\TipoCategoria;
 use App\Unidad;
@@ -114,7 +115,39 @@ class ResponsableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $arrayItemsEntregado = [];
+
+        for($i=0; $i<count($request->item_id_edit) ; $i++){
+            //GUARDANDO ITEM TEMPORAL PARA VERIFICAR LA ELIMINACION
+            array_push($arrayItemsEntregado, $request->item_id_edit[$i]);
+
+            //OBTENIENDO ITEMS PARA VER CAMBIOS
+            $item_pedido_entregado = ItemPedidoEntregado::find($request->item_id_edit[$i]);
+
+            if($request->cantidad[$i] != $item_pedido_entregado->cantidad){
+                $item_pedido_entregado->cantidad = $request->cantidad[$i];
+            }
+
+            $item_pedido_entregado->save();
+        }
+
+        if(count($arrayItemsEntregado)>0){
+            ItemPedidoEntregado::whereNotIn('id',$arrayItemsEntregado)
+                ->where('pedido_id','=',$id)
+                ->delete();
+        }
+
+        $array_estado_pedido = [
+            'user_id'=>Auth::id(),
+            'estado_id'=>4,
+            'pedido_id'=>$id
+        ];
+
+        $estado_pedido = new EstadoPedido($array_estado_pedido);
+        $estado_pedido->save();
+
+        Session::flash('success', "Pedido con codigo ".Pedido::find($id)->codigo." en proceso...");
+        return redirect()->action('PedidosController@index');
     }
 
     /**

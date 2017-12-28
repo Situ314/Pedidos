@@ -4,12 +4,6 @@
 function edicion(){
     auxU = parseInt(config.variables[0].cantItem);
 
-    $('.items-temp-select2').select2({
-        containerCssClass: "hidden"
-        // dropdownCssClass: "test"
-    }).val('').trigger('change');
-    $('.items-temp-select2').prop('required',false);
-
     var cantItem = config.variables[0].cantItemEntrega;
 
     $('.select_unidad_temp').prop('disabled',false);
@@ -36,4 +30,7 @@ function edicion(){
     $('select[name=tipo_cat_id]').select2({
         containerCssClass: "hidden"
     });
+
+    //DESHABILITANDO ITEMS
+    $('.items-select2').prop('disabled', true);
 }

@@ -43,13 +43,21 @@ class DevolucionesController extends Controller
         $anuncion = null;
         switch ($request->tipo_dev){
             case 1: //RECHAZADO
-                $anuncion = "rechazado correctamente";
+                $anuncion = "rechazado ...";
                 $estado = 8;
 
                 break;
             case 2: //OBSERVADO
-                $anuncion = "observado correctamente";
+                $anuncion = "observado ...";
                 $estado = 7;
+                break;
+            case 3: //EN ESPERA
+                if(Auth::user()->rol_id > 4){
+                    return redirect()->back()
+                        ->withErrors(array('error'=>'No puede asignar este estado'));
+                }
+                $anuncion = "en pausa ...";
+                $estado = 5;
                 break;
         }
 

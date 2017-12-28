@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-    {{ Form::open( array('route' => 'asignaciones.store', 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask') ) }}
     <input name="pedido_id" value="{{$pedido->id}}" hidden>
     <div class="row">
         <div class="col-md-12 col-xs-12">
@@ -79,7 +78,7 @@
 
         </div>
     </div>
-    {{ Form::select( 'tipo_cat_id', $tipos->pluck('nombre','id'), array(null) ) }}
+    {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
@@ -99,9 +98,9 @@
                             <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
                         </div>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
+                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>
                             <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
-                            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"> Asignar</i></button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
                         </div>
                     </div>
                 </div>
@@ -110,6 +109,9 @@
         </div>
     </div>
     {{ Form::close() }}
+
+
+    {{ Form::select( 'tipo_cat_id', $tipos->pluck('nombre','id'), array(null) ) }}
 
     <!-- MODAL DEVOLUCION -->
     @include('modals.modal-devolucion')

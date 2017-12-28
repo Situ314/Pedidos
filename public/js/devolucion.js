@@ -30,6 +30,15 @@ function modalDevolver(opt) {
             $('#btnAceptarDevolucion').addClass('btn-primary-custom');
             $('#btnAceptarDevolucion').text("Observar");
             break;
+        case 3: //EN ESPERA (SOLO PARA RESPONSABLES)
+            $('#modalDevolucionHeader').addClass('modal-header-danger');
+            $('#modalDevolucionTitle').append('<i class="fa fa-pause"></i> En Espera');
+
+            $('input[name=tipo_dev]').val(3);
+
+            $('#btnAceptarDevolucion').addClass('btn-danger-custom');
+            $('#btnAceptarDevolucion').text("En Espera");
+            break;
     }
     $('#modalDevolucion').modal('show');
 }

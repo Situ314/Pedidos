@@ -116,14 +116,10 @@ $('ul#myTab li a').click(function (e) {
                                     break;
                                 case 3:
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<a class="btn btn-success-custom" title="Cambiar a en proceso '+response[i].codigo+'" onclick="javascript:cambiarProceso('+response[i].id+');"><i class="fa fa-arrow-right"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
-                                    break;
-                                case 4:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
+                                case 4:
                                 case 5:
                                 case 6:
                                 case 7:
@@ -330,14 +326,10 @@ function getRealizado() {
                                 break;
                             case 3:
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<a class="btn btn-success-custom" title="Cambiar a en proceso '+response[i].codigo+'" onclick="javascript:cambiarProceso('+response[i].id+');"><i class="fa fa-arrow-right"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
-                                break;
-                            case 4:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                     '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
+                            case 4:
                             case 5:
                             case 6:
                             case 7:
