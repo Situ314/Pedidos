@@ -85,7 +85,11 @@
 @section('footerScripts')
     @parent
     {{ Html::script('/js/select2.full.js') }}
+
     {{ Html::script('/js/pedidos/edit-p.js') }}
+    {{ Html::script('/js/pedidos/edit-asignador.js') }}
+
+
     {{ Html::script('/js/pedidos/agregar-item-boton-asignador.js') }}
     {{ Html::script('/js/devolucion.js') }}
 

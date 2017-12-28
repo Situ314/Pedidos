@@ -16,7 +16,7 @@
                         <label for="motivo" class="control-label">Nota (Si desea agregar una nota)</label>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        {{Form::textarea('motivo',null, ['class' => 'form-control text-uppercase', 'required','rows'=>'2'])}}
+                        {{Form::textarea('motivo',null, ['class' => 'form-control text-uppercase','rows'=>'2'])}}
                         @if ($errors->has('motivo'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('motivo') }}</strong>

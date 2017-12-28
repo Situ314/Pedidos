@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Categoria;
 use App\EstadoPedido;
+use App\Item;
 use App\Pedido;
+use App\TipoCategoria;
+use App\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,7 +96,7 @@ class ResponsableController extends Controller
         $items = Item::all();
 
 
-        return view('')
+        return view('responsable.edit')
             ->withTipos($tipos)
             ->withCategroias($categorias)
             ->withUnidades($unidades)
@@ -128,7 +132,12 @@ class ResponsableController extends Controller
      * METODO QUE PERMITE EL CAMBIO DE PEDIDO A PROCESO
      */
     public function postProceso(Request $request){
+        $motivo = null;
+        if($request->motivo!=""){
+            $motivo = strtoupper($request->motivo);
+        }
         $array_estado_pedido = [
+            'motivo'=>$motivo,
             'user_id' => Auth::id(),
             'estado_id'=>4,
             'pedido_id'=>$request->pedido_proceso_id

@@ -77,7 +77,11 @@
 @section('footerScripts')
     @parent
     {{ Html::script('/js/select2.full.js') }}
+
     {{ Html::script('/js/pedidos/edit-p.js') }}
+    {{ Html::script('/js/pedidos/edit-edit-p.js') }}
+
+
     {{ Html::script('/js/pedidos/agregar-item-boton.js') }}
 
     <script type="text/javascript">

@@ -37,6 +37,10 @@ class Pedido extends Model
         return $this->hasMany('App\ItemTemporalPedido','pedido_id','id');
     }
 
+    public function items_entrega(){
+        return $this->hasMany('App\ItemPedidoEntregado','pedido_id','id');
+    }
+
     public function estados_pedido(){
         return $this->hasMany('App\EstadoPedido','pedido_id','id');
     }

@@ -3,7 +3,7 @@
     <tr>
         <th>#</th>
         <th>Unidad</th>
-        <th>Cant. Solicitada</th>
+        <th>Cantidad</th>
         <th>Descripción</th>
         <th>Opciones</th>
     </tr>

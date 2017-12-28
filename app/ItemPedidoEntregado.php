@@ -20,4 +20,8 @@ class ItemPedidoEntregado extends Model
     protected $fillable = [
         'cantidad', 'precio_unitario', 'pedido_id', 'item_id'
     ];
+
+    public function item(){
+        return $this->belongsTo('App\Item','item_id','id');
+    }
 }
