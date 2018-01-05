@@ -144,7 +144,7 @@ class AsignacionesController extends Controller
 
             $motivo = null;
             if($request->motivo != ""){
-                $motivo = $request->motivo;
+                $motivo = strtoupper($request->motivo);
             }
 
             $array_estado_pedido = [

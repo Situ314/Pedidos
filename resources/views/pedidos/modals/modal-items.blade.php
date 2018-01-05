@@ -11,7 +11,7 @@
                 <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel-items-listado">
                         <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h4 class="panel-title">Items en listado</h4>
+                            <h4 class="panel-title">Items Solicitados</h4>
                         </a>
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div id="panel-body-items" class="panel-body">
@@ -20,10 +20,10 @@
                     </div>
                     <div class="panel-items-listado">
                         <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <h4 class="panel-title">Items a verificar</h4>
+                            <h4 class="panel-title">Items a Entregar</h4>
                         </a>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div id="panel-body-items-temp" class="panel-body">
+                            <div id="panel-body-items-entregado" class="panel-body">
                             </div>
                         </div>
                     </div>

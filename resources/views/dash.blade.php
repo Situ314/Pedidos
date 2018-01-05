@@ -8,7 +8,7 @@
             <span class="count_bottom"> Todos los pedidos</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i> Realizado</span>
+            <span class="count_top"><i class="fa fa-clock-o"></i> Creados</span>
             <div class="count info">2</div>
             <span class="count_bottom"> Pedido generado</span>
         </div>
@@ -18,14 +18,14 @@
             <span class="count_bottom"> Pedido autorizados</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Proceso</span>
+            <span class="count_top"><i class="fa fa-user"></i> En proceso</span>
             <div class="count red">0</div>
             <span class="count_bottom"> Pedido verificandose</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Comprobado</span>
+            <span class="count_top"><i class="fa fa-user"></i> En espera</span>
             <div class="count orange">4</div>
-            <span class="count_bottom"> Pedido registrado y realizado</span>
+            <span class="count_bottom"> Pedido detenido</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Entregado</span>

@@ -406,14 +406,20 @@ function verItems(id) {
         if(response.items_pedido.length!=0){
             var bodyItems = '';
             for(var i=0;i<response.items_pedido.length;i++){
-                console.log(response.items_pedido[i]);
-
                 bodyItems += '<tr><th scope="row">'+(i+1)+'</th>' +
                     '<td>'+response.items_pedido[i].item.nombre+'</td>' +
                     '<td>'+response.items_pedido[i].cantidad+'</td>' +
-                    '<td>'+response.items_pedido[i].item.unidad.nombre+' ('+response.items_pedido[i].item.unidad.descripcion+')</td></tr>';
+                    '<td>'+response.items_pedido[i].item.unidad.nombre+' ('+response.items_pedido[i].item.unidad.descripcion+')</td>'+
+                    '<td><label class="label label-success">Item Registrado</label></tr>';
             }
-            tableItems = '<table class="table table-bordered"><thead><tr><th>#</th><th>Item</th><th>Cantidad</th><th>Unidad</th></tr></thead>' +
+            for(var i=0;i<response.items_temp_pedido.length;i++){
+                bodyItems += '<tr><th scope="row">'+(i+1)+'</th>' +
+                    '<td>'+response.items_temp_pedido[i].item.nombre+'</td>' +
+                    '<td>'+response.items_temp_pedido[i].cantidad+'</td>' +
+                    '<td>'+response.items_temp_pedido[i].item.unidad.nombre+' ('+response.items_temp_pedido[i].item.unidad.descripcion+')</td>' +
+                    '<td><label class="label label-warning">Item Temporal</label></tr>';
+            }
+            tableItems = '<table class="table table-bordered"><thead><tr><th>#</th><th>Item</th><th>Cantidad</th><th>Unidad</th><th>Tipo</th></tr></thead>' +
                 '<tbody>' +
                     bodyItems+
                 '</tbody>'+
@@ -425,31 +431,30 @@ function verItems(id) {
         $('#panel-body-items').empty();
         $('#panel-body-items').append(tableItems);
 
-        var tableItemsTemp='';
-        console.log("temp: "+response.items_temp_pedido.length);
+        var tableItemsEntregado='';
 
-        if(response.items_temp_pedido.length!=0){
-            var bodyItemsTemp = '';
-            for(var i=0;i<response.items_temp_pedido.length;i++){
-                bodyItemsTemp += '<tr><th scope="row">'+(i+1)+'</th>' +
-                    '<td>'+response.items_temp_pedido[i].item.nombre+'</td>' +
-                    '<td>'+response.items_temp_pedido[i].cantidad+'</td>' +
-                    '<td>'+response.items_temp_pedido[i].item.unidad.nombre+' ('+response.items_temp_pedido[i].item.unidad.descripcion+')</td></tr>';
+        if(response.items_entrega.length!=0){
+            var bodyItemsEntregar = '';
+            for(var i=0;i<response.items_entrega.length;i++){
+                bodyItemsEntregar += '<tr><th scope="row">'+(i+1)+'</th>' +
+                    '<td>'+response.items_entrega[i].item.nombre+'</td>' +
+                    '<td>'+response.items_entrega[i].cantidad+'</td>' +
+                    '<td>'+response.items_entrega[i].item.unidad.nombre+' ('+response.items_entrega[i].item.unidad.descripcion+')</td>'+
+                    '<td><label class="label label-success">Item Registrado</label></tr>';
+
             }
-            tableItemsTemp = '<table class="table table-bordered"><thead><tr><th>#</th><th>Item</th><th>Cantidad</th><th>Unidad</th></tr></thead>' +
+            tableItemsEntregado = '<table class="table table-bordered"><thead><tr><th>#</th><th>Item</th><th>Cantidad</th><th>Unidad</th><th>Tipo</th></tr></thead>' +
                 '<tbody>' +
-                bodyItemsTemp+
+                bodyItemsEntregar+
                 '</tbody>'+
                 '</table>';
         }else{
-            tableItemsTemp = '<p>No hay items a verificar en el listado</p>'
+            tableItemsEntregado = '<p>Falta verificación</p>';
         }
 
-        $('#panel-body-items-temp').empty();
-        $('#panel-body-items-temp').append(tableItemsTemp);
+        $('#panel-body-items-entregado').empty();
+        $('#panel-body-items-entregado').append(tableItemsEntregado);
 
-        // $('#bodyPedido').empty();
-        // $('#bodyPedido').append(tableItems);
         $('#verItemsPedidoModal').modal('show');
 
     });

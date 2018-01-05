@@ -425,6 +425,10 @@ class PedidosController extends Controller
             $item->item->unidad;
         }
 
+        foreach ($pedido->items_entrega as $item){
+            $item->item->unidad;
+        }
+
         return Response::json(
             $pedido
         );
