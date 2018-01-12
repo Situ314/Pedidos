@@ -39,6 +39,8 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <div id="alertBuscarNombrePedido">
+                    </div>
                     <br>
                     <div class="table-responsive">
                         @include('pedidos.parts.items-table')
@@ -64,12 +66,15 @@
 @section('footerScripts')
     {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/create-p.js') }}
+    {{ Html::script('/js/items/buscar-item.js') }}
+
 
     <script type="text/javascript">
 
         var config = {
             rutas:[
                 {
+                    buscarItem: "{{route('buscar.item')}}",
                     token: "{{Session::token()}}"
                 }
             ],

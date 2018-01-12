@@ -33,7 +33,10 @@ Route::get('/check',function (){
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function (){
-    Route::get('/dash', 'HomeController@index');
+    Route::get('/dash', [
+        'uses'=> 'HomeController@index',
+        'as'=> 'dash.index'
+    ]);
 
     Route::resource('/pedidos', 'PedidosController');
 
@@ -57,11 +60,6 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.progreso'
     ]);
 
-    /*Route::get('/verificacion/{pedido}',[
-        'uses'=>'PedidosController@getVerificaion',
-        'as'=>'pedidos.verificar'
-    ]);*/
-
     Route::resource('/asignaciones','AsignacionesController');
 
     Route::resource('/verificacion','VerificacionController');
@@ -80,6 +78,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/post.responsableProceso',[
         'uses'=>'ResponsableController@postProceso',
         'as'=>'pedidos.proceso'
+    ]);
+
+    Route::post('/post.items.buscar',[
+        'uses'=>'ItemsController@buscarItem',
+        'as'=>'buscar.item',
     ]);
 });
 

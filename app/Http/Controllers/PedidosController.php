@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\ArrayItem;
 use Session;
 use Response;
 
@@ -352,16 +353,21 @@ class PedidosController extends Controller
             }
         }
 
-//        print_r($arrayItems);
         if(count($arrayItems) > 0){
             ItemPedido::whereNotIn('id',$arrayItems)
                 ->where('pedido_id','=',$id)
+                ->delete();
+        }else{
+            ItemPedido::where('pedido_id','=',$id)
                 ->delete();
         }
 
         if(count($arrayItemsTemporales)>0){
             ItemTemporalPedido::whereNotIn('id',$arrayItemsTemporales)
                 ->where('pedido_id','=',$id)
+                ->delete();
+        }else{
+            ItemTemporalPedido::where('pedido_id','=',$id)
                 ->delete();
         }
 

@@ -8,6 +8,10 @@
         <br />
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3>Rol: {{\Illuminate\Support\Facades\Auth::user()->rol->nombre}}</h3>
+            </div>
+
             <!-- ADMINISTRADOR -->
             @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 1)
                 <div class="menu_section">
@@ -42,6 +46,11 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
+                    @if(\Illuminate\Support\Facades\Auth::user()->rol_id < 5)
+                    <li>
+                        <a href="{{route('dash.index')}}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    @endif
                     <li>
                         {{--<a href="{{route('dash.index')}}"><i class="fa fa-dashboard"></i> Dashboard</a>--}}
                     </li>
@@ -84,8 +93,8 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->username }}&nbsp;&nbsp;
+                    <a class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::user()->username }}
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">

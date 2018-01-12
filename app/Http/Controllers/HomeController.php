@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Estado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,9 +25,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        return view('home');
-        $estados = Estado::all();
-        return view('dash')
-            ->withEstados($estados);
+        if(Auth::user()->rol_id < 5){
+            $estados = Estado::all();
+            return view('dash')
+                ->withEstados($estados);
+        }else{
+            return redirect()->action('PedidosController@index');
+        }
     }
 }

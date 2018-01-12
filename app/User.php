@@ -35,6 +35,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id');
     }
 
+    public function rol(){
+        return $this->hasOne('App\Rol','id','rol_id');
+    }
+
     public function getEmpleadoUsuarioAttribute()
     {
         return $this->empleado->nombres.' ('.$this->username.')';

@@ -403,21 +403,26 @@ function verItems(id) {
         }
     }).done(function (response){
         var tableItems='';
+        var contItemsPedidos = 1;
         if(response.items_pedido.length!=0){
             var bodyItems = '';
             for(var i=0;i<response.items_pedido.length;i++){
-                bodyItems += '<tr><th scope="row">'+(i+1)+'</th>' +
+                bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
                     '<td>'+response.items_pedido[i].item.nombre+'</td>' +
                     '<td>'+response.items_pedido[i].cantidad+'</td>' +
                     '<td>'+response.items_pedido[i].item.unidad.nombre+' ('+response.items_pedido[i].item.unidad.descripcion+')</td>'+
                     '<td><label class="label label-success">Item Registrado</label></tr>';
+
+                contItemsPedidos++;
             }
             for(var i=0;i<response.items_temp_pedido.length;i++){
-                bodyItems += '<tr><th scope="row">'+(i+1)+'</th>' +
+                bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
                     '<td>'+response.items_temp_pedido[i].item.nombre+'</td>' +
                     '<td>'+response.items_temp_pedido[i].cantidad+'</td>' +
                     '<td>'+response.items_temp_pedido[i].item.unidad.nombre+' ('+response.items_temp_pedido[i].item.unidad.descripcion+')</td>' +
                     '<td><label class="label label-warning">Item Temporal</label></tr>';
+
+                contItemsPedidos++;
             }
             tableItems = '<table class="table table-bordered"><thead><tr><th>#</th><th>Item</th><th>Cantidad</th><th>Unidad</th><th>Tipo</th></tr></thead>' +
                 '<tbody>' +
