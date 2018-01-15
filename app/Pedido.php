@@ -18,7 +18,7 @@ class Pedido extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id'
+        'codigo', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id', 'solicitud_id'
     ];
 
     public function solicitante(){

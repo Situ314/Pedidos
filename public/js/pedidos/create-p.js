@@ -14,7 +14,7 @@ $( document ).ready(function() {
 
     $('.items-select2').select2({
         allowClear: true,
-        placeholder: "Primero seleccione una categoria...",
+        placeholder: "Primero seleccione un tipo de pedido...",
         width: '100%'
     }).val('').trigger('change');
     $('.items-select2').prop('disabled', true);
@@ -121,7 +121,7 @@ $( document ).ready(function() {
                     var num = $('.items-select2').parent()[i].id.slice(2);
                     $('#item_id'+num).select2({
                         allowClear: true,
-                        placeholder: "Primero seleccione una categoria...",
+                        placeholder: "Primero seleccione un tipo de pedido...",
                         width: '100%'
                     }).val('').trigger('change');
                 }

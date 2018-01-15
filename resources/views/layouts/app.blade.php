@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{--<title>{{ config('app.name', 'Correspondencia') }}</title>--}}
-    <title>Correspondencia</title>
+    <title>Pedidos</title>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">

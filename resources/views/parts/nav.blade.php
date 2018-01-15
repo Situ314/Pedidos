@@ -27,7 +27,7 @@
                     </ul>
                 </div>
             @endif
-        <!-- END ADMINISTRADOR -->
+            <!-- END ADMINISTRADOR -->
             <!-- AUTORIZADOR -->
             @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 5)
                 <div class="menu_section">

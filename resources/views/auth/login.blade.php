@@ -70,7 +70,7 @@
     <div class="row">
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-md-offset-2">
             <div class="panel panel-default login-panel">
-                <div class="panel-heading">Bienvenido</div>
+                <div class="panel-heading">Bienvenido a Pedidos</div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">

@@ -21,9 +21,14 @@ class CreateItemsTable extends Migration
             $table->string('nombre');
             $table->string('descripcion')->nullable()->default(null);
             $table->float('precio_unitario')->nullable()->default(null);
+            $table->string('id_producto_cubo')->nullable()->default(null);
 
             $table->integer('tipo_categoria_id')->unsigned();
             $table->foreign('tipo_categoria_id')->references('id')->on('tipo_categorias')
+                ->onDelete('cascade');
+
+            $table->integer('categoria_id')->unsigned()->nullable()->default(null);
+            $table->foreign('categoria_id')->references('id')->on('categorias')
                 ->onDelete('cascade');
 
             $table->integer('unidad_id')->unsigned();

@@ -71,7 +71,7 @@
 @endif
 <div class="form-group">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <label for="tipo_cat_id" class="control-label">Tipo Categroia*</label>
+        <label for="tipo_cat_id" class="control-label">Tipo Pedido *</label>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         {{Form::select('tipo_cat_id', $tipos->pluck('nombre','id'), null, ['class' => 'js-placeholder-single', 'required'])}}

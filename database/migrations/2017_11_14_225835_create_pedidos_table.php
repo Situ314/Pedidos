@@ -36,6 +36,8 @@ class CreatePedidosTable extends Migration
             $table->foreign('solicitante_id')->references('id')->on('users')
                 ->onDelete('cascade');
 
+            $table->integer('solicitud_id')->unsigned()->nullable()->default(null);
+
             $table->timestamps();
         });
     }
