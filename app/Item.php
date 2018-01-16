@@ -24,4 +24,8 @@ class Item extends Model
     public function unidad(){
         return $this->hasOne('App\Unidad','id','unidad_id');
     }
+
+    public function tipo_categoria(){
+        return $this->hasOne('App\Categoria','id','tipo_categoria_id');
+    }
 }

@@ -84,7 +84,7 @@
                                         foreach ($estados as $estado){
                                             if($estado->id == 1){
                                             echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
-                                            }elseif($estado->id > 2){
+                                            }elseif($estado->id >= 2){
                                             echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
                                             }
                                         }

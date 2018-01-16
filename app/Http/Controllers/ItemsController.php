@@ -6,6 +6,7 @@ use App\Item;
 use Illuminate\Http\Request;
 
 use Response;
+use DB;
 class ItemsController extends Controller
 {
     /**
@@ -89,6 +90,12 @@ class ItemsController extends Controller
         $items = Item::where('nombre','like', strtoupper($request->nombre).'%')
                 ->get();
 
+        /*$queries = DB::getQueryLog();
+        echo end($queries); // only last query*/
+
+        foreach ($items as $item){
+            $item->tipo_categoria;
+        }
         return Response::json(
             $items
         );
