@@ -72,5 +72,15 @@ class ProyectosUsersTableSeeder extends Seeder
             'proyecto_id' => 95,
             'user_id' =>13
         ]);
+
+        DB::table('proyectos_users')->insert([
+            'proyecto_id' => 120,
+            'user_id' =>14
+        ]);
+
+        DB::table('proyectos_users')->insert([
+            'proyecto_id' => 54,
+            'user_id' =>15
+        ]);
     }
 }

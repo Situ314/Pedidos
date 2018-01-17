@@ -38,5 +38,10 @@ class RolesTableSeeder extends Seeder
             'nombre' => 'USUARIO',
             'descripcion' => 'USUARIO QUE REALIZA PEDIDOS'
         ]);
+
+        DB::table('roles')->insert([ //7
+            'nombre' => 'RESP. ENTREGA',
+            'descripcion' => 'RESPONSABLE DE ENTREGA'
+        ]);
     }
 }

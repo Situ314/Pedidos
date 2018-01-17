@@ -14,7 +14,7 @@ $( document ).ready(function(){
     verificacion = rutas.verificacion.replace(":id","");
     verifiAut = rutas.verificacionAutorizador.replace(":id","");
     // console.log(verificacion);
-    getRealizado();
+    getTabla();
 
     setInterval(setTabsCantidad, 5000);
 });
@@ -221,15 +221,25 @@ $('ul#myTab li a').click(function (e) {
     }
 });
 
-function getRealizado() {
+function getTabla() {
     var route = rutas.pedidos;
     var token = rutas.token;
 
-    console.log($('#myTab').children().first().children().prop('id').split('-tab'));
-    // console.log(this.id.split('-tab'));
-    var estado = $('#myTab').children().first().children().prop('id').split('-tab')[0];
+    // console.log($('#myTab').children().first().children().prop('id').split('-tab'));
+    // console.log($('#myTab').children());
+    // console.log($('#myTab').children().length);
 
-    console.log(route);
+    var estado = null;
+    for(var i=0 ; i < $('#myTab').children().length ; i++){
+        // console.log( $('#myTab').children()[i] );
+        // console.log( $($('#myTab').children()[i]).hasClass("active") );
+        if( $($('#myTab').children()[i]).hasClass("active") ){
+            // console.log("Estado: ");
+            // console.log( $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad') );
+            estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
+        }
+    }
+
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -514,17 +524,22 @@ function verProgreso(id) {
 
 }
 
-function setTabsCantidad() {
-    console.log(arrayCantidades);
-
-    for(var i=0;i<arrayCantidades.length;i++){
-        $('#'+arrayCantidades[i].estado+'-tab-cantidad').text(arrayCantidades[i].cantidad);
-        console.log(arrayCantidades[i]);
-    }
-
-}
-
 function cambiarProceso(id) {
     $('input[name=pedido_proceso_id]').val(id);
     $('#modalConfirmacionProceso').modal('show');
+}
+
+function buscarPedido() {
+    var texto = $('#txtBuscarPedido').val();
+    console.log(texto);
+    var estado = null;
+    for(var i=0 ; i < $('#myTab').children().length ; i++){
+        // console.log( $('#myTab').children()[i] );
+        // console.log( $($('#myTab').children()[i]).hasClass("active") );
+        if( $($('#myTab').children()[i]).hasClass("active") ){
+            // console.log("Estado: ");
+            // console.log( $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad') );
+            estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
+        }
+    }
 }

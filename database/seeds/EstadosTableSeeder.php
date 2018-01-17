@@ -12,8 +12,8 @@ class EstadosTableSeeder extends Seeder
     public function run()
     {
         DB::table('estados')->insert([
-            'nombre' => 'CREADO',
-            'descripcion' => 'PEDIDO GENERADO'
+            'nombre' => 'INICIAL',
+            'descripcion' => 'PEDIDO EN ESTADO INICIAL'
         ]);
         DB::table('estados')->insert([
             'nombre' => 'AUTORIZADO',
@@ -33,8 +33,9 @@ class EstadosTableSeeder extends Seeder
         ]);
         DB::table('estados')->insert([
             'nombre' => 'ENTREGADO',
-            'descripcion' => 'PEDIDO ENTREGADO'
+            'descripcion' => 'PEDIDO ENTREGADO O FINALIZADO'
         ]);
+
 
 
         DB::table('estados')->insert([

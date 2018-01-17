@@ -2,7 +2,6 @@
  * Created by djauregui on 18/12/2017.
  */
 $( document ).ready(function() {
-    console.log( "main!" );
     getCantidadEstados();
     setInterval(getCantidadEstados, 20000);
 });
@@ -11,6 +10,9 @@ var arrayCantidades = [];
 function getCantidadEstados() {
     var route = configGlobal.rutas[0].getCantidades;
     var token = configGlobal.rutas[0].token;
+
+    // console.log("Cantidad global");
+
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},

@@ -20,9 +20,11 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php $aux=1;@endphp
                     @foreach($responsables as $responsable)
+                        @if(\Illuminate\Support\Facades\Auth::id()!=$responsable->solicitante->id)
                         <tr>
-                            <th scope="row">{{$loop->iteration}}</th>
+                            <th scope="row">@php echo $aux; $aux++; @endphp</th>
                             <td>{{$responsable->solicitante->empleado->nombres}}</td>
                             <td>{{$responsable->solicitante->username}}</td>
                             <td>{{$responsable->solicitante->email}}</td>
@@ -34,17 +36,14 @@
                                 @endif
                             </td>
                             <td>
-                                @if(\Illuminate\Support\Facades\Auth::user()->id == $responsable->solicitante->id)
-                                    <a disabled="" class="btn btn-sm btn-warning" title="No puede realizar acciones sobre si mismo"><i class="glyphicon glyphicon-minus"></i></a>
+                                @if($responsable->solicitante->rol_id == 5)
+                                    <a href="{{route('autorizador.cambiar',[$responsable->solicitante->id,2])}}" class="btn btn-sm btn-success-custom" title="Convertir en usuario"><i class="glyphicon glyphicon-arrow-down"></i></a>
                                 @else
-                                    @if($responsable->solicitante->rol_id == 5)
-                                        <a href="{{route('autorizador.cambiar',[$responsable->solicitante->id,2])}}" class="btn btn-sm btn-success-custom" title="Convertir en usuario"><i class="glyphicon glyphicon-arrow-down"></i></a>
-                                    @else
-                                        <a href="{{route('autorizador.cambiar',[$responsable->solicitante->id,1])}}" class="btn btn-sm btn-danger-custom" title="Convertir en autorizador" ><i class="glyphicon glyphicon-arrow-up"></i></a>
-                                    @endif
+                                    <a href="{{route('autorizador.cambiar',[$responsable->solicitante->id,1])}}" class="btn btn-sm btn-danger-custom" title="Convertir en autorizador" ><i class="glyphicon glyphicon-arrow-up"></i></a>
                                 @endif
                             </td>
                         </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>

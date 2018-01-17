@@ -114,5 +114,21 @@ class UsersTableSeeder extends Seeder
             'empleado_id' => 11,
             'rol_id' => 4
         ]);
+
+        DB::table('users')->insert([ //14
+            'username' => 'rese1',
+            'email' => null,
+            'password' => bcrypt('123'),
+            'empleado_id' => 12,
+            'rol_id' => 4
+        ]);
+
+        DB::table('users')->insert([ //15
+            'username' => 'rese2',
+            'email' => null,
+            'password' => bcrypt('123'),
+            'empleado_id' => 13,
+            'rol_id' => 4
+        ]);
     }
 }

@@ -25,11 +25,6 @@ Route::get('/buscar',[
     'as'=>'pedidos.buscar'
 ]);
 
-Route::get('/check',function (){
-    echo "<p>asdsadasd</p>";
-    exit();
-})->middleware('admin');
-
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function (){
@@ -87,6 +82,3 @@ Route::group(['middleware' => 'auth'], function (){
 });
 
 //Route::get('/home', 'HomeController@index');
-Route::get('chau',function (){
-   \Illuminate\Support\Facades\Auth::logout();
-});

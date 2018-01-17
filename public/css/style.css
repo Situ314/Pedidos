@@ -7673,3 +7673,6 @@ a.disabled {
 .nav-pills > .active > a:hover {
   background-color: #2a3f54 !important;
 }
+.title_left h3 {
+  color: #5a738e !important;
+}
