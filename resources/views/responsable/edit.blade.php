@@ -56,8 +56,7 @@
 
         </div>
     </div>
-
-    <div class="row">
+    {{--<div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -77,7 +76,7 @@
             </div>
 
         </div>
-    </div>
+    </div>--}}
     {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
     <div class="row">
         <div class="col-md-12 col-xs-12">

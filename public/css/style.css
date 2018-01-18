@@ -7592,6 +7592,9 @@ p {
 .fixed_height_420 {
   height: 420px;
 }
+.fixed_height_260 {
+  height: 260px;
+}
 .scroll-vertical {
   overflow-y: scroll;
 }
@@ -7674,5 +7677,8 @@ a.disabled {
   background-color: #2a3f54 !important;
 }
 .title_left h3 {
+  color: #5a738e !important;
+}
+.control-label {
   color: #5a738e !important;
 }

@@ -120,7 +120,7 @@ class UsersTableSeeder extends Seeder
             'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 12,
-            'rol_id' => 4
+            'rol_id' => 7
         ]);
 
         DB::table('users')->insert([ //15
@@ -128,7 +128,7 @@ class UsersTableSeeder extends Seeder
             'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 13,
-            'rol_id' => 4
+            'rol_id' => 7
         ]);
     }
 }
