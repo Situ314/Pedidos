@@ -15,6 +15,8 @@ use App\Log;
 use App\Pedido;
 use App\Proyecto;
 use App\Responsable;
+use App\SalidaAlmacen;
+use App\SalidaItem;
 use function foo\func;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -105,6 +107,24 @@ class AppServiceProvider extends ServiceProvider
         Responsable::created(function ($resp){
            $this->CreateLog($resp,"responsables");
         });
+
+        //**************************************SALIDA DE ALMACEN
+        SalidaAlmacen::created(function ($sal){
+            $this->CreateLog($sal,"salida_almacen");
+        });
+        SalidaAlmacen::updated(function ($sal){
+            $this->UpdateLog($sal,"salida_almacen");
+        });
+        //**************************************
+
+        //**************************************SALIDA DE ITEMS
+        SalidaItem::created(function ($sal_item){
+            $this->CreateLog($sal_item,"salida_items");
+        });
+        SalidaItem::updated(function ($sal_item){
+            $this->UpdateLog($sal_item,"salida_items");
+        });
+        //**************************************
     }
 
     /**

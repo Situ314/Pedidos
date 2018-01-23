@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-user"></i> Solicitante</label>
-                            <p>{{$pedido->solicitante->empleado->nombres}}</p>
+                            <p id="txtSolicitante">{{$pedido->solicitante->empleado->nombres}}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -42,12 +42,12 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Empresa</label>
-                            <p>{{$pedido->proyecto->empresa->nombre}}</p>
+                            <p id="txtEmpresa">{{$pedido->proyecto->empresa->nombre}}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Proyecto</label>
-                            <p>{{$pedido->proyecto->nombre}}</p>
+                            <p id="txtProyecto">{{$pedido->proyecto->nombre}}</p>
                         </div>
 
                     </div>
@@ -77,7 +77,55 @@
 
         </div>
     </div>--}}
-    {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
+    {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask', 'id' => 'formUpdateResponsable') ) }}
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Salida de Almacen <small>Formulario de salida de almacen</small></h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br>
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <label for="num_ot" class="control-label">Numero de OT</label>
+                            {{Form::number('num_ot',null, ['class'=>'form-control', 'step'=>1,'min'=>1])}}
+                            @if ($errors->has('num_ot'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('num_ot') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                            <label for="area" class="control-label">Area</label>
+                            {{Form::text('area',null, ['class'=>'form-control text-uppercase'])}}
+                            @if ($errors->has('area'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('area') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label for="responsable_entrega_id" class="control-label">Responsable de Entrega *</label>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            {{Form::select('responsable_entrega_id', $responsables->pluck('empleado_usuario','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+                            @if ($errors->has('responsable_entrega_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('responsable_entrega_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
@@ -97,7 +145,7 @@
                             <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
                         </div>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>
+                            {{--<button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>--}}
                             <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
                         </div>
@@ -114,6 +162,8 @@
 
     <!-- MODAL DEVOLUCION -->
     @include('modals.modal-devolucion')
+    @include('responsable.modal-salida-almacen')
+    @include('modals.modal-informacion')
 
 @endsection
 
@@ -133,6 +183,7 @@
         var config = {
             rutas:[
                 {
+                    salidaMax: "{{ route('salida.id.max') }}",
                     token: "{{Session::token()}}"
                 }
             ],

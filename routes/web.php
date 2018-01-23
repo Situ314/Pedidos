@@ -79,6 +79,35 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'ItemsController@buscarItem',
         'as'=>'buscar.item',
     ]);
+
+    //RUTAS DE SALIDA DE ALMACEN
+    Route::post('/post.max.sal',[
+        'uses'=>'SalidaAlmacenController@postUltimoNumeroSalida',
+        'as'=> 'salida.id.max'
+    ]);
 });
 
+Route::get('/snap',function (){
+    $snappy = App::make('snappy.pdf');
+//To file
+    $html = '<h1>Bill</h1><p>You owe me money, dude.</p>';
+    $snappy->generateFromHtml($html, '/tmp/bill-123.pdf');
+    $snappy->generate('http://www.github.com', '/tmp/github.pdf');
+//Or output:
+    return new Response(
+        $snappy->getOutputFromHtml($html),
+        200,
+        array(
+            'Content-Type'          => 'application/pdf',
+            'Content-Disposition'   => 'attachment; filename="file.pdf"'
+        )
+    );
+});
+
+Route::get('/test',function (){
+    $pdf = PDF::loadView('pdf.pdf-salida-almacen');
+    return $pdf->download('invoice.pdf');
+
+    return view('pdf.pdf-salida-almacen');
+});
 //Route::get('/home', 'HomeController@index');
