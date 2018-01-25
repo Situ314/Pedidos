@@ -20,4 +20,8 @@ class SalidaAlmacen extends Model
     protected $fillable = [
         'num_ot', 'area', 'pedido_id', 'responsable_entrega_id'
     ];
+
+    public function documento(){
+        return $this->hasOne('App\Documentos','id');
+    }
 }

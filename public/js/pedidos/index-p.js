@@ -53,13 +53,7 @@ $('ul#myTab li a').click(function (e) {
                     case 1:
                     case 2:
                     case 3:
-                        head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Opciones</th></tr></thead>'+
-                            '<tbody>';
-                        break;
                     case 4:
-                        head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Opciones</th></tr></thead>'+
-                            '<tbody>';
-                        break;
                     case 5:
                         head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Opciones</th></tr></thead>'+
                             '<tbody>';
@@ -120,7 +114,16 @@ $('ul#myTab li a').click(function (e) {
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 4:
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></button>'+
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 case 5:
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        /*'<button type="button" class="btn btn-warning-custom"><i class="fa fa-print"></i></button>'+*/
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    break;
                                 case 6:
                                 case 7:
                                 case 8:
@@ -702,6 +705,20 @@ function verProgreso(id) {
 function cambiarProceso(id) {
     $('input[name=pedido_proceso_id]').val(id);
     $('#modalConfirmacionProceso').modal('show');
+}
+
+function verSalidas(id) {
+    console.log(id);
+    var route = rutas.salidas;
+    console.log(route);
+
+
+    $('#modalBodySalidas').empty();
+    $('#modalBodySalidas').append("append");
+
+    $('#verSalidasPedidoModal').modal('show');
+
+
 }
 
 function buscarPedido() {

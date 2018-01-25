@@ -21,6 +21,7 @@ class CreateSalidaAlmacenTable extends Migration
             $table->string('num_ot')->nullable();
             $table->string('area')->nullable();
 
+            $table->integer('num_salida_almacen')->unsigned();
 
             $table->integer('pedido_id')->unsigned();
             $table->foreign('pedido_id')->references('id')->on('pedidos')

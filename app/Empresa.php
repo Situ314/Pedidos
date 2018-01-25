@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Empresa extends Model
 {
-    public $incrementing = false;
+    // Conexión
+    protected $connection = 'solicitudes';
+//    public $incrementing = false;
     /**
      * The table associated with the model.
      *

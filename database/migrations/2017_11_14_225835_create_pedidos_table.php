@@ -19,13 +19,14 @@ class CreatePedidosTable extends Migration
             $table->increments('id');
 
             $table->string('codigo',8)->unique();
+            $table->integer('num_solicitud')->unsigned();
 
             /*$table->integer('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('areas')
                 ->onDelete('cascade');*/
 
-            $table->integer('proyecto_id')->unsigned();
-            $table->foreign('proyecto_id')->references('id')->on('proyectos')
+            $table->integer('proyecto_id')->unsigned()
+//            $table->foreign('proyecto_id')->references('id')->on('proyectos')
                 ->onDelete('cascade');
 
             $table->integer('tipo_categoria_id')->unsigned();

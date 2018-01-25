@@ -95,4 +95,10 @@ class SalidaAlmacenController extends Controller
             $id
         );
     }
+
+    public function postSalidaItems(Request $request){
+        $salidas = SalidaAlmacen::where('pedido_id','=',$request->id);
+
+
+    }
 }

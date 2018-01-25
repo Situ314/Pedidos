@@ -12,12 +12,21 @@ class ResponsablessTableSeeder extends Seeder
     public function run()
     {
         DB::table('responsables')->insert([
-            'autorizador_id' =>3,
-            'solicitante_id'=>3
+            'autorizador_id' =>2,
+            'solicitante_id'=>2
         ]);
         DB::table('responsables')->insert([
-            'autorizador_id' =>3,
+            'autorizador_id' =>2,
+            'solicitante_id'=>4
+        ]);
+        DB::table('responsables')->insert([
+            'autorizador_id' =>2,
             'solicitante_id'=>5
+        ]);
+
+        DB::table('responsables')->insert([
+            'autorizador_id' =>3,
+            'solicitante_id'=>3
         ]);
         DB::table('responsables')->insert([
             'autorizador_id' =>3,
@@ -26,23 +35,6 @@ class ResponsablessTableSeeder extends Seeder
         DB::table('responsables')->insert([
             'autorizador_id' =>3,
             'solicitante_id'=>7
-        ]);
-
-        DB::table('responsables')->insert([
-            'autorizador_id' =>4,
-            'solicitante_id'=>4
-        ]);
-        DB::table('responsables')->insert([
-            'autorizador_id' =>4,
-            'solicitante_id'=>8
-        ]);
-        DB::table('responsables')->insert([
-            'autorizador_id' =>4,
-            'solicitante_id'=>9
-        ]);
-        DB::table('responsables')->insert([
-            'autorizador_id' =>4,
-            'solicitante_id'=>10
         ]);
     }
 }

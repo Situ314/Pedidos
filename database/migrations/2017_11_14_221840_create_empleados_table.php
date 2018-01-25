@@ -13,7 +13,7 @@ class CreateEmpleadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('empleados', function (Blueprint $table) {
+        /*Schema::create('empleados', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             //******************************************************************************RECURSOS HUMANO
@@ -23,7 +23,7 @@ class CreateEmpleadosTable extends Migration
 
             $table->softDeletes();
             $table->timestamps();
-        });
+        });*/
     }
 
     /**

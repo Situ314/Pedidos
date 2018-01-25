@@ -66,6 +66,34 @@ return [
             'engine' => null,
         ],
 
+        'rrhh' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_R', '127.0.0.1'),
+            'port' => env('DB_PORT_R', '3306'),
+            'database' => env('DB_DATABASE_R', 'forge'),
+            'username' => env('DB_USERNAME_R', 'forge'),
+            'password' => env('DB_PASSWORD_R', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'solicitudes' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_S', '127.0.0.1'),
+            'port' => env('DB_PORT_S', '3306'),
+            'database' => env('DB_DATABASE_S', 'forge'),
+            'username' => env('DB_USERNAME_S', 'forge'),
+            'password' => env('DB_PASSWORD_S', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

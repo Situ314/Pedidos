@@ -13,13 +13,13 @@ class CreateProyectosUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyectos_users', function (Blueprint $table) {
+        /*Schema::create('proyectos_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
 
             $table->integer('proyecto_id')->unsigned();
-            $table->foreign('proyecto_id')->references('id')->on('proyectos')
+//            $table->foreign('proyecto_id')->references('id')->on('proyectos')
                 ->onDelete('cascade');
 
             $table->integer('user_id')->unsigned();
@@ -28,7 +28,7 @@ class CreateProyectosUsersTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
-        });
+        });*/
     }
 
     /**

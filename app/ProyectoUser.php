@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProyectoUser extends Model
 {
+    // Conexión
+    protected $connection = 'solicitudes';
     /**
      * The table associated with the model.
      *
@@ -17,7 +19,7 @@ class ProyectoUser extends Model
      *
      * @var array
      */
-    protected $fillable = [
+    /*protected $fillable = [
         'proyecto_id', 'user_id'
-    ];
+    ];*/
 }

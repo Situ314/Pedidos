@@ -13,7 +13,7 @@ class CreateEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::create('empresas', function (Blueprint $table) {
+        /*Schema::create('empresas', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             //******************************************************************************SOLICITUDES
@@ -23,7 +23,7 @@ class CreateEmpresasTable extends Migration
             $table->string('descripcion')->nullable()->default(null);
 
             $table->timestamps();
-        });
+        });*/
     }
 
     /**

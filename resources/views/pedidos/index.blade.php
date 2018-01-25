@@ -127,6 +127,7 @@
     @include('pedidos.modals.modal-asignar')
     @include('pedidos.modals.modal-estados')
     @include('responsable.modal-en-proceso')
+    @include('modals.modal-salidas')
 @endsection
 
 @section('footerScripts')
@@ -143,6 +144,7 @@
             verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
             verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
             asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+            salidas: "{{route('salida.alm')}}",
             token: "{{Session::token()}}"
         };
         var variables = {

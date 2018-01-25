@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //DATOS DE USUARIOS MAS TABLA DE RESPONSABLES
-        $this->call(EmpleadosTableSeeder::class);
+//        $this->call(EmpleadosTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ResponsablessTableSeeder::class);
@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
         //DATOS PARA LOS PEDIDOS
         $this->call(EstadosTableSeeder::class);
 
-        $this->call(EmpresasTableSeeder::class);
-        $this->call(ProyectosTableSeeder::class);
+//        $this->call(EmpresasTableSeeder::class);
+//        $this->call(ProyectosTableSeeder::class);
 
         //PROYECTOS A LOS QUE PERTENECEN LOS USUARIOS
-        $this->call(ProyectosUsersTableSeeder::class);
+//        $this->call(ProyectosUsersTableSeeder::class);
     }
 }

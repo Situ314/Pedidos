@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    public $incrementing = false;
+    // Conexión
+    protected $connection = 'solicitudes';
+//    public $incrementing = false;
     /**
      * The table associated with the model.
      *

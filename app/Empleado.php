@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Empleado extends Model
 {
-    public $incrementing = false;
+    // Conexión
+    protected $connection = 'rrhh';
+
+    //public $incrementing = false;
     /**
      * The table associated with the model.
      *
@@ -19,6 +22,10 @@ class Empleado extends Model
      * @var array
      */
     protected $fillable = [
-        'id','nombres'
+        'id','nombres', 'am', 'ap'
     ];
+
+    public function usuario_solicitud(){
+        return $this->hasOne('App\UserSolicitud','empleado_id','id');
+    }
 }

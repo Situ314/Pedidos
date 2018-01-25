@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable()->unique()->default(null);
             $table->string('password');
 
-            $table->integer('empleado_id')->unsigned();
-            $table->foreign('empleado_id')->references('id')->on('empleados')
+            $table->integer('empleado_id')->nullable()->unsigned()
+//            $table->foreign('empleado_id')->references('id')->on('empleados')
                 ->onDelete('cascade');
 
             $table->integer('rol_id')->unsigned();

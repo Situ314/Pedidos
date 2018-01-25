@@ -657,7 +657,21 @@ span{
     background-color: @success;
     border-color: @success;
 }
-
+.btn-warning-custom{
+    color: white;
+    background-color: @warning;
+    border-color: @warning;
+    &:hover, &:focus, &:active, &.active{
+        color: white !important;
+        background-color: @warning-oscuro;
+        border-color: @warning-oscuro;
+    }
+}
+.open>.dropdown-toggle.btn-warning-custom{
+    color: white !important;
+    background-color: @warning;
+    border-color: @warning;
+}
 .btn-danger-custom{
     color: white;
     background-color: @danger;

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Empresa;
 use App\EstadoPedido;
 use App\Item;
 use App\ItemPedidoEntregado;
 use App\Pedido;
+use App\Proyecto;
 use App\Responsable;
 use App\SalidaAlmacen;
 use App\SalidaItem;
@@ -103,6 +105,9 @@ class ResponsableController extends Controller
         $users = User::where('rol_id','=',4)
             ->get();
 
+        $empresas = Empresa::all();
+        $proyectos = Proyecto::all();
+
         return view('responsable.edit')
             ->withTipos($tipos)
             ->withCategroias($categorias)
@@ -110,7 +115,10 @@ class ResponsableController extends Controller
             ->withItems($items)
 
             ->withPedido($pedido)
-            ->withResponsables($users);
+            ->withResponsables($users)
+
+            ->withEmpresas($empresas)
+            ->withProyectos($proyectos);
     }
 
     /**
@@ -154,13 +162,13 @@ class ResponsableController extends Controller
                 $sal_item = new SalidaItem($array_items_salida);
                 $sal_item->save();
 
-                if($request->cantidad[$i] != $request->cantidad_guardada[$i]){
+                /*if($request->cantidad[$i] != $request->cantidad_guardada[$i]){
                     $estado = 5; //SI ES DISTINTO FALTAN ITEMS - EN ESPERA
                     $estado_descripcion = "en espera ...";
                 }
             }else{
                 $estado = 5; //SI NO HAY TODOS FALTAN ITEMS - EN ESPERA
-                $estado_descripcion = "en espera ...";
+                $estado_descripcion = "en espera ...";*/
             }
         }
 

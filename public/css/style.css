@@ -7282,6 +7282,24 @@ span.subtitulo-numero {
   background-color: #1abb9c;
   border-color: #1abb9c;
 }
+.btn-warning-custom {
+  color: white;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+.btn-warning-custom:hover,
+.btn-warning-custom:focus,
+.btn-warning-custom:active,
+.btn-warning-custom.active {
+  color: white !important;
+  background-color: #ad6d11;
+  border-color: #ad6d11;
+}
+.open > .dropdown-toggle.btn-warning-custom {
+  color: white !important;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
 .btn-danger-custom {
   color: white;
   background-color: #d9534f;

@@ -81,9 +81,16 @@ Route::group(['middleware' => 'auth'], function (){
     ]);
 
     //RUTAS DE SALIDA DE ALMACEN
+    Route::resource('/salidas','SalidaAlmacenController');
+
     Route::post('/post.max.sal',[
         'uses'=>'SalidaAlmacenController@postUltimoNumeroSalida',
         'as'=> 'salida.id.max'
+    ]);
+
+    Route::post('/post.salida',[
+        'uses'=>'SalidaAlmacenController@postSalidaItems',
+        'as'=>'salida.alm'
     ]);
 });
 
@@ -105,9 +112,13 @@ Route::get('/snap',function (){
 });
 
 Route::get('/test',function (){
-    $pdf = PDF::loadView('pdf.pdf-salida-almacen');
-    return $pdf->download('invoice.pdf');
+    $pedido = \App\Pedido::find(4);
 
-    return view('pdf.pdf-salida-almacen');
+    $pdf = PDF::loadView('pdf.pdf-salida-almacen',array(
+        'pedido'=> $pedido
+    ));
+    return $pdf->stream('invoice.pdf');
+
+//    return view('pdf.pdf-salida-almacen');
 });
 //Route::get('/home', 'HomeController@index');

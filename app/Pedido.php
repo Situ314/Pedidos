@@ -18,7 +18,7 @@ class Pedido extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id', 'solicitud_id'
+        'codigo', 'num_solicitud', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id', 'solicitud_id'
     ];
 
     public function solicitante(){
@@ -51,5 +51,9 @@ class Pedido extends Model
 
     public function estados(){
         return $this->belongsToMany('App\Estado','estados_pedidos','pedido_id','estado_id');
+    }
+
+    public function salidas_almacen(){
+        return $this->hasMany('App\SalidaAlmacen','pedido_id','id');
     }
 }

@@ -94,12 +94,16 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->username }}
-                        <span class=" fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li>
-                            {{--<a href="{{route('cambiar-pass.index')}}" >
+                        @if(count(Auth::user()->empleado)!=0)
+                            {{ Auth::user()->empleado->nombres." ".Auth::user()->empleado->apellido_1 }}
+                        @else
+                            {{ Auth::user()->username }}
+                        @endif
+                       <span class=" fa fa-angle-down"></span>
+                   </a>
+                   <ul class="dropdown-menu dropdown-usermenu pull-right">
+                       <li>
+                           {{--<a href="{{route('cambiar-pass.index')}}" >
                                 <i class="fa fa-lock pull-right"></i>  Cambiar Contraseña
                             </a>--}}
                         </li>

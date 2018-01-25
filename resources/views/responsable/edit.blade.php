@@ -87,39 +87,7 @@
                 </div>
                 <div class="x_content">
                     <br>
-                    <div class="form-group">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <label for="num_ot" class="control-label">Numero de OT</label>
-                            {{Form::number('num_ot',null, ['class'=>'form-control', 'step'=>1,'min'=>1])}}
-                            @if ($errors->has('num_ot'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('num_ot') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                            <label for="area" class="control-label">Area</label>
-                            {{Form::text('area',null, ['class'=>'form-control text-uppercase'])}}
-                            @if ($errors->has('area'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('area') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label for="responsable_entrega_id" class="control-label">Responsable de Entrega *</label>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            {{Form::select('responsable_entrega_id', $responsables->pluck('empleado_usuario','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
-                            @if ($errors->has('responsable_entrega_id'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('responsable_entrega_id') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
+                    @include('responsable.form')
                 </div>
             </div>
 
