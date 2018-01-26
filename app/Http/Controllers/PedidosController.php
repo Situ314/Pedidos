@@ -114,6 +114,7 @@ class PedidosController extends Controller
 
         $array_pedido = [
             'codigo'=>$this->codigo_aleatorio(),
+            'num_solicitud'=>null,
             'area_id'=>$request->area_id,
             'proyecto_id'=>$request->proyecto_id,
             'tipo_categoria_id'=>$request->tipo_cat_id,

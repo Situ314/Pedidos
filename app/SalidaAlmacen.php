@@ -18,10 +18,14 @@ class SalidaAlmacen extends Model
      * @var array
      */
     protected $fillable = [
-        'num_ot', 'area', 'pedido_id', 'responsable_entrega_id'
+        'num_ot', 'area', 'num_salida_almacen', 'pedido_id', 'responsable_entrega_id', 'courrier_id'
     ];
 
     public function documento(){
         return $this->hasOne('App\Documentos','id');
+    }
+
+    public function salida_items(){
+        return $this->hasMany('App\SalidaItem','salida_id','id');
     }
 }

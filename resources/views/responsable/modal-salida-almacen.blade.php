@@ -14,7 +14,7 @@
                         <tbody>
                         <tr>
                             <th width="10%;">Empresa</th>
-                            <td><p id="txtEmpresaSalida"></p></td>
+                            <td colspan="3"><p id="txtEmpresaSalida"></p></td>
                             <th rowspan="2" class="text-center" style="vertical-align: middle; font-size: 20px;">SALIDA DE ALMACEN</th>
                             <th width="4%;">N°</th>
                             <td colspan="3"><span id="txtNum"></span></td>
@@ -23,24 +23,36 @@
                             <th>O.T.<td>
                                 <p id="txtOTSalida" style="font-weight: normal !important;"></p>
                             </td>
+                            <td style="font-weight: bold;"># Solicitud</td>
+                            <td><span id="txtNumSolicitudSalida"></span></td>
                             <th width="6%;">Fecha</th>
                             <td><span id="txtFechaSalida"></span></td>
                             <th width="6%;">Hora</th>
                             <td><span id="txtHoraSalida"></span></td>
                         </tr>
                         <tr>
-                            <td colspan="7" style="font-weight: bold;">
+                            <td colspan="9" style="font-weight: bold;">
                                 Solicitado por: <span id="txtSolicitanteSalida" style="font-weight: normal !important;"></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" style="font-weight: bold;">
+                            <td colspan="9" style="font-weight: bold;">
                                 Para el area de: <span id="txtAreaSalida" style="font-weight: normal !important;"></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" style="font-weight: bold;">
+                            <td colspan="9" style="font-weight: bold;">
                                 Proyecto: <span id="txtProyectoSalida" style="font-weight: normal !important;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9" style="font-weight: bold;">
+                                Responsable: <span id="txtResponsableSalida" style="font-weight: normal !important;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9" style="font-weight: bold;">
+                                Courrier: <span id="txtCourrierSalida" style="font-weight: normal !important;"></span>
                             </td>
                         </tr>
                         </tbody>
@@ -50,20 +62,17 @@
                     <table class="table table-bordered table-condensed table-responsive">
                         <thead>
                         <tr>
-                            <th colspan="4">DATOS DEL PRODUCTO</th>
+                            <th colspan="5">DATOS DEL PRODUCTO</th>
                         </tr>
                         <tr>
                             <th width="6%;">Item</th>
                             <th>Detalle</th>
                             <th>Cantidad</th>
                             <th>U.M.</th>
+                            <th>Observación</th>
                         </tr>
                         </thead>
                         <tbody id="tbodyItemsSalidaAlmacen">
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>dsa</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -20,7 +20,7 @@
         <label for="proyecto_id" class="control-label">Proyecto *</label>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        {{Form::select('proyecto_id', \Illuminate\Support\Facades\Auth::user()->proyectos->pluck('proyecto_empresa','id'), $pedido->proyecto_id, ['class' => 'js-placeholder-single', 'required'])}}
+        {{Form::select('proyecto_id', \Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos->pluck('proyecto_empresa','id'), $pedido->proyecto_id, ['class' => 'js-placeholder-single', 'required'])}}
         @if ($errors->has('proyecto_id'))
         <span class="help-block">
                 <strong>{{ $errors->first('proyecto_id') }}</strong>

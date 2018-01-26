@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Pedido;
 use App\SalidaAlmacen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -86,19 +87,29 @@ class SalidaAlmacenController extends Controller
         //
     }
 
-    public function postUltimoNumeroSalida(){
-        $id = SalidaAlmacen::select('id')
-            ->where('id', DB::raw('(select max(id) from salida_almacen)'))
+    public function postUltimoNumeroSalida(Request $request){
+        $pedido = Pedido::select('pedidos.id','pedidos.num_solicitud')
+            ->leftJoin('pragma_solicitudes.proyectos','pedidos.proyecto_id','=','pragma_solicitudes.proyectos.id')
+            ->where('empresa_id','=',$request->empresa_id)
+            ->whereRaw('YEAR(pedidos.created_at) = YEAR( NOW() )')
+            ->orderBy('pedidos.id','desc')
             ->first();
 
         return Response::json(
-            $id
+            $pedido
         );
     }
 
     public function postSalidaItems(Request $request){
-        $salidas = SalidaAlmacen::where('pedido_id','=',$request->id);
+        $salidas = SalidaAlmacen::where('pedido_id','=',$request->id)
+            ->get();
 
+        foreach ($salidas as $salida){
+            $salida->salida_items;
+        }
 
+        return Response::json(
+            $salidas
+        );
     }
 }

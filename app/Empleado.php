@@ -28,4 +28,8 @@ class Empleado extends Model
     public function usuario_solicitud(){
         return $this->hasOne('App\UserSolicitud','empleado_id','id');
     }
+
+    public function getNombreCompletoAttribute(){
+        return $this->nombres.' '.$this->apellido_1.' '.$this->apellido_2;
+    }
 }

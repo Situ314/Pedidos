@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Empleado;
 use App\Empresa;
 use App\EstadoPedido;
 use App\Item;
@@ -108,6 +109,9 @@ class ResponsableController extends Controller
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
 
+        //FILTRAR A EMPLEADOS A TRAVES DE SU CARGO - CHOFER, COURRIER, ETC
+        $empleados = Empleado::all();
+
         return view('responsable.edit')
             ->withTipos($tipos)
             ->withCategroias($categorias)
@@ -116,6 +120,7 @@ class ResponsableController extends Controller
 
             ->withPedido($pedido)
             ->withResponsables($users)
+            ->withEmpleados($empleados)
 
             ->withEmpresas($empresas)
             ->withProyectos($proyectos);
@@ -130,6 +135,14 @@ class ResponsableController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //VERIFICANDO Y ACTUALIZANDO PEDIDO
+        $pedido = Pedido::find($id);
+        if($pedido->num_solicitud == null){
+            $pedido->num_solicitud = $request->num_solicitud;
+        }
+        $pedido->save();
+
+        //GUARDANDO SALIDA DE ALMACEN
         $ot = null;
         if($request->num_ot != ""){
             $ot = $request->num_ot;
@@ -142,33 +155,36 @@ class ResponsableController extends Controller
 
         $array_salida_almacen = [
             'num_ot'=>$ot,
+            'num_salida_almacen'=>0,
             'area'=>strtoupper($area),
             'pedido_id'=>$id,
-            'responsable_entrega_id'=>$request->responsable_entrega_id
+            'responsable_entrega_id'=>$request->responsable_entrega_id,
+            'courrier_id'=>$request->courrier_id
         ];
         $salida_almacen = new SalidaAlmacen($array_salida_almacen);
         $salida_almacen->save();
 
         //INGRESO DE ITEMS DE SALIDA
-        $estado = 4;
-        $estado_descripcion = "en proceso ...";
+        $estado = 5;
+        $estado_descripcion = "entregado ...";
         for($i=0 ; $i<count($request->input_radio_entrega) ; $i++){
             if($request->input_radio_entrega[$i]==1){ //ENTREGARA ESTE ITEM
                 $array_items_salida = [
                     'cantidad'=>$request->cantidad[$i],
+                    'observacion'=>strtoupper($request->observacion[$i]),
                     'item_pedido_entregado_id'=>$request->item_id_edit[$i],
                     'salida_id'=>$salida_almacen->id
                 ];
                 $sal_item = new SalidaItem($array_items_salida);
                 $sal_item->save();
 
-                /*if($request->cantidad[$i] != $request->cantidad_guardada[$i]){
-                    $estado = 5; //SI ES DISTINTO FALTAN ITEMS - EN ESPERA
-                    $estado_descripcion = "en espera ...";
+                if($request->cantidad[$i] != $request->cantidad_guardada[$i]){
+                    $estado = 4; //SI ES DISTINTO FALTAN ITEMS - EN ESPERA
+                    $estado_descripcion = "entrega parcial ...";
                 }
             }else{
-                $estado = 5; //SI NO HAY TODOS FALTAN ITEMS - EN ESPERA
-                $estado_descripcion = "en espera ...";*/
+                $estado = 4; //SI NO HAY TODOS FALTAN ITEMS - EN ESPERA
+                $estado_descripcion = "entrega parcial ...";
             }
         }
 

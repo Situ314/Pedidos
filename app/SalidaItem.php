@@ -18,6 +18,6 @@ class SalidaItem extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad', 'item_pedido_entregado_id', 'salida_id'
+        'cantidad', 'observacion', 'item_pedido_entregado_id', 'salida_id'
     ];
 }

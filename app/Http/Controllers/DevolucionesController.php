@@ -44,12 +44,12 @@ class DevolucionesController extends Controller
         switch ($request->tipo_dev){
             case 1: //RECHAZADO
                 $anuncion = "rechazado ...";
-                $estado = 8;
+                $estado = 7;
 
                 break;
             case 2: //OBSERVADO
                 $anuncion = "observado ...";
-                $estado = 7;
+                $estado = 6;
                 break;
             case 3: //EN ESPERA
                 if(Auth::user()->rol_id > 4){

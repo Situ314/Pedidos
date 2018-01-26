@@ -19,7 +19,7 @@ class CreatePedidosTable extends Migration
             $table->increments('id');
 
             $table->string('codigo',8)->unique();
-            $table->integer('num_solicitud')->unsigned();
+            $table->integer('num_solicitud')->nullable()->default(null)->unsigned();
 
             /*$table->integer('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('areas')

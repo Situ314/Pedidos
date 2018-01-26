@@ -19,6 +19,7 @@ class CreateSalidaItemsTable extends Migration
             $table->increments('id');
 
             $table->float('cantidad');
+            $table->text('observacion')->nullable();
 
             $table->integer('item_pedido_entregado_id')->unsigned();
             $table->foreign('item_pedido_entregado_id')->references('id')->on('items_pedido_entregado')
