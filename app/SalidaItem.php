@@ -20,4 +20,8 @@ class SalidaItem extends Model
     protected $fillable = [
         'cantidad', 'observacion', 'item_pedido_entregado_id', 'salida_id'
     ];
+
+    public function item_pedido_entregado(){
+        return $this->hasOne('App\ItemPedidoEntregado','id','item_pedido_entregado_id');
+    }
 }

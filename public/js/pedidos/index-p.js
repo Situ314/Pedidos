@@ -114,14 +114,14 @@ $('ul#myTab li a').click(function (e) {
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 4:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-warning-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></button>'+
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<button type="button" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></button>'+
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    break;
                                 case 5:
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        /*'<button type="button" class="btn btn-warning-custom"><i class="fa fa-print"></i></button>'+*/
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 6:
@@ -725,13 +725,65 @@ function verSalidas(id) {
         }
     }).done(function (response){
         console.log(response);
+        $('#accordionSalidaItems').empty();
+        var panelSalida = "";
         for(var i=0; i<response.length ; i++){
             console.log(response[i]);
+            var tableBody = "";
 
+            for(var j=0; j<response[i].salida_items.length ;j++){
+                console.log(response[i].salida_items[j]);
+                tableBody+=
+                    '<tr>' +
+                        '<td>'+(j+1)+'</td>'+
+                        '<td>'+response[i].salida_items[j].item_pedido_entregado.item.nombre+'</td>'+
+                        '<td>'+response[i].salida_items[j].cantidad+'</td>'+
+                        '<td>'+response[i].salida_items[j].item_pedido_entregado.item.unidad.nombre+'</td>'+
+                        '<td>'+response[i].salida_items[j].observacion+'</td>'+
+                    '</tr>';
+            }
+
+            panelSalida+=
+                '<div class="panel-items-listado">'+
+                '<a class="panel-heading panel-heading-custom" role="tab" data-toggle="collapse" data-parent="#accordion" href="#salida_'+response[i].pedido.num_solicitud+'" aria-expanded="true" aria-controls="collapseOne">'+
+                '<h4 class="panel-title">Salida de Almacen: N° '+response[i].pedido.num_solicitud+'</h4>'+
+                '</a>'+
+                '<div id="salida_'+response[i].pedido.num_solicitud+'" class="panel-collapse collapse in" role="tabpanel">'+
+                '<div class="panel-body">'+
+
+                    '<div class="row">' +
+                        '<p>HOLA</p>'+
+                    '</div>'+
+
+
+                    '<div class="row"><div class="table-responsive">'+
+                        '<table class="table table-bordered table-responsive">'+
+                            '<thead>'+
+                                '<tr>'+
+                                    '<th colspan="5">ITEMS ENTREGADOS</th>'+
+                                '</tr>'+
+                                '<tr>'+
+                                    '<th width="4%;">Item</th>'+
+                                    '<th>Detalle</th>'+
+                                    '<th width="6%;">Cantidad</th>'+
+                                    '<th width="10%;">U.M.</th>'+
+                                    '<th>Observación</th>'+
+                                '</tr>'+
+                            '</thead>'+
+                            '<tbody>'+
+                                tableBody+
+                            '</tbody>'+
+                        '</table>'+
+                    '</div></div>'+
+
+                '</div>'+
+                '</div>'+
+                '</div>';
         }
 
-        $('#modalBodySalidas').empty();
-        $('#modalBodySalidas').append("append");
+        $('#accordionSalidaItems').append(
+            panelSalida
+        );
 
         $('#verSalidasPedidoModal').modal('show');
     });

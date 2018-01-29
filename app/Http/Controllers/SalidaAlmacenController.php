@@ -105,7 +105,11 @@ class SalidaAlmacenController extends Controller
             ->get();
 
         foreach ($salidas as $salida){
-            $salida->salida_items;
+            foreach ($salida->salida_items as $salita_item){
+                $salita_item->item_pedido_entregado->item->unidad;
+            }
+            $salida->documento;
+            $salida->pedido;
         }
 
         return Response::json(

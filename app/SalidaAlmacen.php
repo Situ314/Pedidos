@@ -22,10 +22,14 @@ class SalidaAlmacen extends Model
     ];
 
     public function documento(){
-        return $this->hasOne('App\Documentos','id');
+        return $this->hasOne('App\Documentos','salida_id','id');
     }
 
     public function salida_items(){
         return $this->hasMany('App\SalidaItem','salida_id','id');
+    }
+
+    public function pedido(){
+        return $this->belongsTo('App\Pedido','pedido_id','id');
     }
 }

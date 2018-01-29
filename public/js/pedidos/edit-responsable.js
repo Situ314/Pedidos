@@ -15,6 +15,8 @@ var arrayMeses = {
     10: 'Noviembre',
     11: 'Diciembre'
 };
+
+var options_proyectos = "";
 $(document).ready(function(){
     //HABILITANDO EL iCheck
     $('.icheck_class').iCheck({
@@ -58,14 +60,20 @@ $(document).ready(function(){
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'JSON',
+                data:{
+                    id: config.variables[0].ped,
+                    empresa_id: config.variables[0].emp
+                },
                 beforeSend: function(e){
                 }
             }).done(function (response){
+                console.log(response);
+
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
-                if(response.id > 0)
+                /*if(response.id > 0)
                     $('#txtNum').text(parseInt( (response.id)+1) );
                 else
-                    $('#txtNum').text(1);
+                    $('#txtNum').text(1);*/
 
                 $('#txtEmpresaSalida').text( $('#txtEmpresa').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
@@ -76,6 +84,17 @@ $(document).ready(function(){
                 $('#txtSolicitanteSalida').text( $('#txtSolicitante').text() );
                 $('#txtAreaSalida').text( $('input[name=area]').val().toUpperCase() );
                 $('#txtProyectoSalida').text( $('#txtProyecto').text() );
+
+                $('#txtResponsableSalida').text( $('select[name=responsable_entrega_id] option:selected').text() );
+                $('#txtCourrierSalida').text( $('select[name=courrier_id] option:selected').text() )
+
+                if(response.num_solicitud == null){ //ES LA PRIMERA SALIDA
+                    $('#txtNumSolicitudSalida').text( 1 );
+                    $('input[name=num_solicitud]').val( 1 );
+                }else{ //USAR EL MISMO NUMERO
+                    $('#txtNumSolicitudSalida').text( response.num_solicitud );
+                    $('input[name=num_solicitud]').val( response.num_solicitud );
+                }
                 //************************************
 
                 //CARGANDO ITEMS DE SALIDA DE ALMACEN
@@ -88,6 +107,7 @@ $(document).ready(function(){
                                     '<td>'+$('#item_id'+i+' option:selected').text()+'</td>'+
                                     '<td>'+$('#numCantidad'+i).val()+'</td>'+
                                     '<td>'+$('#unidad_id'+i+' option:selected').text()+'</td>'+
+                                    '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
                                 '</tr>';
 
                         aux++;
@@ -109,6 +129,60 @@ $(document).ready(function(){
         console.log("Acepto...");
         $('#formUpdateResponsable').trigger('submit', [true]);
     });
+
+    //CAMBIO DE EMPRESA - CARGA NUEVOS PROYECTOS
+    $('select[name=empresa_id]').change(function () {
+        var selected_op = $(this).find('option:selected').val();
+        if(typeof selected_op != "undefined"){
+            var proyectos = config.variables[0].proy;
+            options_proyectos = "";
+
+            for(var i=0;i<proyectos.length;i++){
+                if(selected_op == proyectos[i].empresa_id){
+                    console.log(proyectos[i]);
+                    options_proyectos += "<option value='"+proyectos[i].id+"'>"+proyectos[i].nombre+"</option>";
+                }
+            }
+
+            $('select[name=proyecto_id]').prop('disabled', false);
+            $('select[name=proyecto_id]').empty();
+            $('select[name=proyecto_id]').append(options_proyectos);
+
+            $('select[name=proyecto_id]').select2({
+                allowClear: true,
+                placeholder: "Seleccione un proyecto...",
+                width: '100%'
+            }).val('').trigger('change');
+        }else{
+            $('select[name=proyecto_id]').prop('disabled', true);
+            $('select[name=proyecto_id]').select2({
+                allowClear: true,
+                placeholder: "Seleccione una empresa...",
+                width: '100%'
+            }).val('').trigger('change');
+        }
+    });
+
+    //EMPRESA - CARGA AUTOMATICAMENTE
+    $('select[name=empresa_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione empresa...",
+        width: '100%'
+    }).val(parseInt(config.variables[0].emp)).trigger('change');
+
+    //PROYECTO - CARGA AUTOMATICAMENTE
+    $('select[name=proyecto_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione proyecto...",
+        width: '100%'
+    }).val(parseInt(config.variables[0].pr)).trigger('change');
+
+    //COURRIER SELECT
+    $('select[name=courrier_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione courrier o delivery...",
+        width: '100%'
+    }).val('').trigger('change');
 });
 
 function edicion(){

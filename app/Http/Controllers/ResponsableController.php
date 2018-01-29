@@ -169,9 +169,14 @@ class ResponsableController extends Controller
         $estado_descripcion = "entregado ...";
         for($i=0 ; $i<count($request->input_radio_entrega) ; $i++){
             if($request->input_radio_entrega[$i]==1){ //ENTREGARA ESTE ITEM
+                $obs = null;
+                if($request->observacion[$i]!=""){
+                    $obs = strtoupper($request->observacion[$i]);
+                }
+
                 $array_items_salida = [
                     'cantidad'=>$request->cantidad[$i],
-                    'observacion'=>strtoupper($request->observacion[$i]),
+                    'observacion'=>$obs,
                     'item_pedido_entregado_id'=>$request->item_id_edit[$i],
                     'salida_id'=>$salida_almacen->id
                 ];

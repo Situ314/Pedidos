@@ -78,6 +78,8 @@
         </div>
     </div>--}}
     {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask', 'id' => 'formUpdateResponsable') ) }}
+    <input name="num_solicitud" hidden>
+
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
@@ -162,8 +164,11 @@
                     items: {!! json_encode($items->toArray()) !!},
                     categoriaSelect: {{$pedido->tipo_categoria_id}},
                     cantItemEntrega: {{count($pedido->items_entrega)}},
-                    items_entrega: {!! json_encode($pedido->items_entrega) !!}
-
+                    items_entrega: {!! json_encode($pedido->items_entrega) !!},
+                    proy: {!! json_encode($proyectos->toArray()) !!},
+                    emp: {{ $pedido->proyecto->empresa_id }},
+                    pr: {{ $pedido->proyecto->id }},
+                    ped: {{ $pedido->id }}
                 }
             ]
         };
