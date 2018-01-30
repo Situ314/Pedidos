@@ -11,7 +11,7 @@
                 <div class="accordion" id="accordionSalidaItems" role="tablist" aria-multiselectable="true">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div id="footerModalSalidaPedido" class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

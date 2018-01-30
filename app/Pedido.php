@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      *

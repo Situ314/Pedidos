@@ -39,6 +39,7 @@ class CreatePedidosTable extends Migration
 
             $table->integer('solicitud_id')->unsigned()->nullable()->default(null);
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

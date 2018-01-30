@@ -92,6 +92,9 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'SalidaAlmacenController@postSalidaItems',
         'as'=>'salida.alm'
     ]);
+
+    //RUTAS DOCUMENTO
+    Route::resource('/documento','DocumentoController');
 });
 
 Route::get('/snap',function (){

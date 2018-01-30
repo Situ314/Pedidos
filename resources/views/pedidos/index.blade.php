@@ -144,7 +144,12 @@
             verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
             verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
             asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+
             salidas: "{{route('salida.alm')}}",
+            salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
+
+            docStor: "{{route('documento.store')}}",
+
             token: "{{Session::token()}}"
         };
         var variables = {
