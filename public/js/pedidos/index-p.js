@@ -20,8 +20,8 @@ $( document ).ready(function(){
 });
 
 $('ul#myTab li a').click(function (e) {
-    console.log(this.id);
-    console.log(this.id.split('-tab'));
+    // console.log(this.id);
+    // console.log(this.id.split('-tab'));
     var estado = this.id.split('-tab')[0];
 
     var route = rutas.pedidos;
@@ -115,13 +115,13 @@ $('ul#myTab li a').click(function (e) {
                                     break;
                                 case 4:
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
-                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                         '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 5:
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 6:
@@ -328,13 +328,13 @@ function getTabla() {
                                 break;
                             case 4:
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
-                                    '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></button>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 5:
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-success-custom" onclick="javascript:verSalidas('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 6:
@@ -708,7 +708,7 @@ function cambiarProceso(id) {
     $('#modalConfirmacionProceso').modal('show');
 }
 
-function verSalidas(id) {
+function verSalidas(id, estado) {
     console.log(id);
     var route = rutas.salidas;
     var token = rutas.token;
@@ -732,15 +732,21 @@ function verSalidas(id) {
             var tableBody = "";
 
             for(var j=0; j<response[i].salida_items.length ;j++){
-                console.log(response[i].salida_items[j]);
+                // console.log(response[i].salida_items[j]);
+                var obs = "";
+
+                if(response[i].salida_items[j].observacion != null){
+                    obs = response[i].salida_items[j].observacion;
+                }
                 tableBody+=
                     '<tr>' +
                         '<td>'+(j+1)+'</td>'+
                         '<td>'+response[i].salida_items[j].item_pedido_entregado.item.nombre+'</td>'+
                         '<td>'+response[i].salida_items[j].cantidad+'</td>'+
                         '<td>'+response[i].salida_items[j].item_pedido_entregado.item.unidad.nombre+'</td>'+
-                        '<td>'+response[i].salida_items[j].observacion+'</td>'+
+                        '<td>'+obs+'</td>'+
                     '</tr>';
+
             }
 
             //TRATAMIENTO DE DOCUMENTO
@@ -749,21 +755,25 @@ function verSalidas(id) {
 
             if(response[i].documento == null){
                 spanDoc = '<label class="label label-danger pull-right">S/D</label>';
-                formInputDoc = '<form action="'+rutas.docStor+'" method="POST" enctype="multipart/form-data">' +
-                    '<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">' +
-                        '<input type="hidden" name="_token" value="'+rutas.token+'">'+
-                        '<input name="salida_id" value="'+response[i].id+'" hidden>'+
-                        '<label for="documento" class="control-label">Documento *</label>'+
-                        '<input name="documento" type="file" required>'+
-                    '</div>'+
-                    '<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">' +
-                        '<button type="submit" class="btn btn-default"><i class="fa fa-upload"> Subir Archivo</i></button>'+
-                    '</div>'+
+                formInputDoc =
+                    '<form action="'+rutas.docStor+'" method="POST" enctype="multipart/form-data">' +
+
+                    '<input name="salida_id" value="'+response[i].id+'" hidden>'+
+                    '<input type="hidden" name="_token" value="'+rutas.token+'">'+
+
+                    '<table class="table">' +
+                        '<thead><tr><th colspan="3">DOCUMENTO</th></tr></thead>' +
+                        '<tbody>' +
+                            '<td><input name="documento" type="file" required></td>' +
+                            '<td><button type="submit" class="btn btn-default"><i class="fa fa-upload"> Subir Archivo</i></button></td>' +
+                            '<td><a href="'+rutas.pdf.replace(':id',response[i].id)+'" target="_blank" class="btn btn-info-custom"><i class="fa fa-print"> Imprimir</i></a></td>' +
+                        '</tbody>'+
+                    '</table>'+
+
                     '</form>';
             }else{
                 var documento = response[i].documento.nombre;
                 var extension = documento.replace(/^.*\./, '');
-                console.log(extension);
 
                 switch (extension){
                     case 'pdf':
@@ -774,7 +784,7 @@ function verSalidas(id) {
                     case "jpeg":
                     case "jpg":
                     case "JPG":
-                        formInputDoc = '<img src="'+response[i].documento.ubicacion+'" style="width: 100%;">';
+                        formInputDoc = '<img src="'+rutas.storage.replace('archivo',response[i].documento.ubicacion)+'" style="width: 100%;">';
                         break;
                 }
 
@@ -784,10 +794,10 @@ function verSalidas(id) {
 
             panelSalida+=
                 '<div class="panel-items-listado">'+
-                    '<a class="panel-heading panel-heading-custom" role="tab" data-toggle="collapse" data-parent="#accordion" href="#salida_'+response[i].pedido.num_solicitud+'" aria-expanded="true" aria-controls="collapseOne">'+
-                        '<h4 class="panel-title">Salida N°: '+response[i].pedido.num_solicitud+' '+spanDoc+'</h4>'+
+                    '<a class="panel-heading" role="tab" data-toggle="collapse" data-parent="#accordion" href="#salida_'+response[i].id+'" aria-expanded="true" aria-controls="collapseOne">'+
+                        '<h4 class="panel-title">Salida N°: '+response[i].id+' '+spanDoc+'</h4>'+
                     '</a>'+
-                '<div id="salida_'+response[i].pedido.num_solicitud+'" class="panel-collapse collapse in" role="tabpanel">'+
+                '<div id="salida_'+response[i].id+'" class="panel-collapse collapse" role="tabpanel">'+
                     '<div class="panel-body">'+
 
                         '<div class="table-responsive">'+
@@ -818,10 +828,15 @@ function verSalidas(id) {
                 '</div>'+
                 '</div>';
 
-            $('#btnCompletarPedidoModal').remove();
-            $('#footerModalSalidaPedido').prepend(
-                '<a id="btnCompletarPedidoModal" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-info-custom">Completar Pedido</a>'
-            );
+            console.log("Estado: "+estado);
+            if(estado==4){
+                $('#btnCompletarPedidoModal').remove();
+                $('#footerModalSalidaPedido').prepend(
+                    '<a id="btnCompletarPedidoModal" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-info-custom">Completar Pedido</a>'
+                );
+            }else{
+                $('#btnCompletarPedidoModal').remove();
+            }
         }
 
         $('#accordionSalidaItems').append(

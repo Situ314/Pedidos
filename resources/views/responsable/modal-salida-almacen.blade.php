@@ -62,7 +62,7 @@
                     <table class="table table-bordered table-condensed table-responsive">
                         <thead>
                         <tr>
-                            <th colspan="5">DATOS DEL PRODUCTO</th>
+                            <th colspan="5">DATOS DE LOS PRODUCTOS</th>
                         </tr>
                         <tr>
                             <th width="6%;">Item</th>

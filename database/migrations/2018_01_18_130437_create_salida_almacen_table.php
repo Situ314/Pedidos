@@ -35,6 +35,9 @@ class CreateSalidaAlmacenTable extends Migration
 //            $table->foreign('responsable_entrega_id')->references('id')->on('users')
                 ->onDelete('cascade');
 
+            $table->integer('proyecto_id')->nullable()->unsigned()
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class SalidaAlmacen extends Model
      * @var array
      */
     protected $fillable = [
-        'num_ot', 'area', 'num_salida_almacen', 'pedido_id', 'responsable_entrega_id', 'courrier_id'
+        'num_ot', 'area', 'num_salida_almacen', 'pedido_id', 'responsable_entrega_id', 'courrier_id', 'proyecto_id'
     ];
 
     public function documento(){
@@ -31,5 +31,13 @@ class SalidaAlmacen extends Model
 
     public function pedido(){
         return $this->belongsTo('App\Pedido','pedido_id','id');
+    }
+
+    public function proyecto(){
+        return $this->belongsTo('App\Proyecto','proyecto_id','id');
+    }
+
+    public function responsable(){
+        return $this->hasOne('App\Empleado','id','responsable_entrega_id');
     }
 }

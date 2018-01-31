@@ -85,15 +85,11 @@
                 </div>
                 <div class="x_content">
                     <br>
-                    <br>
-                    Salida: {{ $pedido->salidas_almacen }}
-                    <br>
-                    <br>
                     @php
                         $arrayItemsEntregados = [];
                         foreach ($pedido->salidas_almacen as $salida){
-                            echo "Salida Items <br>";
-                            echo $salida->salida_items.'<br>';
+                            //echo "Salida Items <br>";
+                            //echo $salida->salida_items.'<br>';
                             foreach ($salida->salida_items as $item){
                                 if( array_key_exists($item->item_pedido_entregado_id,$arrayItemsEntregados) ){
                                     $arrayItemsEntregados[$item->item_pedido_entregado_id] += $arrayItemsEntregados[$item->item_pedido_entregado_id];
@@ -102,7 +98,7 @@
                                 }
                             }
                         }
-                        echo print_r($arrayItemsEntregados).'<br>';
+                        //echo print_r($arrayItemsEntregados).'<br>';
                     @endphp
                     <div class="table-responsive">
                         @include('salidas.parts.items-entregados')
@@ -141,7 +137,7 @@
     {{ Html::script('/js/select2.full.js') }}
 
     {{ Html::script('/js/pedidos/edit-p.js') }}
-    {{ Html::script('/js/pedidos/edit-responsable.js') }}
+    {{ Html::script('/js/pedidos/edit-salida.js') }}
 
 
     {{ Html::script('/js/pedidos/agregar-item-boton-asignador.js') }}

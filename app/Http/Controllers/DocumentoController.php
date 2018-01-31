@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Documentos;
 use Illuminate\Http\Request;
 
+use Session;
 class DocumentoController extends Controller
 {
     /**

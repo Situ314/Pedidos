@@ -176,4 +176,14 @@ class SalidaAlmacenController extends Controller
             $salidas
         );
     }
+
+    public function pdfSalida($id){
+        $salida = SalidaAlmacen::find($id);
+
+        $pdf = \PDF::loadView('pdf.pdf-salida-almacen', array(
+            'salida'=>$salida
+        ));
+
+        return $pdf->stream('Salida Almacen'.$salida->id.'.pdf');
+    }
 }

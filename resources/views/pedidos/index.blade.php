@@ -145,10 +145,14 @@
             verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
             asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
 
+            //SALIDAS
             salidas: "{{route('salida.alm')}}",
             salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
+            pdf: "{{route('salidas.pdf',['id'=>':id'])}}",
 
+            //DOCUMENTOS
             docStor: "{{route('documento.store')}}",
+            storage: "{{ asset('storage/archivo') }}",
 
             token: "{{Session::token()}}"
         };

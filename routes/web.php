@@ -93,6 +93,11 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'salida.alm'
     ]);
 
+    Route::get('/pdfSalidaAlmacen/{id}',[
+        'uses'=>'SalidaAlmacenController@pdfSalida',
+        'as'=>'salidas.pdf'
+    ]);
+
     //RUTAS DOCUMENTO
     Route::resource('/documento','DocumentoController');
 });

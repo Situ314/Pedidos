@@ -1,4 +1,7 @@
 /**
+ * Created by djauregui on 31/1/2018.
+ */
+/**
  * Created by djauregui on 28/12/2017.
  */
 var arrayMeses = {
@@ -27,7 +30,6 @@ $(document).ready(function(){
     //CAMBIO DE VALORES EL LOS INPUT HIDDEN
     $('.icheck_class').on('ifClicked', function(event){
         var valor = this.id.split('radio_entrega_');
-        console.log(valor[1]);
         if($('#inputRadio'+valor[1]).val()==0)
             $('#inputRadio'+valor[1]).val(1);
         else
@@ -43,8 +45,12 @@ $(document).ready(function(){
         var token = config.rutas[0].token;
         var route = config.rutas[0].salidaMax;
 
+        var id = $('input[name^=input_radio_entrega]')[ $('input[name^=input_radio_entrega]').length-1 ].id;
+        var tamaño = id.split('inputRadio');
+
         var aux_cont = 0;
-        for(var i=0 ; i<$('input[name^=input_radio_entrega]').length ;i++){
+        for(var i=0 ; i<=tamaño[1] ;i++){
+            console.log("Iteracion: "+i);
             if( $('#inputRadio'+i).val()==0 ){
                 aux_cont++;
             }
@@ -68,11 +74,6 @@ $(document).ready(function(){
                 console.log(response);
 
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
-                /*if(response.id > 0)
-                    $('#txtNum').text(parseInt( (response.id)+1) );
-                else
-                    $('#txtNum').text(1);*/
-
                 $('#txtEmpresaSalida').text( $('#txtEmpresa').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
 
@@ -99,17 +100,23 @@ $(document).ready(function(){
                 var tbody = "";
                 var aux = 1;
 
-                for(var i=0 ; i<$('input[name^=input_radio_entrega]').length ;i++){
+                for(var i=0 ; i<=tamaño[1] ;i++){
+                    console.log($('#inputRadio'+i));
+                    if( $('#inputRadio'+i).length ){
+                        console.log("existe "+i);
+                    }else{
+                        console.log("no existe "+i);
+                    }
 
                     if( $('#inputRadio'+i).val()==1 ){
                         console.log("input-"+i);
                         tbody += '<tr>'+
-                                    '<th scope="row">'+aux+'</th>'+
-                                    '<td>'+$('#item_id'+i+' option:selected').text()+'</td>'+
-                                    '<td>'+$('#numCantidad'+i).val()+'</td>'+
-                                    '<td>'+$('#unidad_id'+i+' option:selected').text()+'</td>'+
-                                    '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
-                                '</tr>';
+                            '<th scope="row">'+aux+'</th>'+
+                            '<td>'+$('#item_id'+i+' option:selected').text()+'</td>'+
+                            '<td>'+$('#numCantidad'+i).val()+'</td>'+
+                            '<td>'+$('#unidad_id'+i+' option:selected').text()+'</td>'+
+                            '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
+                            '</tr>';
 
                         aux++;
                         // console.log( $('#numCantidad'+i).val() );

@@ -159,7 +159,8 @@ class ResponsableController extends Controller
             'area'=>strtoupper($area),
             'pedido_id'=>$id,
             'responsable_entrega_id'=>$request->responsable_entrega_id,
-            'courrier_id'=>$request->courrier_id
+            'courrier_id'=>$request->courrier_id,
+            'proyecto_id'=>$request->proyecto_id
         ];
         $salida_almacen = new SalidaAlmacen($array_salida_almacen);
         $salida_almacen->save();
