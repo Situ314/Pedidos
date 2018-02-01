@@ -68,11 +68,6 @@ $(document).ready(function(){
                 console.log(response);
 
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
-                /*if(response.id > 0)
-                    $('#txtNum').text(parseInt( (response.id)+1) );
-                else
-                    $('#txtNum').text(1);*/
-
                 $('#txtEmpresaSalida').text( $('#txtEmpresa').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
 
@@ -89,9 +84,9 @@ $(document).ready(function(){
                 if(response.num_solicitud == null){ //ES LA PRIMERA SALIDA
                     $('#txtNumSolicitudSalida').text( 1 );
                     $('input[name=num_solicitud]').val( 1 );
-                }else{ //USAR EL MISMO NUMERO
-                    $('#txtNumSolicitudSalida').text( response.num_solicitud );
-                    $('input[name=num_solicitud]').val( response.num_solicitud );
+                }else{ //USAR EL NUMERO ANTERIOR MAS UNO
+                    $('#txtNumSolicitudSalida').text( (response.num_solicitud+1) );
+                    $('input[name=num_solicitud]').val( (response.num_solicitud+1) );
                 }
                 //************************************
 

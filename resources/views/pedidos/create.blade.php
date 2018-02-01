@@ -52,13 +52,17 @@
                     <div class="ln_solid"></div>
                     <div class="row text-center">
                         <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
-                        @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) == 0)
+                        @if(count(\Illuminate\Support\Facades\Auth::user()->empleado) == 0)
                             <button class="btn btn-success-custom" disabled="true" title="No puede realizar esta accion"><i class="fa fa-save"> Guardar</i></button>
                         @else
-                            @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)==0 )
-                                <button class="btn btn-success-custom" disabled="true"><i class="fa fa-save" title="No puede realizar esta accion"> Guardar</i></button>
+                            @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) == 0)
+                                <button class="btn btn-success-custom" disabled="true" title="No puede realizar esta accion"><i class="fa fa-save"> Guardar</i></button>
                             @else
-                                <button type="submit" class="btn btn-success-custom"><i class="fa fa-save"> Guardar</i></button>
+                                @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)==0 )
+                                    <button class="btn btn-success-custom" disabled="true"><i class="fa fa-save" title="No puede realizar esta accion"> Guardar</i></button>
+                                @else
+                                    <button type="submit" class="btn btn-success-custom"><i class="fa fa-save"> Guardar</i></button>
+                                @endif
                             @endif
                         @endif
                     </div>

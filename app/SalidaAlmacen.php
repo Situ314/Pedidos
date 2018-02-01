@@ -40,4 +40,8 @@ class SalidaAlmacen extends Model
     public function responsable(){
         return $this->hasOne('App\Empleado','id','responsable_entrega_id');
     }
+
+    public function courrier(){
+        return $this->hasOne('App\Empleado','id','courrier_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Asignacion;
+use App\Documentos;
 use App\Empleado;
 use App\Empresa;
 use App\EstadoPedido;
@@ -123,6 +124,15 @@ class AppServiceProvider extends ServiceProvider
         });
         SalidaItem::updated(function ($sal_item){
             $this->UpdateLog($sal_item,"salida_items");
+        });
+        //**************************************
+
+        //**************************************SALIDA DE ITEMS
+        Documentos::created(function ($doc){
+            $this->CreateLog($doc,"documentos");
+        });
+        Documentos::updated(function ($doc){
+           $this->UpdateLog($doc,"documentos");
         });
         //**************************************
     }

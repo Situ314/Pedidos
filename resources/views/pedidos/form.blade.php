@@ -37,17 +37,24 @@
         @endif
     </div>
 </div>--}}
-@if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) == 0)
+@if(count(\Illuminate\Support\Facades\Auth::user()->empleado)==0)
     <div class="alert alert-warning">
-        <strong><i class="fa fa-user"></i> Alerta!</strong> No cuenta con usuario en solicitudes, comuniquese con sistemas
+        <strong><i class="fa fa-user"></i> Alerta!</strong> Usted no cuenta con un empleado relacionado a su usuario, comuniquese con sistemas
     </div>
 @else
-    @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)==0 )
+    @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) == 0)
         <div class="alert alert-warning">
-            <strong><i class="fa fa-institution"></i> Alerta!</strong> No cuenta con proyectos en el sistema de solicitudes, comuniquese con sistemas
+            <strong><i class="fa fa-user"></i> Alerta!</strong> No cuenta con usuario en solicitudes, comuniquese con sistemas
         </div>
+    @else
+        @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)==0 )
+            <div class="alert alert-warning">
+                <strong><i class="fa fa-institution"></i> Alerta!</strong> No cuenta con proyectos en el sistema de solicitudes, comuniquese con sistemas
+            </div>
+        @endif
     @endif
 @endif
+
 <div class="form-group">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <label for="motivo" class="control-label">Motivo *</label>
@@ -62,24 +69,26 @@
     </div>
 </div>
 
-@if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) != 0)
-    @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)!=0 )
-        @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)>1)
-        <div class="form-group">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label for="proyecto_id" class="control-label">Proyecto *</label>
+@if(count(\Illuminate\Support\Facades\Auth::user()->empleado) != 0)
+    @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) != 0)
+        @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)!=0 )
+            @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)>1)
+            <div class="form-group">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="proyecto_id" class="control-label">Proyecto *</label>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    {{Form::select('proyecto_id', \Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos->pluck('proyecto_empresa','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+                    @if ($errors->has('proyecto_id'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('proyecto_id') }}</strong>
+                </span>
+                    @endif
+                </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {{Form::select('proyecto_id', \Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos->pluck('proyecto_empresa','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
-                @if ($errors->has('proyecto_id'))
-                    <span class="help-block">
-                <strong>{{ $errors->first('proyecto_id') }}</strong>
-            </span>
-                @endif
-            </div>
-        </div>
-        @else
-            <input name="proyecto_id" hidden value="{{\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos[0]->id}}">
+            @else
+                <input name="proyecto_id" hidden value="{{\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos[0]->id}}">
+            @endif
         @endif
     @endif
 @endif

@@ -23,6 +23,10 @@ class Documentos extends Model
         'nombre', 'ubicacion', 'salida_id'
     ];
 
+    public function salida(){
+        return $this->belongsTo('App\SalidaAlmacen','salida_id','id');
+    }
+
     public function setUbicacionAttribute($archivo){
         $nombreArchivo = Carbon::now()->year . Carbon::now()->month . Carbon::now()->day
             . "-" .

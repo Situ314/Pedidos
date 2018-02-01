@@ -69,7 +69,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>
+                <td width="50%;">
                     <div class="row text-center">
                         <p>FIRMA</p>
                         <br>
@@ -79,11 +79,94 @@
                     <div class="row" style="margin: 0px 0px 0px 0px;">
                         <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->responsable->nombre_completo }}</p>
                         <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->responsable->ci_numero }}</p>
-                        <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->responsable->ci_numero }}</p>
+                        <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->responsable->laboral_empleado->cargo->nombre }}</p>
+                        <p>Fecha: ........../........../..........  Hora..........::..........</p>
                     </div>
                 </td>
-                <td>d</td>
+                <td width="50%;">
+                    @if($salida->courrier_id != null)
+                        <div class="row text-center">
+                            <p>FIRMA</p>
+                            <br>
+                            <br>
+                            <p>___________________________________</p>
+                        </div>
+                        <div class="row" style="margin: 0px 0px 0px 0px;">
+                            <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->courrier->nombre_completo }}</p>
+                            <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->courrier->ci_numero }}</p>
+                            <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->courrier->laboral_empleado->cargo->nombre }}</p>
+                            <p>Fecha: ........../........../..........  Hora..........::..........</p>
+                        </div>
+                    @else
+                        <div class="row text-center">
+                            <p>FIRMA</p>
+                            <br>
+                            <br>
+                            <p>___________________________________</p>
+                        </div>
+                        <div class="row" style="margin: 0px 0px 0px 0px;">
+                            <p><span style="font-weight: bold;">Nombre:</span></p>
+                            <p><span style="font-weight: bold;">C.I.:</span></p>
+                            <p><span style="font-weight: bold;">Cargo:</span></p>
+                            <p>Fecha: ........../........../..........  Hora..........::..........</p>
+                        </div>
+                    @endif
+                </td>
             </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-condensed">
+        <thead>
+        <th>COURRIER, DELIVERY O CHOFER</th>
+        <th>RECIBI CONFORME DESTINATARIO FINAL</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="50%;">
+                @if($salida->courrier_id != null)
+                    <div class="row text-center">
+                        <p>FIRMA</p>
+                        <br>
+                        <br>
+                        <p>___________________________________</p>
+                    </div>
+                    <div class="row" style="margin: 0px 0px 0px 0px;">
+                        <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->courrier->nombre_completo }}</p>
+                        <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->courrier->ci_numero }}</p>
+                        <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->courrier->laboral_empleado->cargo->nombre }}</p>
+                        <p>Fecha: ........../........../..........  Hora..........::..........</p>
+                    </div>
+                @else
+                    <div class="row text-center">
+                        <p>FIRMA</p>
+                        <br>
+                        <br>
+                        <p>___________________________________</p>
+                    </div>
+                    <div class="row" style="margin: 0px 0px 0px 0px;">
+                        <p><span style="font-weight: bold;">Nombre:</span></p>
+                        <p><span style="font-weight: bold;">C.I.:</span></p>
+                        <p><span style="font-weight: bold;">Cargo:</span></p>
+                        <p>Fecha: ........../........../..........  Hora..........::..........</p>
+                    </div>
+                @endif
+            </td>
+            <td width="50%;">
+                <div class="row text-center">
+                    <p>FIRMA</p>
+                    <br>
+                    <br>
+                    <p>___________________________________</p>
+                </div>
+                <div class="row" style="margin: 0px 0px 0px 0px;">
+                    <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->pedido->solicitante->empleado->nombre_completo }}</p>
+                    <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->pedido->solicitante->empleado->ci_numero }}</p>
+                    <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->pedido->solicitante->empleado->laboral_empleado->cargo->nombre }}</p>
+                    <p>Fecha: ........../........../..........  Hora..........::..........</p>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
 @endsection

@@ -32,4 +32,8 @@ class Empleado extends Model
     public function getNombreCompletoAttribute(){
         return $this->nombres.' '.$this->apellido_1.' '.$this->apellido_2;
     }
+
+    public function laboral_empleado(){
+        return $this->hasOne('App\LaboralEmpleadoRRHH','empleado_id','id');
+    }
 }
