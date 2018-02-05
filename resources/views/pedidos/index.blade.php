@@ -124,7 +124,7 @@
 
     <!-- Modales -->
     @include('pedidos.modals.modal-items')
-    @include('pedidos.modals.modal-asignar')
+    {{--@include('pedidos.modals.modal-asignar')--}}
     @include('pedidos.modals.modal-estados')
     @include('responsable.modal-en-proceso')
     @include('modals.modal-salidas')
@@ -164,4 +164,5 @@
     {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/index-p.js') }}
     {{ Html::script('/js/set-tab-index.js') }}
+
 @endsection

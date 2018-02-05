@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Empleado;
+use App\Responsable;
+use App\Rol;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
+use Response;
+use Session;
 class UsersController extends Controller
 {
     public function __construct()
@@ -17,7 +24,24 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = User::all();
+        $roles = Rol::all();
+        $autorizadores = User::where('rol_id','=',5)
+            ->get();
+        $empleados = Empleado::all();
+
+        if(Auth::user()->rol_id == 2){ //USUARIO ADMINISTRADOR
+            $usuarios = $usuarios
+                ->where('rol_id','>',2);
+            $roles = $roles
+                ->where('id','>',2);
+        }
+
+        return view('admin.users.index')
+            ->withUsers($usuarios)
+            ->withRoles($roles)
+            ->withAutorizadores($autorizadores)
+            ->withEmpleados($empleados);
     }
 
     /**
@@ -38,7 +62,31 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, array(
+            'username' => 'required|unique:users,username',
+            'password' => 'required|min:8'
+        ));
+
+        $array_user = [
+            'username'=>$request->username,
+            'password'=>bcrypt($request->password),
+            'empleado_id'=>$request->empleado_id,
+            'rol_id'=>$request->rol_id
+        ];
+        $usuario = new User($array_user);
+        $usuario->save();
+
+        if($request->rol_id == 6){ //SE CREA UN USUARIO
+            $array_responsable = [
+                'autorizador_id'=>$request->autorizador_id,
+                'solicitante_id'=>$usuario->id
+            ];
+            $responsable = new Responsable($array_responsable);
+            $responsable->save();
+        }
+
+        Session::flash('success', "Usuario ".$usuario->username." creado correctamente...");
+        return redirect()->back();
     }
 
     /**
@@ -60,7 +108,15 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        $user->empleado;
+        $responsables = Responsable::where('solicitante_id','=',$id)->first();
+
+        return Response::json(
+            [$user,
+            $responsables]
+        );
     }
 
     /**
@@ -72,7 +128,29 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, array(
+            'password' => 'required|min:8'
+        ));
+
+        $usuario = User::find($id);
+        $usuario->username = $request->username;
+        $usuario->password = $request->password;
+        $usuario->empleado_id = $request->empleado_id;
+        $usuario->rol_id = $request->rol_id;
+        $usuario->save();
+
+        if ($usuario->rol_id == 6){ //SI USUARIO - VERIFICAR AUTORIZADOR
+            $responsable = Responsable::where('solicitante_id','=',$usuario->id)
+                ->first();
+
+            if($responsable->autorizador_id != $request->autorizador_id){ //CAMBIO DE AUTORIZADOR
+                $responsable->autorizador_id = $request->autorizador_id;
+                $responsable->save();
+            }
+        }
+
+        Session::flash('success', "Usuario ".$usuario->username." modificado correctamente...");
+        return redirect()->back();
     }
 
     /**

@@ -155,7 +155,6 @@ class ResponsableController extends Controller
 
         $array_salida_almacen = [
             'num_ot'=>$ot,
-            'num_salida_almacen'=>0,
             'area'=>strtoupper($area),
             'pedido_id'=>$id,
             'responsable_entrega_id'=>$request->responsable_entrega_id,

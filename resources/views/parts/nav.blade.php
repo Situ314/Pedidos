@@ -13,14 +13,14 @@
             </div>
 
             <!-- ADMINISTRADOR -->
-            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 1)
+            @if(\Illuminate\Support\Facades\Auth::user()->rol_id <= 2)
                 <div class="menu_section">
                     <h3>Administración</h3>
                     <ul class="nav side-menu">
                         <li>
                             <a><i class="fa fa-group"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="#">Listado</a></li>
+                                <li><a href="{{ route('usuario.index') }}">Listado</a></li>
                                 <li><a href="#">Responsables</a></li>
                             </ul>
                         </li>

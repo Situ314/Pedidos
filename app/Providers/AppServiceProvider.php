@@ -18,7 +18,7 @@ use App\Proyecto;
 use App\Responsable;
 use App\SalidaAlmacen;
 use App\SalidaItem;
-use function foo\func;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -90,7 +90,6 @@ class AppServiceProvider extends ServiceProvider
         EstadoPedido::created(function ($estado_pedido){
            $this->CreateLog($estado_pedido,"estados_pedidos");
         });
-
         Empleado::created(function ($emp){
             $this->CreateLog($emp,"empleados");
         });
@@ -105,9 +104,14 @@ class AppServiceProvider extends ServiceProvider
            $this->CreateLog($item,"items");
         });
 
+        //**************************************RESPONSABLE
         Responsable::created(function ($resp){
            $this->CreateLog($resp,"responsables");
         });
+        Responsable::updated(function ($res){
+            $this->UpdateLog($res,"responsables");
+        });
+        //**************************************
 
         //**************************************SALIDA DE ALMACEN
         SalidaAlmacen::created(function ($sal){
@@ -133,6 +137,15 @@ class AppServiceProvider extends ServiceProvider
         });
         Documentos::updated(function ($doc){
            $this->UpdateLog($doc,"documentos");
+        });
+        //**************************************
+
+        //**************************************USER
+        User::created(function ($usu){
+            $this->CreateLog($usu,"users");
+        });
+        User::updated(function ($usu){
+            $this->UpdateLog($usu,"users");
         });
         //**************************************
     }

@@ -48,7 +48,16 @@
         <label for="tipo_cat_id" class="control-label">Responsable*</label>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        {{Form::select('responsable_id', $users->pluck('empleado_usuario','id'), array(null), ['class' => 'js-placeholder-single', 'required'])}}
+{{--        {{Form::select('responsable_id', $users->pluck('empleado_usuario','id'), array(null), ['class' => 'js-placeholder-single', 'required'])}}--}}
+        <select name="responsable_id" class="js-placeholder-single" required>
+            @foreach($users as $user)
+                @if(count($user->empleado) != 0)
+                    <option value="{{$user->id}}">{{$user->empleado->nombre_completo}} ({{$user->username}})</option>
+                @else
+                    <option value="{{$user->id}}">{{$user->username}}</option>
+                @endif
+            @endforeach
+        </select>
         @if ($errors->has('responsable_id'))
             <span class="help-block">
                 <strong>{{ $errors->first('responsable_id') }}</strong>

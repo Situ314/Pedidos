@@ -100,6 +100,9 @@ Route::group(['middleware' => 'auth'], function (){
 
     //RUTAS DOCUMENTO
     Route::resource('/documento','DocumentoController');
+
+    //USUARIO - ADMINISTRACION
+    Route::resource('/usuario','UsersController');
 });
 
 Route::get('/snap',function (){
