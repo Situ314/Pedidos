@@ -103,6 +103,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     //USUARIO - ADMINISTRACION
     Route::resource('/usuario','UsersController');
+    Route::get('/restaurar/{id}',[
+        'uses'=> 'UsersController@restore',
+        'as'=> 'usuario.restore'
+    ]);
 });
 
 Route::get('/snap',function (){

@@ -25,6 +25,10 @@ class CreateDocumentosTable extends Migration
             $table->foreign('salida_id')->references('id')->on('salida_almacen')
                 ->onDelete('cascade');
 
+            $table->integer('tipo_documento_id')->unsigned();
+            $table->foreign('tipo_documento_id')->references('id')->on('tipo_documentos')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

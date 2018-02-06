@@ -66,11 +66,11 @@
                             <td>{{ $user->rol->nombre }}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-sm btn-info-custom" onclick="javascript:updateUsuario({{$user->id}});" title="Editar usuario {{ $user->username }}"><i class="fa fa-edit"></i></button>
                                     @if($user->deleted_at == null)
-                                        <button type="button" class="btn btn-sm btn-danger-custom" onclick="javascript:updateUsuario({{$user->id}});" title="Deshabilitar usuario {{ $user->username }}"><i class="fa fa-lock"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger-custom col-xs-6" onclick="javascript:deshabilitarUsuario({{$user->id}});" title="Deshabilitar usuario {{ $user->username }}"><i class="fa fa-lock"></i></button>
+                                        <button type="button" class="btn btn-sm btn-info-custom col-xs-6" onclick="javascript:updateUsuario({{$user->id}});" title="Editar usuario {{ $user->username }}"><i class="fa fa-edit"></i></button>
                                     @else
-                                        <button type="button" class="btn btn-sm btn-success-custom" onclick="javascript:updateUsuario({{$user->id}});" title="Habilitar usuario {{ $user->username }}"><i class="fa fa-unlock"></i></button>
+                                        <button type="button" class="btn btn-sm btn-success-custom" onclick="javascript:habilitarUsuario({{$user->id}});" title="Habilitar usuario {{ $user->username }}"><i class="fa fa-unlock"></i></button>
                                     @endif
                                 </div>
                             </td>
@@ -98,7 +98,8 @@
         var rutas = {
             update: "{{ route('usuario.update',['id'=>':id']) }}",
             edit: "{{ route('usuario.edit',['id'=>':id']) }}",
-
+            del: "{{route('usuario.destroy',['id'=>':id'])}}",
+            res: "{{route('usuario.restore',['id'=>':id'])}}",
             token: "{{Session::token()}}"
         };
     </script>

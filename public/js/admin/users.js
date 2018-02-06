@@ -116,3 +116,49 @@ function crearUsuario() {
     }).val('').trigger('change');
     $('#modalUserCreate').modal('show');
 }
+
+function deshabilitarUsuario(id) {
+    var route = rutas.del;
+    route = route.replace(':id',id);
+    console.log(route);
+
+    var token = rutas.token;
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'DELETE',
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (error){
+        if(error){
+            window.location.reload();
+        }else{ //FALSO = TODO BIEN
+            window.location.reload();
+        }
+    });
+}
+
+function habilitarUsuario(id) {
+    var route = rutas.res;
+    route = route.replace(':id',id);
+    console.log(route);
+
+    var token = rutas.token;
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (error){
+        console.log(error);
+        if(error){
+            window.location.reload();
+        }else{
+            window.location.reload();
+
+        }
+    });
+}

@@ -18,7 +18,7 @@ class SalidaAlmacen extends Model
      * @var array
      */
     protected $fillable = [
-        'num_ot', 'area', 'num_salida_almacen', 'pedido_id', 'responsable_entrega_id', 'courrier_id', 'proyecto_id'
+        'num_ot', 'area', 'pedido_id', 'responsable_entrega_id', 'courrier_id', 'proyecto_id'
     ];
 
     public function documento(){

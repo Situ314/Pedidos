@@ -24,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $usuarios = User::all();
+        $usuarios = User::withTrashed();
         $roles = Rol::all();
         $autorizadores = User::where('rol_id','=',5)
             ->get();
@@ -36,6 +36,7 @@ class UsersController extends Controller
             $roles = $roles
                 ->where('id','>',2);
         }
+        $usuarios = $usuarios->get();
 
         return view('admin.users.index')
             ->withUsers($usuarios)
@@ -161,6 +162,43 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $error = true;
+        $nombre = User::find($id)->username;
+        try{
+            User::destroy($id);
+            $error = false;
+            Session::flash('success', "Usuario ".$nombre." deshabilitado...");
+
+        }catch (\Exception $e){
+            $error = true;
+            Session::flash('success', "Usuario ".$nombre." deshabilitado...");
+        }
+
+        return Response::json(
+            $error
+        );
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id){
+        $error = true;
+
+        try{
+            User::withTrashed()->find($id)->restore();
+            $error = false;
+            Session::flash('success', "Usuario  habilitado...");
+
+        }catch (\Exception $e){
+            $error = true;
+        }
+
+        return Response::json(
+            $error
+        );
     }
 }
