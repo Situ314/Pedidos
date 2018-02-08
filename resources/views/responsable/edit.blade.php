@@ -27,7 +27,7 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-file-text"></i> Motivo/Descripción</label>
-                            <p>{{$pedido->estados_pedido[0]->motivo }}</p>
+                            <p>{{$pedido->estados_pedido[count($pedido->estados_pedido)-1]->motivo }}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

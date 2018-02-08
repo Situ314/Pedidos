@@ -573,6 +573,7 @@ class PedidosController extends Controller
         foreach ($pedidos as $pedido){
             $pedido->proyecto->empresa;
             $pedido->solicitante->empleado;
+            $pedido->documentos;
         }
 
         return Response::json(

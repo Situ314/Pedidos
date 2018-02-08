@@ -107,6 +107,7 @@
     {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/create-p.js') }}
     {{ Html::script('/js/items/buscar-item.js') }}
+    {{ Html::script('/js/archivos/readeble-size.js') }}
 
     <script type="text/javascript">
 

@@ -48,6 +48,8 @@ $('ul#myTab li a').click(function (e) {
             var body = "";
             var table = "";
 
+            // console.log(response);
+
             if(response.length!=0){
                 switch ( parseInt(variables.uR)){
                     case 1:
@@ -88,6 +90,9 @@ $('ul#myTab li a').click(function (e) {
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
+                            }
+                            if(response[i].documentos.length > 0){
+                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                             }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
@@ -131,6 +136,9 @@ $('ul#myTab li a').click(function (e) {
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
+                            if(response[i].documentos.length > 0){
+                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -160,7 +168,9 @@ $('ul#myTab li a').click(function (e) {
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
-
+                            if(response[i].documentos.length > 0){
+                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -193,7 +203,9 @@ $('ul#myTab li a').click(function (e) {
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
-
+                            if(response[i].documentos.length > 0){
+                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -302,6 +314,9 @@ function getTabla() {
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -344,6 +359,9 @@ function getTabla() {
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -373,7 +391,9 @@ function getTabla() {
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
-
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -406,7 +426,9 @@ function getTabla() {
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
-
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
@@ -861,4 +883,40 @@ function buscarPedido() {
             estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
         }
     }
+}
+
+function verDocumentos(id) {
+    console.log(id);
+
+    var route = rutas.docPed;
+    var token = rutas.token;
+
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        data:{
+            id: id
+        },
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (response){
+        console.log(response);
+        var tr = '';
+        for(var i=0 ; i<response.length ;i++){
+            var descargar = rutas.descDoc;
+            descargar = descargar.replace(':id',response[i].id);
+            tr+='<tr>'+
+                    '<th scope="row">'+(i+1)+'</th>'+
+                    '<td>'+response[i].nombre+'</td>'+
+                    '<td>'+getReadableFileSizeString(response[i].size)+'</td>'+
+                    '<td><a href="'+descargar+'" class="btn btn-success-custom" title="Descargar '+response[i].nombre+'"><i class="fa fa-download"></i></a></td>'+
+                '</tr>';
+        }
+        $('#tbodyDoc').empty();
+        $('#tbodyDoc').append(tr);
+        $('#modalDocumentos').modal('show');
+    });
+
 }

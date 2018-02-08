@@ -59,4 +59,8 @@ class Pedido extends Model
     public function salidas_almacen(){
         return $this->hasMany('App\SalidaAlmacen','pedido_id','id');
     }
+
+    public function documentos(){
+        return $this->hasMany('App\Documentos','pedido_id','id');
+    }
 }

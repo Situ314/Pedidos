@@ -100,6 +100,14 @@ Route::group(['middleware' => 'auth'], function (){
 
     //RUTAS DOCUMENTO
     Route::resource('/documento','DocumentoController');
+    Route::post('/post.doc.pedido',[
+        'uses'=>'DocumentoController@postDocs',
+        'as'=>'post.docs'
+    ]);
+    Route::get('descargar/{id}', [
+        'uses' => 'DocumentoController@getDocumento',
+        'as'=> 'doc.descargar'
+    ]);
 
     //USUARIO - ADMINISTRACION
     Route::resource('/usuario','UsersController');

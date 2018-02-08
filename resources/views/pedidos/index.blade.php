@@ -128,6 +128,7 @@
     @include('pedidos.modals.modal-estados')
     @include('responsable.modal-en-proceso')
     @include('modals.modal-salidas')
+    @include('pedidos.modals.modal-documentos')
 @endsection
 
 @section('footerScripts')
@@ -153,6 +154,8 @@
             //DOCUMENTOS
             docStor: "{{route('documento.store')}}",
             storage: "{{ asset('storage/archivo') }}",
+            docPed: "{{route('post.docs')}}",
+            descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
 
             token: "{{Session::token()}}"
         };
@@ -164,5 +167,6 @@
     {{ Html::script('/js/select2.full.js') }}
     {{ Html::script('/js/pedidos/index-p.js') }}
     {{ Html::script('/js/set-tab-index.js') }}
+    {{ Html::script('/js/archivos/readeble-size.js') }}
 
 @endsection

@@ -8,7 +8,10 @@ use App\SalidaAlmacen;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Session;
+use Response;
+
 use Illuminate\Support\Facades\DB;
 
 class DocumentoController extends Controller
@@ -34,7 +37,7 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * METODO QUE SE USAR PARA EL SUBID DE ARCHIVOS DE ALMACEN.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -45,11 +48,13 @@ class DocumentoController extends Controller
             'documento' => 'required|mimes:jpg,jpeg,png,pdf'
         ));
 
+        $salida = SalidaAlmacen::find($request->salida_id);
+
         $array_documento = [
             'nombre'=>$request->documento->getClientOriginalName(),
             'ubicacion'=>$request->documento,
             'salida_id'=>$request->salida_id,
-            'pedido_id'=>null,
+            'pedido_id'=>$salida->pedido_id,
             'tipo_documento_id'=>1
         ];
         $doc = new Documentos($array_documento);
@@ -136,5 +141,24 @@ class DocumentoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function postDocs(Request $request){
+        $documentos = Documentos::where('pedido_id','=',$request->id)
+            ->where('tipo_documento_id','=',2)
+            ->get();
+
+        foreach ($documentos as $documento){
+            $documento->size = Storage::disk('public')->size($documento->ubicacion);
+        }
+        return Response::json(
+            $documentos
+        );
+    }
+
+    public function getDocumento($id){
+        $documento = Documentos::find($id);
+        $ubicacion = storage_path('app/public/'.$documento->ubicacion);
+        return response()->download($ubicacion,$documento->nombre);
     }
 }
