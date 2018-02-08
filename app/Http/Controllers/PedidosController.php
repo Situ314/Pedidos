@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Asignacion;
 use App\Categoria;
+use App\Documentos;
 use App\Empleado;
 use App\Empresa;
 use App\Estado;
@@ -16,6 +17,7 @@ use App\Pedido;
 use App\Proyecto;
 use App\Responsable;
 use App\TipoCategoria;
+use App\TipoDocumento;
 use App\Unidad;
 use App\User;
 use Illuminate\Http\Request;
@@ -52,10 +54,13 @@ class PedidosController extends Controller
      */
     public function create()
     {
-        $tipos = TipoCategoria::orderBy('nombre');
+        $tipos = TipoCategoria::orderBy('nombre')->get();
         $categorias = Categoria::all();
         $unidades = Unidad::all();
         $items = Item::all();
+
+        /*$tipos = TipoDocumento::where('id','>',1)
+            ->get();*/
 
 //        dd($areas->pluck('nombre','id'));
         return view('pedidos.create')
@@ -73,6 +78,7 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
+
         /*$array_empresas = explode('|',$request->empresa_id);
         $empresa_id = $array_empresas[0];
         if(Empresa::find($empresa_id)==null){
@@ -112,6 +118,8 @@ class PedidosController extends Controller
             $empleado->save();
         }*/
 
+//        dd($request->all());
+
         $array_pedido = [
             'codigo'=>$this->codigo_aleatorio(),
             'num_solicitud'=>null,
@@ -123,6 +131,7 @@ class PedidosController extends Controller
         $pedido = new Pedido($array_pedido);
         $pedido->save();
 
+        //AGREGANDO ITEMS
         $aux = 0;
         for($i=0;$i<count($request->txtItem);$i++){
             if($request->txtItem[$i]!=""){
@@ -155,6 +164,20 @@ class PedidosController extends Controller
             }
         }
 
+        //AGREGANDO DOCUMENTOS
+        for($i=0;$i<count($request->doc);$i++){
+            $array_documento = [
+                'nombre'=>$request->doc[$i]->getClientOriginalName(),
+                'ubicacion'=>$request->doc[$i],
+                'salida_id'=>null,
+                'pedido_id'=>$pedido->id,
+                'tipo_documento_id'=>2
+            ];
+            $doc = new Documentos($array_documento);
+            $doc->save();
+        }
+
+        //AGREGANDO ESTADO
         $estado = null;
         if(Auth::user()->rol_id < 5){
             $estado = 2;

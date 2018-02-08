@@ -20,7 +20,7 @@ class Documentos extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'ubicacion', 'salida_id'
+        'nombre', 'ubicacion', 'salida_id', 'pedido_id', 'tipo_documento_id'
     ];
 
     public function salida(){

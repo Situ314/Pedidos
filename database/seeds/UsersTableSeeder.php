@@ -13,7 +13,6 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([ //1
             'username' => 'root',
-            'email' => null,
             'password' => bcrypt('r00tp3d1d0s'),
             'empleado_id' => null,
             'rol_id' => 1
@@ -21,7 +20,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //2
             'username' => 'aut1',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 1,
             'rol_id' => 5
@@ -29,7 +27,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //3
             'username' => 'aut2',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 2,
             'rol_id' => 5
@@ -37,7 +34,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //4
             'username' => 'usu1',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 3,
             'rol_id' => 6
@@ -45,7 +41,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //5
             'username' => 'usu2',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 4,
             'rol_id' => 6
@@ -53,7 +48,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //6
             'username' => 'usu3',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 5,
             'rol_id' => 6
@@ -61,7 +55,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //7
             'username' => 'usu4',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 6,
             'rol_id' => 6
@@ -69,7 +62,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //8
             'username' => 'res1',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 7,
             'rol_id' => 4
@@ -77,7 +69,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //9
             'username' => 'res2',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 8,
             'rol_id' => 4
@@ -85,7 +76,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([ //11
             'username' => 'asi1',
-            'email' => null,
             'password' => bcrypt('123'),
             'empleado_id' => 9,
             'rol_id' => 3

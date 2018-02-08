@@ -48,7 +48,9 @@ class DocumentoController extends Controller
         $array_documento = [
             'nombre'=>$request->documento->getClientOriginalName(),
             'ubicacion'=>$request->documento,
-            'salida_id'=>$request->salida_id
+            'salida_id'=>$request->salida_id,
+            'pedido_id'=>null,
+            'tipo_documento_id'=>1
         ];
         $doc = new Documentos($array_documento);
         $doc->save();

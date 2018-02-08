@@ -19,7 +19,7 @@
                 {{--PREGUNTA SI LA CANTIDAD PEDIDA ES MAYOR A LA CANTIDAD QUE ENTREGADA--}}
                 @if($item->cantidad > $arrayItemsEntregados[$item->id])
                     {{--ES NECESARIO MOSTRAR LA CANTIDAD FALTANTE--}}
-                    <th scope="row">{{($auxItem)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
+                    <th scope="row" width="2%;">{{($auxItem)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
                     <td width="15%;"><input name="txtUnidad[]" id="txtUnidad{{$loop->index}}" hidden/>{{ Form::select('unidad_id[]', $unidades->pluck('full_name', 'id'), $item->item->unidad_id, ['class'=>'', 'required'=>'true','id'=>'unidad_id'.$loop->index.'','onchange'=>'javascript:cambiarTextoUnidad('.$loop->index.');']) }}</td>
                     <td width="10%;">
                         {{ Form::text('cantidad_guardada[]', $item->cantidad - $arrayItemsEntregados[$item->id], ['class'=>'hidden']) }}
@@ -40,7 +40,7 @@
 
                 @endif
             @else
-                <th scope="row">{{($auxItem)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
+                <th scope="row" width="2%;">{{($auxItem)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
                 <td width="15%;"><input name="txtUnidad[]" id="txtUnidad{{$loop->index}}" hidden/>{{ Form::select('unidad_id[]', $unidades->pluck('full_name', 'id'), $item->item->unidad_id, ['class'=>'', 'required'=>'true','id'=>'unidad_id'.$loop->index.'','onchange'=>'javascript:cambiarTextoUnidad('.$loop->index.');']) }}</td>
                 <td width="10%;">
                     {{ Form::text('cantidad_guardada[]', $item->cantidad, ['class'=>'hidden']) }}

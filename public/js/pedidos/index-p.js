@@ -593,7 +593,8 @@ function verItems(id) {
     }).done(function (response){
         var tableItems='';
         var contItemsPedidos = 1;
-        if(response.items_pedido.length!=0){
+        // console.log(response);
+        if(response.items_pedido.length>0 || response.items_temp_pedido.length>0){
             var bodyItems = '';
             for(var i=0;i<response.items_pedido.length;i++){
                 bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +

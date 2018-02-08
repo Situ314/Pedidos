@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
         //DATOS PARA LOS PEDIDOS
         $this->call(EstadosTableSeeder::class);
 
+        //DATOS PARA LOS PEDIDOS
+        $this->call(TipoDocumentosTableSeeder::class);
 //        $this->call(EmpresasTableSeeder::class);
 //        $this->call(ProyectosTableSeeder::class);
 

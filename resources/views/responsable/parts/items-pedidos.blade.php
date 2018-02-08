@@ -12,7 +12,7 @@
     @php $auxItem=0;@endphp
     @foreach($pedido->items_temp_pedido as $item)
         <tr>
-            <th scope="row">{{($auxItem+1)}}</th>
+            <th scope="row" width="2%;">{{($auxItem+1)}}</th>
             <td>{{$item->item->unidad->full_name}}</td>
             <td>{{$item->cantidad}}</td>
             <td>{{$item->item->nombre}}</td>
@@ -22,7 +22,7 @@
     @endforeach
     @foreach($pedido->items_pedido as $item)
         <tr>
-            <th scope="row">{{($auxItem+1)}}</th>
+            <th scope="row" width="2%;">{{($auxItem+1)}}</th>
             <td>{{$item->item->unidad->full_name}}</td>
             <td>{{$item->cantidad}}</td>
             <td>{{$item->item->nombre}}</td>

@@ -1,6 +1,6 @@
 <div class="form-group">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="empresa_id" class="control-label">Empresa *</label>
+        <label for="empresa_id" class="control-label">* Empresa</label>
         {{ Form::select('empresa_id', $empresas->pluck('nombre','id'), null, ['class' => 'js-placeholder-single', 'required']) }}
         @if ($errors->has('empresa_id'))
             <span class="help-block">
@@ -9,7 +9,7 @@
         @endif
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="proyecto_id" class="control-label">Proyecto *</label>
+        <label for="proyecto_id" class="control-label">* Proyecto</label>
         {{Form::select('proyecto_id', array(null), null, ['class' => 'js-placeholder-single', 'required'])}}
         @if ($errors->has('proyecto_id'))
             <span class="help-block">

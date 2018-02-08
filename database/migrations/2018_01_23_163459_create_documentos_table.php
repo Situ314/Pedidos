@@ -21,8 +21,12 @@ class CreateDocumentosTable extends Migration
             $table->string('nombre');
             $table->string('ubicacion');
 
-            $table->integer('salida_id')->unsigned();
+            $table->integer('salida_id')->nullable()->unsigned();
             $table->foreign('salida_id')->references('id')->on('salida_almacen')
+                ->onDelete('cascade');
+
+            $table->integer('pedido_id')->nullable()->unsigned();
+            $table->foreign('pedido_id')->references('id')->on('pedidos')
                 ->onDelete('cascade');
 
             $table->integer('tipo_documento_id')->unsigned();

@@ -17,7 +17,7 @@
 @else
     <div class="form-group">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <label for="proyecto_id" class="control-label">Proyecto *</label>
+            <label for="proyecto_id" class="control-label">* Proyecto</label>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             {{Form::select('proyecto_id', $pedido->solicitante->empleado->usuario_solicitud->proyectos->pluck('proyecto_empresa','id'), $pedido->proyecto_id, ['class' => 'js-placeholder-single', 'required'])}}

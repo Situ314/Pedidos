@@ -13,7 +13,7 @@
     @php $auxItem=0;@endphp
     @foreach($pedido->items_entrega as $item)
         <tr>
-            <th scope="row">{{($loop->iteration)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
+            <th scope="row" width="2%;">{{($loop->iteration)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
             <td width="15%;"><input name="txtUnidad[]" id="txtUnidad{{$loop->index}}" hidden/>{{ Form::select('unidad_id[]', $unidades->pluck('full_name', 'id'), $item->item->unidad_id, ['class'=>'', 'required'=>'true','id'=>'unidad_id'.$loop->index.'','onchange'=>'javascript:cambiarTextoUnidad('.$loop->index.');']) }}</td>
             <td width="10%;">
                 {{ Form::text('cantidad_guardada[]', $item->cantidad, ['class'=>'hidden']) }}

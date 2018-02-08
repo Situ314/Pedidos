@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label for="motivo" class="control-label">MOTIVO *</label>
+                        <label for="motivo" class="control-label">* Motivo</label>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         {{Form::textarea('motivo', null, ['class' => 'form-control text-uppercase', 'required', 'rows'=>'3'])}}

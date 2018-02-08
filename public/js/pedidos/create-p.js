@@ -4,7 +4,7 @@
 // var options_categorias = "";
 var option_unidades = "";
 var options_items = "";
-
+var options_proyectos = "";
 $( document ).ready(function() {
     $('.js-placeholder-single').select2({
         allowClear: true,
@@ -24,45 +24,6 @@ $( document ).ready(function() {
     getUnidades();
 
     // getEmpleados();
-
-    /*$('select[name=empresa_id]').change(function () {
-        var select_proyectos = $('select[name=proyecto_id]');
-
-        console.log($(this).find('option:selected').data('foo'));
-        var selected_empresa = $(this).find('option:selected').data('foo');
-        if(typeof selected_empresa!='undefined'){
-            select_proyectos.empty();
-            select_proyectos.append(options_proyectos);
-
-            var select_proyectos_options = $('select[name=proyecto_id] option');
-
-            select_proyectos_options.each(function (index, value) {
-                // console.log(index);
-                // console.log(value);
-                // console.log($(value).data('foo'));
-                // console.log("Empresa: "+$(this).data('foo'));
-                if(selected_empresa != $(value).data('foo')){
-                    // console.log("no es igual")
-                    $(value).remove();
-                }
-            });
-
-            select_proyectos.prop('disabled', false);
-            select_proyectos.select2({
-                allowClear: true,
-                placeholder: "Seleccione un proyecto ...",
-                width: '100%'
-            }).val('').trigger('change');
-        }else{
-            select_proyectos.prop('disabled', true);
-            select_proyectos.select2({
-                allowClear: true,
-                placeholder: "Primero seleccione una empresa ...",
-                width: '100%'
-            }).val('').trigger('change');
-        }
-
-    });*/
 
     $('select[name=tipo_cat_id]').change(function () {
         var selected_op = $(this).find('option:selected').val();
@@ -143,6 +104,49 @@ $( document ).ready(function() {
         }
 
 
+    });
+
+    //CUANDO CAMBIA LA EMPRESA
+    $('select[name=empresa_id]').change(function () {
+        var selected_op = $(this).find('option:selected').val();
+        if(typeof selected_op != "undefined") {
+            console.log(selected_op);
+            console.log(proyectos_empleado);
+            console.log(jQuery.isEmptyObject(proyectos_empleado));
+
+            options_proyectos = "";
+            var proyectos_s = proyectos_solicitudes.pr;
+            for(var i=0 ; i<proyectos_s.length ; i++){
+                // console.log(proyectos_s[i]);
+                if(selected_op == proyectos_s[i].empresa_id){
+                    options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].nombre+'</option>';
+                }
+            }
+            if(!jQuery.isEmptyObject(proyectos_empleado)){ //TODOS LOS PROYECTOS ESTAN EM SOLICITUDES INCLUIDO EL SUYO
+                // console.log(proyecto_e);
+                var proyecto_e = proyectos_empleado.pr;
+                if(selected_op == proyecto_e.empresa_id){
+                    options_proyectos += '<option value="'+proyecto_e.id+'" data-emp="'+proyecto_e.empresa_id+'">'+proyecto_e.nombre+'</option>';
+                }
+            }
+
+            $('select[name=proyecto_id]').prop('disabled', false);
+            $('select[name=proyecto_id]').empty();
+            $('select[name=proyecto_id]').append(options_proyectos);
+
+            $('select[name=proyecto_id]').select2({
+                allowClear: true,
+                placeholder: "Seleccione un proyecto...",
+                width: '100%'
+            }).val('').trigger('change');
+        }else{
+            $('select[name=proyecto_id]').prop('disabled', true);
+            $('select[name=proyecto_id]').select2({
+                allowClear: true,
+                placeholder: "Seleccione una empresa...",
+                width: '100%'
+            }).val('').trigger('change');
+        }
     });
 });
 
@@ -346,3 +350,47 @@ function cambiarTextoUnidad(id) {
         $('#txtUnidad'+id).val(0);
     }
 }
+
+//FUNCIONES PARA DOCUMENTOS
+var auxD = 1;
+function agregarDocumento() {
+    console.log("docuemtno");
+    if( $('table#tableDoc').hasClass('hidden') ){
+        $('table#tableDoc').removeClass('hidden');
+    }
+
+    var tr = '<tr>' +
+        '<td scope="row" width="2%;">'+auxD+'</td>'+
+        '<td><input name="doc[]" id="inputFile'+auxD+'" class="hidden" onchange="javascript:mostrarNombre(this, '+auxD+');" type="file"><p id="fileName'+auxD+'"></p></td>'+
+        '<td><p id="fileSize'+auxD+'"></p></td>'+
+        '<td><a class="eliminar" onclick="javascript:eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
+        '</tr>';
+    $('tbody#tbodyDoc').append(tr);
+
+    $('#inputFile'+auxD).trigger('click');
+    // var filename = $('#inputFile'+auxD).val().split('\\').pop();
+    // console.log(filename);
+
+    auxD++;
+}
+
+function mostrarNombre(obj, id) {
+    // console.log(obj);
+    // console.log(obj.files);
+    // console.log(obj.files.item(0).name);
+    // console.log(obj.files.item(0).size);
+    // console.log(getReadableFileSizeString(obj.files.item(0).size));
+    $('#fileName'+id).text( obj.files.item(0).name );
+    $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) )
+}
+
+function getReadableFileSizeString(fileSizeInBytes) {
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+};
