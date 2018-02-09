@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@if(count($pedido->solicitante->proyectos)==1)
+{{--@if(count($pedido->solicitante->proyectos)==1)
     <input name="proyecto_id" hidden value="{{$pedido->proyecto_id}}">
 @else
     <div class="form-group">
@@ -28,7 +28,7 @@
             @endif
         </div>
     </div>
-@endif
+@endif--}}
 <div class="form-group">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <label for="tipo_cat_id" class="control-label">Tipo Categroia*</label>

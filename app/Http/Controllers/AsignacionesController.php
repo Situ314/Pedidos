@@ -55,9 +55,9 @@ class AsignacionesController extends Controller
             $pedido = Pedido::find($request->pedido_id);
 
             //VERIFICANDO SI ALGUN VALOR CAMBIO EN EL PEDIDO
-            if($pedido->proyecto_id != $request->proyecto_id){
+            /*if($pedido->proyecto_id != $request->proyecto_id){
                 $pedido->proyecto_id = $request->proyecto_id;
-            }
+            }*/
 
             if($pedido->tipo_categoria_id != $request->tipo_cat_id){
                 $pedido->tipo_categoria_id = $request->tipo_cat_id;
@@ -212,7 +212,6 @@ class AsignacionesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all(),$id);
     }
 
     /**

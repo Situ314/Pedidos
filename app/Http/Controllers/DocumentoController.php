@@ -79,7 +79,7 @@ class DocumentoController extends Controller
             //VERIFICAR SI TODOS LOS DOCUMENTOS ESTAN
             $salidas = SalidaAlmacen::select('id')
                 ->where('salida_almacen.pedido_id','=',$pedido->id)
-                ->whereRaw('salida_almacen.id NOT IN (SELECT documentos.salida_id FROM documentos)')
+                ->whereRaw('salida_almacen.id NOT IN (SELECT documentos.salida_id FROM documentos where documentos.salida_id is not null)')
                 ->get();
             if(count($salidas) == 0){ //SE SUBIERON TODOS LOS ARCHIVOS
                 $array_estado_pedido = [
