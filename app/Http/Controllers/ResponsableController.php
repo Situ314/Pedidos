@@ -29,13 +29,32 @@ class ResponsableController extends Controller
         $this->middleware('resp');
     }
     /**
-     * Display a listing of the resource.
+     * METODO QUE SE USARA PARA MOSTRAR LAS IMPRESIONES DE LOS USUARIOS
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        //TODOS LOS PEDIDOS CON ESTADO PARCIAL O ENTREGADO
+        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+            ->select('t1.pedido_id as pedido_id')
+            ->leftJoin('estados_pedidos as t2',function ($join){
+                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                    ->on('t1.id', '<', 't2.id');
+            })
+            ->whereNull('t2.id')
+            ->where('t1.estado_id','=',4)
+            ->orWhere('t1.estado_id','=',5);
+
+        $salidas = SalidaAlmacen::where('responsable_entrega_id','=',Auth::id())
+            ->whereIn('pedido_id',$estados_pedidos_id_array)
+            ->get();
+
+//        DB::enableQueryLog();
+//        dd($estados_pedidos_id_array->get(), $salidas->get(), $salidas->toSQL(), $salidas->getBindings(), DB::getQueryLog());
+
+        return view('responsable.impresiones.index')
+            ->withSalidas($salidas);
     }
 
     /**
@@ -270,5 +289,39 @@ class ResponsableController extends Controller
         Session::flash('success', "Pedido con codigo ".Pedido::find($request->pedido_proceso_id)->codigo." en proceso...");
         return redirect()->action('PedidosController@index');
 
+    }
+
+    /**
+     * METODO QUE PERMITE ELIMINA LOS ITEMS QUE NO HAYAN SIDO ENTREGADOS Y CAMBIA DE ESTADO
+     */
+    public function getCompletarPedido(Request $request, $id){
+        $salida_almacen = SalidaAlmacen::select('id')->where('pedido_id','=',$id);
+
+        $salida_items = SalidaItem::whereIn('salida_id',$salida_almacen->get());
+
+        $array_items = [];
+        foreach ($salida_items->get() as $item){
+            array_push($array_items,$item->item_pedido_entregado->id);
+            if($item->cantidad != $item->item_pedido_entregado->cantidad){
+                $item->item_pedido_entregado->cantidad = $item->cantidad;
+                $item->item_pedido_entregado->save();
+            }
+        }
+
+        $items_borrar = ItemPedidoEntregado::where('pedido_id','=',$id)
+                ->whereNotIn('id', $array_items)
+                ->delete();
+
+        $array_estado = [
+            'motivo'=>strtoupper($request->motivo_entrega),
+            'user_id'=>Auth::id(),
+            'estado_id'=>5,
+            'pedido_id'=>$id
+        ];
+        $estado_pedido = new EstadoPedido($array_estado);
+        $estado_pedido->save();
+
+        Session::flash('success', "Pedido con codigo ".Pedido::find($id)->codigo." cambio a entregado, items de entrega modificados...");
+        return redirect()->action('PedidosController@index');
     }
 }

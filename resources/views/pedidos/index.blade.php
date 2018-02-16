@@ -125,11 +125,11 @@
 
     <!-- Modales -->
     @include('pedidos.modals.modal-items')
-    {{--@include('pedidos.modals.modal-asignar')--}}
     @include('pedidos.modals.modal-estados')
     @include('responsable.modal-en-proceso')
     @include('modals.modal-salidas')
     @include('pedidos.modals.modal-documentos')
+    @include('modals.modal-completar')
 @endsection
 
 @section('footerScripts')
@@ -158,6 +158,8 @@
             docPed: "{{route('post.docs')}}",
             descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
 
+            //COMP.P
+            comP: "{{route('responsable.completar',['id'=>':id'])}}",
             token: "{{Session::token()}}"
         };
         var variables = {

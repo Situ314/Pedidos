@@ -62,6 +62,11 @@
                             <li><a href="{{route('pedidos.index')}}">Listado</a></li>
                         </ul>
                     </li>
+                    @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4)
+                        <li>
+                            <a href="{{ route('responsable.index') }}"><i class="fa fa-print"></i> Impresiones</a>
+                        </li>
+                    @endif
 
                 </ul>
             </div>

@@ -732,7 +732,6 @@ function cambiarProceso(id) {
 }
 
 function verSalidas(id, estado) {
-    console.log(id);
     var route = rutas.salidas;
     var token = rutas.token;
 
@@ -851,14 +850,19 @@ function verSalidas(id, estado) {
                 '</div>'+
                 '</div>';
 
-            console.log("Estado: "+estado);
             if(estado==4){
-                $('#btnCompletarPedidoModal').remove();
+                $('#btnCompletarSalida').remove();
+                $('#btnCompletarPedido').remove();
+
+                $('#formCompletarPedidoEntregado').prop("action", rutas.comP.replace(':id',id));
+
                 $('#footerModalSalidaPedido').prepend(
-                    '<a id="btnCompletarPedidoModal" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-info-custom">Completar Pedido</a>'
+                    '<a id="btnCompletarSalida" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-info-custom"><i class="fa fa-check"></i> Completar Salidas</a>'+
+                    '<button id="btnCompletarPedido" data-toggle="modal" data-dismiss="modal" data-target="#modalEntregarPedido" type="button" class="btn btn-success-custom pull-left"><i class="fa fa-check-square-o"></i> Completar Pedido</button>'
                 );
             }else{
-                $('#btnCompletarPedidoModal').remove();
+                $('#btnCompletarSalida').remove();
+                $('#btnCompletarPedido').remove();
             }
         }
 

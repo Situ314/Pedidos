@@ -23,7 +23,7 @@
                             <th>O.T.<td>
                                 <p id="txtOTSalida" style="font-weight: normal !important;"></p>
                             </td>
-                            <td style="font-weight: bold;"># Solicitud</td>
+                            <td style="font-weight: bold;"># Pedido</td>
                             <td><span id="txtNumSolicitudSalida"></span></td>
                             <th width="6%;">Fecha</th>
                             <td><span id="txtFechaSalida"></span></td>

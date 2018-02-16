@@ -1,18 +1,21 @@
 @extends('layouts.pdf')
 
 @section('content')
+    <div class="pull-right">
+        <img width="164px" height="60px" src="http://solicitudes.pragmainvest.com.bo/empresas/tepco_srl/tepco_srl.jpg">
+    </div>
     <table class="table table-bordered table-condensed">
         <tbody>
         <tr>
             <th width="8%;">Empresa</th>
-            <td width="15%;">{{ $salida->proyecto->empresa->nombre }}</td>
-            <th rowspan="2" class="text-center" width="30%;" style="vertical-align: middle; font-size: 16px;">SALIDA DE ALMACEN</th>
+            <td width="18%;">{{ $salida->proyecto->empresa->nombre }}</td>
+            <th rowspan="2" class="text-center" width="30%;" style="vertical-align: middle; font-size: 16px; background-color: #c0e674;">SALIDA DE ALMACEN</th>
             <th width="4%;">N°</th>
             <td colspan="3" width="15%;" class="text-center">N° {{ $salida->id }}</td>
         </tr>
         <tr>
             <th>O.T. <span style="font-weight: normal;">{{ $salida->num_ot }}</span></th>
-            <td style="font-weight: bold;"># Solicitud <span style="font-weight: normal;">{{$salida->pedido->num_solicitud}}</span></td>
+            <td style="font-weight: bold;"># Pedido <span style="font-weight: normal;">{{$salida->pedido->num_solicitud}}</span></td>
             <th width="6%;">Fecha</th>
             <td width="8%;">{{ date( "Y-m-d",strtotime($salida->created_at) ) }}</td>
             <th width="6%;">Hora</th>
@@ -39,7 +42,7 @@
     <table class="table table-bordered table-condensed">
         <thead>
             <tr>
-                <th colspan="5">DATOS DE LOS PRODUCTOS</th>
+                <th colspan="5" style="background-color: #c0e674;">DATOS DE LOS PRODUCTOS</th>
             </tr>
             <tr>
                 <th width="4%;">Item</th>
@@ -63,7 +66,7 @@
     </table>
 
     <table class="table table-bordered table-condensed">
-        <thead>
+        <thead style="background-color: #c0e674;">
             <th>ENTREGUE CONFORME ALMACEN</th>
             <th>COURRIER, DELIVERY O CHOFER</th>
         </thead>
@@ -117,7 +120,7 @@
     </table>
 
     <table class="table table-bordered table-condensed">
-        <thead>
+        <thead style="background-color: #c0e674;">
         <th>COURRIER, DELIVERY O CHOFER</th>
         <th>RECIBI CONFORME DESTINATARIO FINAL</th>
         </thead>

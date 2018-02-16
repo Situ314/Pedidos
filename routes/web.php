@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=> 'dash.index'
     ]);
 
+    //******************************************************PEDIDOS
     Route::resource('/pedidos', 'PedidosController');
 
     Route::post('post.pedidos',[
@@ -54,20 +55,28 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'PedidosController@postEstadosPedido',
         'as'=>'pedidos.progreso'
     ]);
+    //******************************************************
 
+    //******************************************************ASIGNADOR
     Route::resource('/asignaciones','AsignacionesController');
 
+    //******************************************************VERIFICACION
     Route::resource('/verificacion','VerificacionController');
 
+    //******************************************************AUTORIZADOR
     Route::resource('/autorizador','AutorizadorController');
-
-    Route::resource('/devolucion','DevolucionesController');
 
     Route::get('/get.cambiarUsu/{usu}/{opcion}',[
         'uses'=>'AutorizadorController@getCambiarRango',
         'as'=>'autorizador.cambiar'
     ]);
+    //******************************************************
 
+    //******************************************************DEVOLUCION
+    Route::resource('/devolucion','DevolucionesController');
+
+
+    //******************************************************RESPONSABLE
     Route::resource('/responsable','ResponsableController');
 
     Route::post('/post.responsableProceso',[
@@ -75,12 +84,18 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.proceso'
     ]);
 
+    Route::get('/get.comp/{id}',[
+        'uses'=>'ResponsableController@getCompletarPedido',
+        'as'=>'responsable.completar'
+    ]);
+    //******************************************************
+
     Route::post('/post.items.buscar',[
         'uses'=>'ItemsController@buscarItem',
         'as'=>'buscar.item',
     ]);
 
-    //RUTAS DE SALIDA DE ALMACEN
+    //******************************************************SALIDAS DE ALMACEN
     Route::resource('/salidas','SalidaAlmacenController');
 
     Route::post('/post.max.sal',[
@@ -97,8 +112,9 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'SalidaAlmacenController@pdfSalida',
         'as'=>'salidas.pdf'
     ]);
+    //******************************************************
 
-    //RUTAS DOCUMENTO
+    //******************************************************DOCUMENTOS - ARCHIVOS SUBIDOS
     Route::resource('/documento','DocumentoController');
     Route::post('/post.doc.pedido',[
         'uses'=>'DocumentoController@postDocs',
@@ -108,40 +124,14 @@ Route::group(['middleware' => 'auth'], function (){
         'uses' => 'DocumentoController@getDocumento',
         'as'=> 'doc.descargar'
     ]);
+    //******************************************************
 
-    //USUARIO - ADMINISTRACION
+    //******************************************************ADMINISTRACION DE USUARIOS
     Route::resource('/usuario','UsersController');
     Route::get('/restaurar/{id}',[
         'uses'=> 'UsersController@restore',
         'as'=> 'usuario.restore'
     ]);
-});
-
-Route::get('/snap',function (){
-    $snappy = App::make('snappy.pdf');
-//To file
-    $html = '<h1>Bill</h1><p>You owe me money, dude.</p>';
-    $snappy->generateFromHtml($html, '/tmp/bill-123.pdf');
-    $snappy->generate('http://www.github.com', '/tmp/github.pdf');
-//Or output:
-    return new Response(
-        $snappy->getOutputFromHtml($html),
-        200,
-        array(
-            'Content-Type'          => 'application/pdf',
-            'Content-Disposition'   => 'attachment; filename="file.pdf"'
-        )
-    );
-});
-
-Route::get('/test',function (){
-    $pedido = \App\Pedido::find(4);
-
-    $pdf = PDF::loadView('pdf.pdf-salida-almacen',array(
-        'pedido'=> $pedido
-    ));
-    return $pdf->stream('invoice.pdf');
-
-//    return view('pdf.pdf-salida-almacen');
+    //******************************************************
 });
 //Route::get('/home', 'HomeController@index');
