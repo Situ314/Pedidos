@@ -45,6 +45,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2><i class="fa fa-location-arrow"></i> Pedidos <small>Pedidos realizados</small></h2>
+                        <a class="btn btn-md btn-success-custom pull-right" href="{{route('pedidos.create')}}"><i class="fa fa-plus"></i> Crear</a>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">

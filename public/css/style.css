@@ -7700,3 +7700,11 @@ a.disabled {
 .control-label {
   color: #5a738e !important;
 }
+.bg-default {
+  background-color: #73879c !important;
+  color: #fff;
+}
+.bg-warning {
+  background-color: #f0ad4e !important;
+  color: #fff;
+}

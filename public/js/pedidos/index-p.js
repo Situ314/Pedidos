@@ -98,7 +98,7 @@ $('ul#myTab li a').click(function (e) {
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                                 '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                                 '<td><div class="btn-group" role="group">' +
                                 opciones+
                                 '</div></td>'+
@@ -143,7 +143,7 @@ $('ul#myTab li a').click(function (e) {
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                                 '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                                 '<td><div class="btn-group" role="group">' +
                                 opciones+
                                 '</div></td>'+
@@ -175,7 +175,7 @@ $('ul#myTab li a').click(function (e) {
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                                 '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                                 '<td><div class="btn-group" role="group">' +
                                 opciones+
                                 '</div></td>'+
@@ -615,24 +615,24 @@ function verItems(id) {
     }).done(function (response){
         var tableItems='';
         var contItemsPedidos = 1;
-        // console.log(response);
+        console.log(response);
         if(response.items_pedido.length>0 || response.items_temp_pedido.length>0){
             var bodyItems = '';
-            for(var i=0;i<response.items_pedido.length;i++){
-                bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
-                    '<td>'+response.items_pedido[i].item.nombre+'</td>' +
-                    '<td>'+response.items_pedido[i].cantidad+'</td>' +
-                    '<td>'+response.items_pedido[i].item.unidad.nombre+' ('+response.items_pedido[i].item.unidad.descripcion+')</td>'+
-                    '<td><label class="label label-success">Item Registrado</label></tr>';
-
-                contItemsPedidos++;
-            }
             for(var i=0;i<response.items_temp_pedido.length;i++){
                 bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
                     '<td>'+response.items_temp_pedido[i].item.nombre+'</td>' +
                     '<td>'+response.items_temp_pedido[i].cantidad+'</td>' +
                     '<td>'+response.items_temp_pedido[i].item.unidad.nombre+' ('+response.items_temp_pedido[i].item.unidad.descripcion+')</td>' +
                     '<td><label class="label label-warning">Item Temporal</label></tr>';
+
+                contItemsPedidos++;
+            }
+            for(var i=0;i<response.items_pedido.length;i++){
+                bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
+                    '<td>'+response.items_pedido[i].item.nombre+'</td>' +
+                    '<td>'+response.items_pedido[i].cantidad+'</td>' +
+                    '<td>'+response.items_pedido[i].item.unidad.nombre+' ('+response.items_pedido[i].item.unidad.descripcion+')</td>'+
+                    '<td><label class="label label-success">Item Registrado</label></tr>';
 
                 contItemsPedidos++;
             }

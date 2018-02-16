@@ -205,7 +205,6 @@ function edicion(){
                 width: '100%'
             }).val(config.variables[0].items_entrega[i].item.unidad_id).trigger('change');
         }
-
     }
 
     //OCULTANDO EL SELECT DE CATEGORIA

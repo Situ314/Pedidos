@@ -55,7 +55,6 @@
     @endif--}}
 @endif
 
-
 {{-- SI TIENE EMPLEADO --}}
 @if(count(\Illuminate\Support\Facades\Auth::user()->empleado) != 0)
     {{-- SI TIENE USUARIO EN SOLICITUDES --}}
@@ -64,21 +63,30 @@
         @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)!=0 )
 
             @php $bandera = true; @endphp
+            @php $array_empresas = []; @endphp
             <div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <label for="empresa_id" class="control-label">* Empresa</label>
                         <select name="empresa_id" required class="js-placeholder-single">
                             @foreach(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos as $proyecto)
-                                <option value="{{ $proyecto->empresa_id }}">{{ $proyecto->empresa->nombre }}</option>
                                 @if($proyecto->empresa_id == \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id)
                                     @php $bandera = false; @endphp
                                 @endif
+
+                                @if( !in_array($proyecto->empresa_id,$array_empresas))
+
+                                    <option value="{{ $proyecto->empresa_id }}">{{ $proyecto->empresa->nombre }}</option>
+                                    {{ array_push($array_empresas, $proyecto->empresa_id) }}
+                                @endif
+
                             @endforeach
 
                             {{-- SI HUBO UNA EMPRESA IGUAL AL PROYECTO --}}
                             @if($bandera)
-                                <option value="{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id}}">{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa->nombre}}</option>
+                                @if(!in_array(\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id,$array_empresas))
+                                    <option value="{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id}}">{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa->nombre}}</option>
+                                @endif
                             @endif
                         </select>
                         @if ($errors->has('empresa_id'))
