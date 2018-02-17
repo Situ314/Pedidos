@@ -107,6 +107,9 @@ class SalidaAlmacenController extends Controller
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
 
+        $salida = SalidaAlmacen::where('pedido_id','=',$id)
+            ->first();
+
         //FILTRAR A EMPLEADOS A TRAVES DE SU CARGO - CHOFER, COURRIER, ETC
         $empleados = Empleado::all();
 
@@ -121,7 +124,9 @@ class SalidaAlmacenController extends Controller
             ->withEmpleados($empleados)
 
             ->withEmpresas($empresas)
-            ->withProyectos($proyectos);
+            ->withProyectos($proyectos)
+
+            ->withSalida($salida);
     }
 
     /**

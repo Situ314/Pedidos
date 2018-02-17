@@ -60,7 +60,7 @@ $(document).ready(function(){
                 dataType: 'JSON',
                 data:{
                     id: config.variables[0].ped,
-                    empresa_id: config.variables[0].emp
+                    empresa_id: $('select[name=empresa_id] option:selected').val()
                 },
                 beforeSend: function(e){
                 }
@@ -68,7 +68,7 @@ $(document).ready(function(){
                 console.log(response);
 
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
-                $('#txtEmpresaSalida').text( $('#txtEmpresa').text() );
+                $('#txtEmpresaSalida').text( $('select[name=empresa_id] option:selected').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
 
                 $('#txtFechaSalida').text( moment().format('DD')+'/'+arrayMeses[moment().month()]+'/'+moment().format('YYYY') );
@@ -76,7 +76,7 @@ $(document).ready(function(){
 
                 $('#txtSolicitanteSalida').text( $('#txtSolicitante').text() );
                 $('#txtAreaSalida').text( $('input[name=area]').val().toUpperCase() );
-                $('#txtProyectoSalida').text( $('#txtProyecto').text() );
+                $('#txtProyectoSalida').text( $('select[name=proyecto_id] option:selected').text() );
 
                 $('#txtResponsableSalida').text( $('select[name=responsable_entrega_id] option:selected').text() );
                 $('#txtCourrierSalida').text( $('select[name=courrier_id] option:selected').text() )
@@ -85,8 +85,8 @@ $(document).ready(function(){
                     $('#txtNumSolicitudSalida').text( 1 );
                     $('input[name=num_solicitud]').val( 1 );
                 }else{ //USAR EL NUMERO ANTERIOR MAS UNO
-                    $('#txtNumSolicitudSalida').text( (response.num_solicitud+1) );
-                    $('input[name=num_solicitud]').val( (response.num_solicitud+1) );
+                    $('#txtNumSolicitudSalida').text( (parseInt(response.num_solicitud)+1) );
+                    $('input[name=num_solicitud]').val( (parseInt(response.num_solicitud)+1) );
                 }
                 //************************************
 

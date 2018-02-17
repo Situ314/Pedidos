@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-user"></i> Solicitante</label>
-                            <p id="txtSolicitante">{{$pedido->solicitante->empleado->nombres}}</p>
+                            <p id="txtSolicitante">{{$pedido->solicitante->empleado->nombre_completo}}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -147,7 +147,6 @@
 
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/edit-responsable.js') }}
-
 
     {{ Html::script('/js/pedidos/agregar-item-boton-asignador.js') }}
     {{ Html::script('/js/devolucion.js') }}

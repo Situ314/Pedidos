@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-user"></i> Solicitante</label>
-                            <p id="txtSolicitante">{{$pedido->solicitante->empleado->nombres}}</p>
+                            <p id="txtSolicitante">{{$pedido->solicitante->empleado->nombre_completo}}}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -42,12 +42,12 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Empresa</label>
-                            <p id="txtEmpresa">{{$pedido->proyecto->empresa->nombre}}</p>
+                            <p>{{$pedido->proyecto->empresa->nombre}}</p>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Proyecto</label>
-                            <p id="txtProyecto">{{$pedido->proyecto->nombre}}</p>
+                            <p>{{$pedido->proyecto->nombre}}</p>
                         </div>
 
                     </div>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="x_content">
                     <br>
-                    @include('responsable.form')
+                    @include('salidas.form')
                 </div>
             </div>
 
@@ -139,7 +139,6 @@
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/edit-salida.js') }}
 
-
     {{ Html::script('/js/pedidos/agregar-item-boton-asignador.js') }}
     {{ Html::script('/js/devolucion.js') }}
 
@@ -161,7 +160,7 @@
                     cantItemEntrega: {{count($pedido->items_entrega)}},
                     items_entrega: {!! json_encode($pedido->items_entrega) !!},
                     proy: {!! json_encode($proyectos->toArray()) !!},
-                    emp: {{ $pedido->proyecto->empresa_id }},
+                    emp: {{ $salida->proyecto->empresa_id }},
                     pr: {{ $pedido->proyecto->id }},
                     ped: {{ $pedido->id }}
                 }

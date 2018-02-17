@@ -71,8 +71,6 @@ $(document).ready(function(){
                 beforeSend: function(e){
                 }
             }).done(function (response){
-                console.log(response);
-
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
                 $('#txtEmpresaSalida').text( $('#txtEmpresa').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
