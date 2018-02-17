@@ -51,14 +51,6 @@ class DevolucionesController extends Controller
                 $anuncion = "observado ...";
                 $estado = 6;
                 break;
-            case 3: //EN ESPERA
-                if(Auth::user()->rol_id > 4){
-                    return redirect()->back()
-                        ->withErrors(array('error'=>'No puede asignar este estado'));
-                }
-                $anuncion = "en pausa ...";
-                $estado = 5;
-                break;
         }
 
         $array_devolucion = [

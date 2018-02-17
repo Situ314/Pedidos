@@ -35,6 +35,7 @@ class CreateItemsTable extends Migration
             $table->foreign('unidad_id')->references('id')->on('unidades')
                 ->onDelete('cascade');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
