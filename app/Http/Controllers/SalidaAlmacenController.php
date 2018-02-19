@@ -153,16 +153,15 @@ class SalidaAlmacenController extends Controller
     }
 
     public function postUltimoNumeroSalida(Request $request){
-        $pedido = Pedido::select('pedidos.id','pedidos.num_solicitud')
-            ->leftJoin('pragma_solicitudes.proyectos','pedidos.proyecto_id','=','pragma_solicitudes.proyectos.id')
+        $salida = SalidaAlmacen::select('salida_almacen.num_solicitud')
+            ->leftJoin('pragma_solicitudes.proyectos','salida_almacen.proyecto_id','=','pragma_solicitudes.proyectos.id')
             ->where('empresa_id','=',$request->empresa_id)
-            ->whereRaw('YEAR(pedidos.created_at) = YEAR( NOW() )')
-            ->whereNotNull('pedidos.num_solicitud')
-            ->orderBy('pedidos.id','desc')
+            ->whereRaw('YEAR(salida_almacen.created_at) = YEAR( NOW() )')
+            ->orderBy('salida_almacen.id','desc')
             ->first();
 
         return Response::json(
-            $pedido
+            $salida
         );
     }
 

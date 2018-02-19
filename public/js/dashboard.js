@@ -73,7 +73,7 @@ function setDivs() {
     var aux = 0;
     for(var i=0; i<arrayCantidadesLocal.length ;i++){
         $('#div-estado-'+arrayCantidadesLocal[i].estado).text( arrayCantidadesLocal[i].cantidad );
-        aux += arrayCantidadesLocal[i].cantidad;
+        aux += parseInt(arrayCantidadesLocal[i].cantidad);
     }
 
     //DIV TOTAL

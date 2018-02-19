@@ -154,22 +154,6 @@ class ResponsableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //VERIFICANDO Y ACTUALIZANDO PEDIDO
-        $pedido = Pedido::find($id);
-        if($pedido->num_solicitud == null){
-            //VERIFICANDO EL NUMERO DE SALIDA POR GESTION Y EMPRESA SELECCIONADA
-            $salida = Pedido::select('pedidos.id','pedidos.num_solicitud')
-                ->leftJoin('pragma_solicitudes.proyectos','pedidos.proyecto_id','=','pragma_solicitudes.proyectos.id')
-                ->where('empresa_id','=',$request->empresa_id)
-                ->whereRaw('YEAR(pedidos.created_at) = YEAR( NOW() )')
-                ->whereNotNull('pedidos.num_solicitud')
-                ->orderBy('pedidos.id','desc')
-                ->first();
-            $pedido->num_solicitud = $salida->num_solicitud+1;
-            $pedido->save();
-
-        }
-
         //GUARDANDO SALIDA DE ALMACEN
         $ot = null;
         if($request->num_ot != ""){
@@ -181,10 +165,31 @@ class ResponsableController extends Controller
             $area = $request->area;
         }
 
+        //PARTE IMPORTANTE - EL NUMERO DE SOLICITUD VERIFICADO
+        $num_solicitud = SalidaAlmacen::select('salida_almacen.num_solicitud')
+            ->leftJoin('pragma_solicitudes.proyectos','salida_almacen.proyecto_id','=','pragma_solicitudes.proyectos.id')
+            ->where('empresa_id','=',$request->empresa_id)
+            ->whereRaw('YEAR(salida_almacen.created_at) = YEAR( NOW() )')
+            ->orderBy('salida_almacen.id','desc')
+            ->first();
+
+        $solicitud_saliente = 1;
+        $salidas = null;
+        if($num_solicitud != null){ //DEBERIA PREGUNTAR SI TIENE UN PEDIDO RELACIONADO
+            $salidas = SalidaAlmacen::where('salida_almacen.pedido_id','=',$id)
+                ->get();
+            if(count($salidas)>0){ //OBTENER EL MISMO NUMERO DE SALIDA
+                $solicitud_saliente = $salidas[0]->num_solicitud;
+            }else{ //NUEVA SALIDA, INCREMENTAR EN UNO
+                $solicitud_saliente = $num_solicitud->num_solicitud+1;
+            }
+        }
+        //**************CARGA EL NUMERO DE SOLICITUD
         $array_salida_almacen = [
             'num_ot'=>$ot,
             'area'=>strtoupper($area),
             'pedido_id'=>$id,
+            'num_solicitud'=>$solicitud_saliente,
             'responsable_entrega_id'=>$request->responsable_entrega_id,
             'courrier_id'=>$request->courrier_id,
             'proyecto_id'=>$request->proyecto_id

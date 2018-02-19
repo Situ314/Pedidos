@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th>O.T. <span style="font-weight: normal;">{{ $salida->num_ot }}</span></th>
-            <td style="font-weight: bold;"># Pedido <span style="font-weight: normal;">{{$salida->pedido->num_solicitud}}</span></td>
+            <td style="font-weight: bold;"># Pedido: <span style="font-weight: normal;">{{$salida->num_solicitud}}</span></td>
             <th width="6%;">Fecha</th>
             <td width="8%;">{{ date( "Y-m-d",strtotime($salida->created_at) ) }}</td>
             <th width="6%;">Hora</th>
@@ -80,9 +80,9 @@
                         <p>___________________________________</p>
                     </div>
                     <div class="row" style="margin: 0px 0px 0px 0px;">
-                        <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->responsable->nombre_completo }}</p>
-                        <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->responsable->ci_numero }}</p>
-                        <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->responsable->laboral_empleado->cargo->nombre }}</p>
+                        <p><span style="font-weight: bold;">Nombre:</span> {{ $salida->responsable->empleado->nombre_completo }}</p>
+                        <p><span style="font-weight: bold;">C.I.:</span> {{ $salida->responsable->empleado->ci_numero }}</p>
+                        <p><span style="font-weight: bold;">Cargo:</span> {{ $salida->responsable->empleado->laboral_empleado->cargo->nombre }}</p>
                         <p>Fecha: ........../........../..........  Hora..........::..........</p>
                     </div>
                 </td>

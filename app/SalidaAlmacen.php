@@ -18,7 +18,7 @@ class SalidaAlmacen extends Model
      * @var array
      */
     protected $fillable = [
-        'num_ot', 'area', 'pedido_id', 'responsable_entrega_id', 'courrier_id', 'proyecto_id'
+        'num_ot', 'area', 'num_solicitud', 'pedido_id', 'responsable_entrega_id', 'courrier_id', 'proyecto_id'
     ];
 
     public function documento(){
@@ -38,7 +38,7 @@ class SalidaAlmacen extends Model
     }
 
     public function responsable(){
-        return $this->hasOne('App\Empleado','id','responsable_entrega_id');
+        return $this->hasOne('App\User','id','responsable_entrega_id');
     }
 
     public function courrier(){
