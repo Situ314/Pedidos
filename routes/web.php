@@ -133,5 +133,9 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=> 'usuario.restore'
     ]);
     //******************************************************
+
+    //******************************************************CAMBIO DE CONTRASEÑA
+    Route::resource('/cambiar-pass','UpdatePasswordController');
+    //******************************************************
 });
 //Route::get('/home', 'HomeController@index');
