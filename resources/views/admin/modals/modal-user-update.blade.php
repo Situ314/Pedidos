@@ -8,7 +8,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><i class="fa fa-user"></i> Actualizar Usuario</h4>
             </div>
-            {{ Form::open( array('route' => ['usuario.update','id'=>':id'], 'method' => 'PUT','class' => 'form-horizontal input_mask', 'id'=>'formUpdateUser', 'data-toggle'=>'validator') ) }}
+            {{ Form::open( array('route' => ['admin-usuarios.update','id'=>':id'], 'method' => 'PUT','class' => 'form-horizontal input_mask', 'id'=>'formUpdateUser', 'data-toggle'=>'validator') ) }}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

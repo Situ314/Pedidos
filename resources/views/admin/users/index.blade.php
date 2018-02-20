@@ -96,9 +96,9 @@
 
     <script type="text/javascript">
         var rutas = {
-            update: "{{ route('usuario.update',['id'=>':id']) }}",
-            edit: "{{ route('usuario.edit',['id'=>':id']) }}",
-            del: "{{route('usuario.destroy',['id'=>':id'])}}",
+            update: "{{ route('admin-usuarios.update',['id'=>':id']) }}",
+            edit: "{{ route('admin-usuarios.edit',['id'=>':id']) }}",
+            del: "{{route('admin-usuarios.destroy',['id'=>':id'])}}",
             res: "{{route('usuario.restore',['id'=>':id'])}}",
             token: "{{Session::token()}}"
         };

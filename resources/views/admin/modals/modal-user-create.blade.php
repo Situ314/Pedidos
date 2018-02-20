@@ -8,7 +8,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><i class="fa fa-user"></i> Crear Usuario</h4>
             </div>
-            {{ Form::open( array('route' => 'usuario.store', 'method' => 'POST','class' => 'form-horizontal input_mask') ) }}
+            {{ Form::open( array('route' => 'admin-usuarios.store', 'method' => 'POST','class' => 'form-horizontal input_mask') ) }}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -126,12 +126,16 @@ Route::group(['middleware' => 'auth'], function (){
     ]);
     //******************************************************
 
-    //******************************************************ADMINISTRACION DE USUARIOS
-    Route::resource('/usuario','UsersController');
+    //******************************************************ADMINISTRACION
+    //******************************************************USUARIOS
+    Route::resource('/admin-usuarios','UsersController');
     Route::get('/restaurar/{id}',[
         'uses'=> 'UsersController@restore',
         'as'=> 'usuario.restore'
     ]);
+    //******************************************************AUTORIZADORES
+    Route::resource('/admin-autorizadores','AdminAutorizadoresController');
+
     //******************************************************
 
     //******************************************************CAMBIO DE CONTRASEÑA
