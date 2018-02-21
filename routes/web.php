@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.proceso'
     ]);
 
-    Route::get('/get.comp/{id}',[
+    Route::get('/responsable/{id}/completar',[
         'uses'=>'ResponsableController@getCompletarPedido',
         'as'=>'responsable.completar'
     ]);
@@ -120,7 +120,7 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'DocumentoController@postDocs',
         'as'=>'post.docs'
     ]);
-    Route::get('descargar/{id}', [
+    Route::get('documento/{id}/descargar', [
         'uses' => 'DocumentoController@getDocumento',
         'as'=> 'doc.descargar'
     ]);
@@ -129,13 +129,20 @@ Route::group(['middleware' => 'auth'], function (){
     //******************************************************ADMINISTRACION
     //******************************************************USUARIOS
     Route::resource('/admin-usuarios','UsersController');
-    Route::get('/restaurar/{id}',[
+    Route::get('/admin-usuarios/{id}/restaurar',[
         'uses'=> 'UsersController@restore',
         'as'=> 'usuario.restore'
     ]);
     //******************************************************AUTORIZADORES
     Route::resource('/admin-autorizadores','AdminAutorizadoresController');
-
+    Route::post('/post.aut.solicitantes',[
+        'uses'=>'AdminAutorizadoresController@postSolicitantes',
+        'as'=>'admin-autorizadores.solicitantes'
+    ]);
+    Route::get('/admin-usuarios/{id}/equipo',[
+        'uses'=>'AdminAutorizadoresController@getMisSolicitantes',
+        'as'=>'admin-autorizadores.equipo'
+    ]);
     //******************************************************
 
     //******************************************************CAMBIO DE CONTRASEÑA

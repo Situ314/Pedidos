@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Responsable;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use Response;
 
 class AdminAutorizadoresController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,21 @@ class AdminAutorizadoresController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = User::withTrashed();
+        $responsables = Responsable::all();
+
+        $autorizadores = User::where('rol_id','=',5)
+            ->get();
+
+        if(Auth::user()->rol_id == 2){ //USUARIO ADMINISTRADOR
+            $usuarios = $usuarios
+                ->where('rol_id','=',6);
+        }
+
+        return view('admin.autorizadores.index')
+            ->withResponsables($responsables)
+            ->withAutorizadores($autorizadores)
+            ->withUsers($usuarios);
     }
 
     /**
@@ -80,5 +103,30 @@ class AdminAutorizadoresController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function postSolicitantes(Request $request){
+        $solicitantes = Responsable::where('autorizador_id','=',$request->id)
+            ->get();
+
+        foreach ($solicitantes as $solicitante){
+            if(count($solicitante->solicitante->empleado)>0){
+                $solicitante->solicitante->empleado->laboral_empleado->cargo;
+            }else{
+                $solicitante->empleado;
+            }
+        }
+
+        return Response::json(
+            $solicitantes
+        );
+    }
+
+    public function getMisSolicitantes($id){
+        $users = Responsable::where('autorizador_id','=',$id)
+            ->get();
+
+        return view('autorizador.index-equipo')
+            ->withUsers($users);
     }
 }

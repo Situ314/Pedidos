@@ -21,7 +21,7 @@
                             <a><i class="fa fa-group"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="{{ route('admin-usuarios.index') }}">Listado</a></li>
-                                <li><a href="#">Responsables</a></li>
+                                <li><a href="{{route('admin-autorizadores.index')}}">Autorizadores</a></li>
                             </ul>
                         </li>
                     </ul>
