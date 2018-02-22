@@ -7,7 +7,7 @@
         <th>Opciones</th>
     </tr>
     </thead>
-    <tbody id="tbodyItems">
+    <tbody>
     @foreach($autorizadores as $autorizador)
     <tr>
         <th scope="row" width="2%;">{{ $loop->iteration }}</th>
@@ -28,7 +28,7 @@
             @endforeach
         </td>
         <td>
-            <a href="{{route('admin-autorizadores.equipo',$autorizador->id)}}" class="btn btn-info-custom" onclick="verSolicitantes({{$autorizador->id}})" title="Ver usuarios de {{$autorizador->username}}"><i class="fa fa-edit"></i></a>
+            <a href="{{route('admin-autorizadores.equipo',$autorizador->id)}}" class="btn btn-info-custom" onclick="verSolicitantes({{$autorizador->id}})" title="Ver usuarios de {{$autorizador->username}}"><i class="fa fa-users"></i></a>
         </td>
     </tr>
     @endforeach

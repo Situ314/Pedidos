@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('headerScripts')
+    {{ Html::style('/css/select2.min.css') }}
+@endsection
+
 @section('content')
     <div class="row">
         <div class="x_panel">
@@ -8,7 +12,7 @@
                     @foreach($users as $user)
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 profile_details">
                             <div class="well profile_view">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixed_height_260">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixed_height_260 scroll-vertical">
                                     <h4 class="control-label">
                                         <i>
                                             @if(count($user->solicitante->empleado) > 0)
@@ -33,6 +37,11 @@
                                             @endif
                                         </p>
                                         <ul class="list-unstyled">
+                                            <li><i class="fa fa-user"></i> Usuario:
+                                                @if(count($user->solicitante) > 0)
+                                                    {{$user->solicitante->username}}
+                                                @endif
+                                            </li>
                                             <li><i class="fa fa-envelope"></i> Correo:
                                                 @if(count($user->solicitante->empleado) > 0)
                                                     {{$user->solicitante->empleado->laboral_empleado->email_corporativo}}
@@ -54,13 +63,13 @@
                                         <button type="button" title="Modificar equipo" class="btn btn-info-custom btn-xs" onclick="equipo({{$user->id}});">
                                             <i class="fa fa-edit"></i> Equipo
                                         </button>
-                                        <button type="button" title="Convertir en autorizador" class="btn btn-success-custom btn-xs" onclick="autorizador({{$user->id}});">
+                                        <a href="{{route('admin-autorizadores.cambiar_rol',[$user->solicitante->id,1])}}" title="Convertir en autorizador" class="btn btn-success-custom btn-xs" onclick="autorizador({{$user->id}});">
                                             <i class="fa fa-arrow-up"></i> Autorizador
-                                        </button>
+                                        </a>
                                     @else
-                                        <button type="button" title="Convertir en usuario" class="btn btn-danger-custom btn-xs" onclick="usuario({{$user->id}});">
+                                        <a href="{{route('admin-autorizadores.cambiar_rol',[$user->solicitante->id,2])}}" title="Convertir en usuario" class="btn btn-danger-custom btn-xs" onclick="usuario({{$user->id}});">
                                             <i class="fa fa-arrow-down"></i> Usuario
-                                        </button>
+                                        </a>
                                     @endif
                                 </div>
                             </div>
@@ -70,10 +79,19 @@
                 </div>
             </div>
     </div>
+
+    <!-- MODALS -->
+    @include('admin.autorizadores.modals.modal-update-autorizadores')
 @endsection
 
 @section('footerScripts')
     @parent
-    {{ Html::script('/js/admin/aut.js') }}
+    <script type="text/javascript">
+        var rutas = {
+            updateEquipo: "{{route('update.autorizadores',['id'=>':id'])}}"
+        };
+    </script>
+    {{ Html::script('/js/select2.full.js') }}
+    {{ Html::script('modal-edit-aut.jsedit-aut.js') }}
 
 @endsection

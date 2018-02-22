@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         return $this->empleado->nombres.' '.$this->empleado->apellido_1.' '.$this->empleado->apellido_2.' ('.$this->username.')';
     }
+
+    //UNICAMENTE CUANDO EL USUARIO ES AUTORIZADOR
+    public function solicitantes(){
+        return $this->belongsToMany('App\User','responsables','autorizador_id','solicitante_id');
+    }
+
+    //PARA USUARIOS Y ASI OBTENER A SUSU AUTORIZADORES
+    public function autorizadores (){
+        return $this->belongsToMany('App\User','responsables','solicitante_id','autorizador_id');
+    }
 }

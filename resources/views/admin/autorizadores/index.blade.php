@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('headerScripts')
+    {{ Html::style('/css/select2.min.css') }}
+@endsection
+
 @section('content')
     <div>
         <div class="x_panel">
@@ -26,8 +30,7 @@
                             @include('admin.autorizadores.table-autorizadores')
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                                booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+                            @include('admin.autorizadores.table-users')
                         </div>
                     </div>
                 </div>
@@ -36,6 +39,20 @@
         </div>
     </div>
 
-    <!-- MODALES -->
-    @include('admin.autorizadores.modals.modal-users')
+    <!--MODALS -->
+    @include('admin.autorizadores.modals.modal-update-autorizadores')
+@endsection
+
+@section('footerScripts')
+    @parent
+    <script type="text/javascript">
+        var rutas = {
+            updateAut: "{{route('update.autorizadores', ['id'=>':id'])}}",
+            getAut: "{{route('post.autorizadores',['id'=>':id'])}}",
+
+            token: "{{Session::token()}}"
+        };
+    </script>
+    {{ Html::script('/js/select2.full.js') }}
+    {{ Html::script('/js/admin/modal-edit-aut.js') }}
 @endsection

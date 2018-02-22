@@ -38,6 +38,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="submit" class="btn btn-info-custom" data-dismiss="modal"><i class="fa fa-save"></i> Actualizar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
             </div>
         </div>

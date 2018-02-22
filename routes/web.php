@@ -135,13 +135,21 @@ Route::group(['middleware' => 'auth'], function (){
     ]);
     //******************************************************AUTORIZADORES
     Route::resource('/admin-autorizadores','AdminAutorizadoresController');
-    Route::post('/post.aut.solicitantes',[
-        'uses'=>'AdminAutorizadoresController@postSolicitantes',
-        'as'=>'admin-autorizadores.solicitantes'
-    ]);
-    Route::get('/admin-usuarios/{id}/equipo',[
+    Route::get('/admin-autorizadores/{id}/equipo',[
         'uses'=>'AdminAutorizadoresController@getMisSolicitantes',
         'as'=>'admin-autorizadores.equipo'
+    ]);
+    Route::match(['put', 'patch'], '/admin-autorizadores/{id}/autorizadores', [
+        'uses'=>'AdminAutorizadoresController@updateAutorizadores',
+        'as'=>'update.autorizadores'
+    ]);
+    Route::get('/admin-autorizadores/{id}/{opcion}/cambiarRol',[
+        'uses'=>'AdminAutorizadoresController@getCambiarRol',
+        'as'=>'admin-autorizadores.cambiar_rol'
+    ]);
+    Route::post('/post.autorizadores/{id}',[
+        'uses'=>'AdminAutorizadoresController@postAutorizadores',
+        'as'=>'post.autorizadores'
     ]);
     //******************************************************
 
