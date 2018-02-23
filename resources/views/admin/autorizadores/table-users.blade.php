@@ -28,7 +28,11 @@
                     @endforeach
                 </td>
                 <td>
-                    <button type="button" class="btn btn-info-custom" onclick="editarAutorizadores({{$user->id}});" title="Editar autorizadores"><i class="fa fa-user-secret"></i></button>
+                    @if($user->deleted_at == null)
+                        <button type="button" class="btn btn-info-custom" onclick="editarAutorizadores({{$user->id}});" title="Editar autorizadores"><i class="fa fa-user-secret"></i></button>
+                    @else
+                        <label class="label label-danger">Usuario deshabilitado</label>
+                    @endif
                 </td>
             </tr>
         @endforeach

@@ -28,7 +28,11 @@
             @endforeach
         </td>
         <td>
-            <a href="{{route('admin-autorizadores.equipo',$autorizador->id)}}" class="btn btn-info-custom" onclick="verSolicitantes({{$autorizador->id}})" title="Ver usuarios de {{$autorizador->username}}"><i class="fa fa-users"></i></a>
+            @if($autorizador->deleted_at == null)
+                <a href="{{route('admin-autorizadores.equipo',$autorizador->id)}}" class="btn btn-info-custom" onclick="verSolicitantes({{$autorizador->id}})" title="Ver usuarios de {{$autorizador->username}}"><i class="fa fa-users"></i></a>
+            @else
+                <label class="label label-danger">Usuario deshabilitado</label>
+            @endif
         </td>
     </tr>
     @endforeach

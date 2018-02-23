@@ -7,10 +7,22 @@
 @section('content')
     <div class="row">
         <div class="x_panel">
-                <div class="x_content">
-                    <div class="row">
+            <div class="x_title">
+                <h2>Equipo
+                    <small>Panel que despliega el equipo de
+                    @if(count($autorizador->empleado) > 0)
+                        {{$autorizador->empleado->nombre_completo}}
+                    @else
+                        {{$autorizador->username}}
+                    @endif
+                    </small>
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
                     @foreach($users as $user)
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 profile_details">
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 profile_details">
                             <div class="well profile_view">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixed_height_260 scroll-vertical">
                                     <h4 class="control-label">
@@ -60,7 +72,7 @@
                                 </div>
                                 <div class="col-xs-12 bottom text-center">
                                     @if($user->solicitante->rol_id != 5)
-                                        <button type="button" title="Modificar equipo" class="btn btn-info-custom btn-xs" onclick="equipo({{$user->id}});">
+                                        <button type="button" title="Modificar equipo" class="btn btn-info-custom btn-xs" onclick="editarAutorizadores({{$user->solicitante_id}});">
                                             <i class="fa fa-edit"></i> Equipo
                                         </button>
                                         <a href="{{route('admin-autorizadores.cambiar_rol',[$user->solicitante->id,1])}}" title="Convertir en autorizador" class="btn btn-success-custom btn-xs" onclick="autorizador({{$user->id}});">
@@ -75,9 +87,12 @@
                             </div>
                         </div>
                     @endforeach
-                    </div>
                 </div>
-            </div>
+                <div class="ln_solid"></div>
+                <div class="row text-center">
+                    <a href="{{route('admin-autorizadores.index')}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
+                </div>
+        </div>
     </div>
 
     <!-- MODALS -->
@@ -88,10 +103,13 @@
     @parent
     <script type="text/javascript">
         var rutas = {
-            updateEquipo: "{{route('update.autorizadores',['id'=>':id'])}}"
+            updateAut: "{{route('update.autorizadores', ['id'=>':id'])}}",
+            getAut: "{{route('post.autorizadores',['id'=>':id'])}}",
+
+            token: "{{Session::token()}}"
         };
     </script>
     {{ Html::script('/js/select2.full.js') }}
-    {{ Html::script('modal-edit-aut.jsedit-aut.js') }}
+    {{ Html::script('/js/admin/modal-edit-aut.js') }}
 
 @endsection

@@ -28,6 +28,7 @@ class AdminAutorizadoresController extends Controller
             ->get();
 
         $autorizadores = User::where('rol_id','=',5)
+            ->withTrashed()
             ->get();
 
         return view('admin.autorizadores.index')
@@ -106,8 +107,11 @@ class AdminAutorizadoresController extends Controller
             ->get();
         $autorizadores = User::where('rol_id','=',5)
             ->get();
+        $autorizador = User::find($id);
 
         return view('autorizador.index-equipo')
+            ->withAutorizador($autorizador)
+
             ->withUsers($users)
             ->withAutorizadores($autorizadores);
     }
@@ -124,8 +128,33 @@ class AdminAutorizadoresController extends Controller
 
     public function updateAutorizadores(Request $request, $id){
         //GUARDA SOLO A LOS AUTORIZADORES SELECCIONADOS
+        $array_responsables_existentes = [];
 
-        dd($request->all(), $id);
+        for($i=0 ; $i<count($request->autorizador_id) ; $i++){
+            echo $request->autorizador_id[$i].'<br>';
+            $responsable = Responsable::where('autorizador_id','=',$request->autorizador_id[$i])
+                ->where('solicitante_id','=',$id)
+                ->get();
+            if(count($responsable)==0){
+                $array_responsable = [
+                    'autorizador_id'=>$request->autorizador_id[$i],
+                    'solicitante_id'=>$id
+                ];
+                $responsable = new Responsable($array_responsable);
+                $responsable->save();
+
+                array_push($array_responsables_existentes, $request->autorizador_id[$i]);
+            }else{
+                array_push($array_responsables_existentes, $request->autorizador_id[$i]);
+            }
+        }
+
+        Responsable::where('solicitante_id','=',$id)
+            ->whereNotIn('autorizador_id',$array_responsables_existentes)
+            ->delete();
+
+        Session::flash('success', "Usuario ".User::find($id)->username." actualizado correctamente...");
+        return redirect()->back();
     }
 
     //CAMBIA DE USUARIO A AUTORIZADOR O VICEVERSA
