@@ -121,6 +121,11 @@
     {{ Html::script('/js/dashboard.js') }}
 
     <script type="text/javascript">
+        var rutas = {
+            chartData: "{{route('dash.fecha',['inicio'=>':inicio','fin'=>':fin'])}}",
+
+            token: "{{Session::token()}}"
+        };
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
             type: 'line',

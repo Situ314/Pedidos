@@ -33,6 +33,11 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=> 'dash.index'
     ]);
 
+    Route::post('/dash/{inicio}/{fin}/fechas',[
+        'uses'=>'HomeController@postPedidosGroupFecha',
+        'as'=>'dash.fecha'
+    ]);
+
     //******************************************************PEDIDOS
     Route::resource('/pedidos', 'PedidosController');
 

@@ -81,35 +81,72 @@ function setDivs() {
 }
 
 //ACTUALIZANDO EL CHART
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
+function addData(chart, obj) {
+    // chart.data.labels.push(label);
+
+    //AGREGANDO LABELS
+    for(var i=0 ; i<obj.length ; i++){
+        chart.data.labels.push(obj[i].fecha);
+    }
+
+    for (i=0 ; i<obj.length ;i++){
+        // chart.data.datasets[0].data[i] = obj[i].cantidad;
+        chart.data.datasets.push({label: "hola", data:[obj[i].cantidad]});
+    }
+
+    // chart.data.datasets.push({label: "hola", data:[3]});
+    chart.update();
+    console.log(chart.data);
+
+    //AGREGANDO DATOS
+    console.log("Agregando data");
+    /*console.log(data.length);
+
     chart.data.datasets.forEach(function(dataset){
         dataset.data.push(data);
     });
-    chart.update();
+    chart.update();*/
 }
 
 function removeData(chart) {
+    // console.log(chart);
+    // console.log(chart.data);
+    // console.log(chart.data.datasets.length);
 
-    console.log(chart.data);
-    console.log(chart.data.datasets.length);
+    //ELIMINANDO DATOS
     var tamaño = chart.data.datasets.length;
     for(var i=0 ; i<tamaño ; i++){
-        // console.log("Eliminando: "+i);
         chart.data.datasets.pop(0);
     }
-    /*var aux = 1;
-    chart.data.datasets.forEach(function(dataset){
-        dataset.data.pop();
-        console.log("Iteracion: "+aux);
-        console.log(dataset.data);
-        aux++;
-    });*/
+
+    //ELIMINANDO LABELS
+    tamaño = chart.data.labels.length;
+    for(i=0 ; i<tamaño ;i++){
+        chart.data.labels.pop(0);
+    }
+
     chart.update();
 }
 
 function getChartUpdate(fecha_inicio, fecha_fin) {
     console.log(fecha_inicio+" "+fecha_fin);
-    removeData(myChart);
+    // removeData(myChart);
 
+    var route = rutas.chartData;
+    route = route.replace(':inicio',fecha_inicio);
+    route = route.replace(':fin',fecha_fin);
+    var token = rutas.token;
+
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (response){
+        console.log(response);
+        removeData(myChart);
+        addData(myChart, response);
+    });
 }

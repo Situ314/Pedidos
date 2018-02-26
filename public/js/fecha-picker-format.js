@@ -68,5 +68,5 @@ function cb(start, end) {
 
     $('#dateRange span').html(inicio + ' - ' + fin);
 
-    getChartUpdate( (start.format('D')+"/"+start.format('M')+"/"+start.format('YYYY') ) , (end.format('D')+"/"+end.format('M')+"/"+end.format('YYYY')) );
+    getChartUpdate( (start.format('YYYY')+"-"+start.format('M')+"-"+start.format('D') ) , (end.format('YYYY')+"-"+end.format('M')+"-"+end.format('D')) );
 }
