@@ -129,6 +129,10 @@ Route::group(['middleware' => 'auth'], function (){
         'uses' => 'DocumentoController@getDocumento',
         'as'=> 'doc.descargar'
     ]);
+    Route::get('documento/{id}/archivo', [
+        'uses'=>'DocumentoController@getFile',
+        'as'=>'doc.get'
+    ]);
     //******************************************************
 
     //******************************************************ADMINISTRACION

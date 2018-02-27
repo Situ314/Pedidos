@@ -20,7 +20,7 @@ class Documentos extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'ubicacion', 'salida_id', 'pedido_id', 'tipo_documento_id'
+        'nombre', 'mime', 'ubicacion', 'salida_id', 'pedido_id', 'tipo_documento_id'
     ];
 
     public function salida(){
@@ -35,7 +35,8 @@ class Documentos extends Model
             $archivo->getClientOriginalName();
 
         $this->attributes['ubicacion'] = $nombreArchivo;
+        $this->attributes['mime'] = $archivo->getClientMimeType();
 
-        Storage::disk('public')->put($nombreArchivo, \File::get($archivo));
+        Storage::disk('local')->put($nombreArchivo, \File::get($archivo));
     }
 }

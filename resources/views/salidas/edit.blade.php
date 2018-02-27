@@ -91,8 +91,10 @@
                             //echo "Salida Items <br>";
                             //echo $salida->salida_items.'<br>';
                             foreach ($salida->salida_items as $item){
+                                //echo "Salida Items 2 <br>";
+                                //echo $item.'<br>';
                                 if( array_key_exists($item->item_pedido_entregado_id,$arrayItemsEntregados) ){
-                                    $arrayItemsEntregados[$item->item_pedido_entregado_id] += $arrayItemsEntregados[$item->item_pedido_entregado_id];
+                                    $arrayItemsEntregados[$item->item_pedido_entregado_id] += $item->cantidad;
                                 }else{
                                     $arrayItemsEntregados[$item->item_pedido_entregado_id] = $item->cantidad;
                                 }

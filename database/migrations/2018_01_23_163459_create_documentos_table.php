@@ -19,6 +19,7 @@ class CreateDocumentosTable extends Migration
             $table->increments('id');
 
             $table->string('nombre');
+            $table->string('mime');
             $table->string('ubicacion');
 
             $table->integer('salida_id')->nullable()->unsigned();

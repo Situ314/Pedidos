@@ -148,6 +148,8 @@ $( document ).ready(function() {
             }).val('').trigger('change');
         }
     });
+
+
 });
 
 var options_proyectos = "";
@@ -354,16 +356,15 @@ function cambiarTextoUnidad(id) {
 //FUNCIONES PARA DOCUMENTOS
 var auxD = 1;
 function agregarDocumento() {
-    console.log("docuemtno");
     if( $('table#tableDoc').hasClass('hidden') ){
         $('table#tableDoc').removeClass('hidden');
     }
 
     var tr = '<tr>' +
         '<td scope="row" width="2%;">'+auxD+'</td>'+
-        '<td><input name="doc[]" id="inputFile'+auxD+'" class="hidden" onchange="javascript:mostrarNombre(this, '+auxD+');" type="file"><p id="fileName'+auxD+'"></p></td>'+
+        '<td><input name="doc[]" id="inputFile'+auxD+'" class="hidden" onchange="mostrarNombre(this, '+auxD+');" type="file"><p id="fileName'+auxD+'"></p></td>'+
         '<td><p id="fileSize'+auxD+'"></p></td>'+
-        '<td><a class="eliminar" onclick="javascript:eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
+        '<td><a class="eliminar" onclick="eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
         '</tr>';
     $('tbody#tbodyDoc').append(tr);
 
@@ -381,5 +382,5 @@ function mostrarNombre(obj, id) {
     // console.log(obj.files.item(0).size);
     // console.log(getReadableFileSizeString(obj.files.item(0).size));
     $('#fileName'+id).text( obj.files.item(0).name );
-    $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) )
+    $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) );
 }

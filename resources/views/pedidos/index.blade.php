@@ -155,6 +155,7 @@
             //DOCUMENTOS
             docStor: "{{route('documento.store')}}",
             storage: "{{ asset('storage/archivo') }}",
+            docGet: "{{route('doc.get',['id'=>':id'])}}",
             docPed: "{{route('post.docs')}}",
             descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
 

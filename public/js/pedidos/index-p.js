@@ -73,13 +73,13 @@ $('ul#myTab li a').click(function (e) {
                             var opciones = "";
                             switch (parseInt(estado)){
                                 case 1:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 2:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="javascript:asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 3:
                                 case 4:
@@ -87,12 +87,12 @@ $('ul#myTab li a').click(function (e) {
                                 case 6:
                                 case 7:
                                 case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
                             if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                             }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
@@ -110,38 +110,38 @@ $('ul#myTab li a').click(function (e) {
                             switch (parseInt(estado)){
                                 case 1:
                                 case 2:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 3:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 4:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
-                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                         '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 6:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 7:
                                 case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
                             if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                             }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
@@ -157,9 +157,9 @@ $('ul#myTab li a').click(function (e) {
                             var opciones = "";
                             switch (parseInt(estado)){
                                 case 1:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="javascript:verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 2:
                                 case 3:
@@ -168,12 +168,12 @@ $('ul#myTab li a').click(function (e) {
                                 case 6:
                                 case 7:
                                 case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
                             if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                             }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
@@ -193,22 +193,22 @@ $('ul#myTab li a').click(function (e) {
                                 case 3:
                                 case 4:
                                 case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 6:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                         '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 7:
                                 case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                        '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                             }
                             if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                             }
                             body+='<tr><th scope="row">'+(i+1)+'</th>' +
                                 '<td>'+response[i].codigo+'</td>' +
@@ -277,6 +277,8 @@ function getTabla() {
         var body = "";
         var table = "";
 
+        // console.log(response);
+
         if(response.length!=0){
             switch ( parseInt(variables.uR)){
                 case 1:
@@ -300,13 +302,13 @@ function getTabla() {
                         var opciones = "";
                         switch (parseInt(estado)){
                             case 1:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="javascript:asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 3:
                             case 4:
@@ -314,18 +316,18 @@ function getTabla() {
                             case 6:
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                             '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                             '<td><div class="btn-group" role="group">' +
                             opciones+
                             '</div></td>'+
@@ -337,40 +339,44 @@ function getTabla() {
                         switch (parseInt(estado)){
                             case 1:
                             case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                     '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 4:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
-                                    '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                     '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="javascript:verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 6:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                break;
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                             '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                             '<td><div class="btn-group" role="group">' +
                             opciones+
                             '</div></td>'+
@@ -380,9 +386,9 @@ function getTabla() {
                         var opciones = "";
                         switch (parseInt(estado)){
                             case 1:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="javascript:verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 2:
                             case 3:
@@ -391,18 +397,18 @@ function getTabla() {
                             case 6:
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                             '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
+                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
                             '<td><div class="btn-group" role="group">' +
                             opciones+
                             '</div></td>'+
@@ -416,22 +422,22 @@ function getTabla() {
                             case 3:
                             case 4:
                             case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 6:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                     '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-success-custom" onclick="javascript:verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
@@ -495,21 +501,21 @@ function getTabla() {
                             '<td>'+response[i].proyecto.nombre+'</td>' +
                             '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
                             '<td><div class="btn-group" role="group">' +
-                            '<button type="button" class="btn btn-info-custom" title="Ver lista '+response[i].codigo+'" onclick="javascript:verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
-                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
+                            '<button type="button" class="btn btn-info-custom" title="Ver lista '+response[i].codigo+'" onclick="verItems('+response[i].id+');"><i class="fa fa-sort-amount-desc"></i></button>' +
+                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
                             '</tr>';
                         break;
                     case 3:
                         var opciones = "";
                         switch (parseInt(estado)){
                             case 1:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="javascript:asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 3:
                             case 4:
@@ -517,8 +523,8 @@ function getTabla() {
                             case 6:
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
@@ -536,21 +542,21 @@ function getTabla() {
                         switch (parseInt(estado)){
                             case 1:
                             case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
                                     '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 4:
                             case 5:
                             case 6:
                             case 7:
                             case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                         }
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
@@ -570,9 +576,9 @@ function getTabla() {
                             '<td>'+response[i].proyecto.nombre+'</td>' +
                             '<td>'+response[i].solicitante.empleado.nombres+'</td>' +
                             '<td><div class="btn-group" role="group">' +
-                            '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                            '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="javascript:verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
+                            '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
+                            '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
                             '</tr>';
                         break;
                     case 6:
@@ -581,8 +587,8 @@ function getTabla() {
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                             '<td>'+response[i].proyecto.nombre+'</td>' +
                             '<td><div class="btn-group" role="group">' +
-                            '<button type="button" class="btn btn-info-custom" onclick="javascript:verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
-                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="javascript:verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
+                            '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>'+
+                            '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button></div></td>'+
                             '</tr>';
                         break;
                 }
@@ -803,14 +809,14 @@ function verSalidas(id, estado) {
 
                 switch (extension){
                     case 'pdf':
-                        formInputDoc = '<iframe src="/js/ViewerJS/?zoom=page-width#../../storage/'+response[i].documento.ubicacion+'" width="100%" height="600" allowfullscreen webkitallowfullscreen></iframe>';
+                        formInputDoc = '<iframe src="/js/ViewerJS/?zoom=page-width#/documento/'+response[i].documento.id+'/archivo" width="100%" height="600" allowfullscreen webkitallowfullscreen></iframe>';
                         break;
                     case "png":
                     case "PNG":
                     case "jpeg":
                     case "jpg":
                     case "JPG":
-                        formInputDoc = '<img src="'+rutas.storage.replace('archivo',response[i].documento.ubicacion)+'" style="width: 100%;">';
+                        formInputDoc = '<img src="'+rutas.docGet.replace(':id',response[i].documento.id)+'" style="width: 100%;">';
                         break;
                 }
 

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Session;
-use Response;
+use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\DB;
 
@@ -52,6 +52,7 @@ class DocumentoController extends Controller
 
         $array_documento = [
             'nombre'=>$request->documento->getClientOriginalName(),
+            'mime'=>$request->documento->getClientMimeType(),
             'ubicacion'=>$request->documento,
             'salida_id'=>$request->salida_id,
             'pedido_id'=>$salida->pedido_id,
@@ -149,7 +150,7 @@ class DocumentoController extends Controller
             ->get();
 
         foreach ($documentos as $documento){
-            $documento->size = Storage::disk('public')->size($documento->ubicacion);
+            $documento->size = Storage::disk('local')->size($documento->ubicacion);
         }
         return Response::json(
             $documentos
@@ -158,7 +159,16 @@ class DocumentoController extends Controller
 
     public function getDocumento($id){
         $documento = Documentos::find($id);
-        $ubicacion = storage_path('app/public/'.$documento->ubicacion);
+        $ubicacion = storage_path('app/'.$documento->ubicacion);
         return response()->download($ubicacion,$documento->nombre);
+    }
+
+    public function getFile($id){
+
+        $documento = Documentos::where('id', '=', $id)->first();
+        $file = Storage::disk('local')->get($documento->ubicacion);
+
+        return (new Response($file, 200))
+            ->header('Content-Type', $documento->mime);
     }
 }
