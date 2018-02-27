@@ -100,9 +100,14 @@ class AppServiceProvider extends ServiceProvider
         });
         //**************************************
 
+        //**************************************ITEM
         Item::created(function ($item){
            $this->CreateLog($item,"items");
         });
+        Item::updated(function ($item){
+            $this->UpdateLog($item,"items");
+        });
+        //**************************************
 
         //**************************************RESPONSABLE
         Responsable::created(function ($resp){

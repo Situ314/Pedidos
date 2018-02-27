@@ -197,6 +197,25 @@ class ResponsableController extends Controller
         $salida_almacen = new SalidaAlmacen($array_salida_almacen);
         $salida_almacen->save();
 
+        //CORRIGIENDO ITEMS NO CONFIRMADOS
+        for($i=0 ; $i<count($request->input_radio_entrega) ; $i++){
+            $item_pedido_entregado = ItemPedidoEntregado::find($request->item_id_edit[$i]);
+
+            $item = Item::find($item_pedido_entregado->item_id);
+            if($item->confirmado == 0){ //VERIFICA NOMBRE Y UNIDAD
+                echo $item.'<br>';
+                if( $item->nombre != strtoupper($request->txtItem[$i]) ){
+                    $item->nombre = strtoupper($request->txtItem[$i]);
+                }
+
+                if($item->unidad_id != $request->txtUnidad[$i]){
+                    $item->unidad_id = $request->txtUnidad[$i];
+                }
+                $item->confirmado = 1;
+                $item->save();
+            }
+        }
+
         //INGRESO DE ITEMS DE SALIDA
         $estado = 5;
         $estado_descripcion = "entregado ...";

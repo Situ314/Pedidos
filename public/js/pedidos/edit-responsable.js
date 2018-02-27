@@ -98,13 +98,19 @@ $(document).ready(function(){
 
                     if( $('#inputRadio'+i).val()==1 ){
                         console.log("input-"+i);
+                        var detalle = "";
+                        if($('#item_id'+i).length){
+                            detalle = $('#item_id'+i+' option:selected').text();
+                        }else{
+                            detalle = $('#txtItem'+i).val();
+                        }
                         tbody += '<tr>'+
-                                    '<th scope="row">'+aux+'</th>'+
-                                    '<td>'+$('#item_id'+i+' option:selected').text()+'</td>'+
-                                    '<td>'+$('#numCantidad'+i).val()+'</td>'+
-                                    '<td>'+$('#unidad_id'+i+' option:selected').text()+'</td>'+
-                                    '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
-                                '</tr>';
+                            '<th scope="row">'+aux+'</th>'+
+                            '<td>'+detalle+'</td>'+
+                            '<td>'+$('#numCantidad'+i).val()+'</td>'+
+                            '<td>'+$('#unidad_id'+i+' option:selected').text()+'</td>'+
+                            '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
+                            '</tr>';
 
                         aux++;
                         // console.log( $('#numCantidad'+i).val() );

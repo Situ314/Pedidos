@@ -73,6 +73,7 @@ class AsignacionesController extends Controller
                         //REGISTRANDO ITEM
                         $array_item = [
                             'nombre'=>strtoupper($request->txtItem[$i]),
+                            'confirmado'=>0,
                             'tipo_categoria_id'=>$request->tipo_cat_id,
                             'unidad_id'=>$request->txtUnidad[$i]
                         ];
@@ -87,7 +88,7 @@ class AsignacionesController extends Controller
                         ];
                         $item_pedido_entregado = new ItemPedidoEntregado($array_item_pedido_entregado);
                         $item_pedido_entregado->save();
-                        //***********************************************************
+                        //*************************************************************
                     }else{ //ES UN ITEM EN BASE DE DATOS
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
                         $array_item_pedido_entregado = [
@@ -105,6 +106,7 @@ class AsignacionesController extends Controller
                         //CREANDO ITEM ESCRITO - REGISTRANDO EL ITEM
                         $array_item = [
                             'nombre'=>strtoupper($request->txtItem[$i]),
+                            'confirmado'=>0,
                             'tipo_categoria_id'=>$request->tipo_cat_id,
                             'unidad_id'=>$request->txtUnidad[$i]
                         ];

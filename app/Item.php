@@ -20,7 +20,7 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'descripcion', 'precio_unitario', 'id_producto_cubo','tipo_categoria_id','unidad_id'
+        'nombre', 'descripcion', 'precio_unitario', 'id_producto_cubo', 'confirmado','tipo_categoria_id','unidad_id'
     ];
     /**
      * The attributes that should be mutated to dates.

@@ -166,8 +166,11 @@
                     unidades: {!! json_encode($unidades->toArray()) !!},
                     items: {!! json_encode($items->toArray()) !!},
                     categoriaSelect: {{$pedido->tipo_categoria_id}},
+
+                    //ITEMS ENTREGA
                     cantItemEntrega: {{count($pedido->items_entrega)}},
                     items_entrega: {!! json_encode($pedido->items_entrega) !!},
+
                     proy: {!! json_encode($proyectos->toArray()) !!},
                     emp: {{ $pedido->proyecto->empresa_id }},
                     pr: {{ $pedido->proyecto->id }},
