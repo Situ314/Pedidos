@@ -22,7 +22,7 @@ class SalidaAlmacenController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('resp');
+        $this->middleware('resp',['except'=>'postSalidaItems']);
     }
     /**
      * Display a listing of the resource.
