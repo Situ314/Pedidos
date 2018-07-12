@@ -60,27 +60,7 @@
 
         </div>
     </div>
-    {{--<div class="row">
-        <div class="col-md-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Items Solicitados <small>Tabla con los items pedidos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <br>
-                    <div class="table-responsive">
-                        @include('responsable.parts.items-pedidos')
-                    </div>
-                </div>
-            </div>
 
-        </div>
-    </div>--}}
     {{ Form::open( array('route' => ['responsable.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask', 'id' => 'formUpdateResponsable') ) }}
     <input name="num_solicitud" hidden>
 

@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel fixed_height_260 scroll-vertical">
+            <div class="x_panel fixed_height_260">
                 <div class="x_title">
                     <h2>Pedido <small>Datos del pedido</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -22,7 +22,7 @@
                             <p>{{$pedido->created_at}}</p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <p><b><i class="fa fa-sort-numeric-asc"></i> Codigo: </b></p>
+                            <p><b><i class="fa fa-barcode"></i> Codigo: </b></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <p>{{$pedido->codigo}}</p>
@@ -34,7 +34,7 @@
                             <p>{{$pedido->proyecto->empresa->nombre}}</p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <p><b><i class="fa fa-institution"></i> Proyecto: </b></p>
+                            <p><b><i class="fa fa-home"></i> Proyecto: </b></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <p>{{$pedido->proyecto->nombre}}</p>
