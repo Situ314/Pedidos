@@ -170,7 +170,7 @@ $('ul#myTab li a').click(function (e) {
                             switch (parseInt(estado)){
                                 case 1:
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                         '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                     break;
                                 case 2:
@@ -430,7 +430,7 @@ function getTabla() {
                         switch (parseInt(estado)){
                             case 1:
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-sort-amount-desc"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'" onclick="verificarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                     '<button type="button" class="btn btn-default" title="Ver estados" onclick="verProgreso('+response[i].id+');"><i class="fa fa-list-alt"></i></button>';
                                 break;
                             case 2:
@@ -753,10 +753,6 @@ function verItems(id) {
 function asignarResponsable(id) {
     $('#modalAsignacion').modal('show');
     $('input[name=pedido_responsable_id]').val(id);
-}
-
-function verificarPedido(id) {
-    console.log(id);
 }
 
 function verProgreso(id) {

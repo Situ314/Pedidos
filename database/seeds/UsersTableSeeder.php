@@ -81,6 +81,13 @@ class UsersTableSeeder extends Seeder
             'rol_id' => 3
         ]);
 
+        DB::table('users')->insert([ //12
+            'username' => 'admin',
+            'password' => bcrypt('adminpedidos123%'),
+            'empleado_id' => null,
+            'rol_id' => 2
+        ]);
+
         /*DB::table('users')->insert([ //12
             'username' => 'res1',
             'email' => null,

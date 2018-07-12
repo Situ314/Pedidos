@@ -368,7 +368,7 @@ function agregarDocumento() {
         '</tr>';
     $('tbody#tbodyDoc').append(tr);
 
-    $('#inputFile'+auxD).trigger('click');
+    $('#imgPreview'+auxD).trigger('click');
     // var filename = $('#inputFile'+auxD).val().split('\\').pop();
     // console.log(filename);
 
