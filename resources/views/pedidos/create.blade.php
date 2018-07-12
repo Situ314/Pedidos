@@ -22,16 +22,8 @@
                     <br>
                     @include('pedidos.form')
                 </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <div class="x_panel">
                 <div class="x_title">
-                    <h2>Documento <small>Formulario que permite subir documentos si son necesarios</small></h2>
+                    <h2>Documento <small>De ser necesario se debe agregar documentos</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -42,13 +34,6 @@
                     <br>
                     <button type="button" class="btn btn-success-custom" onclick="javascript:agregarDocumento();"><i class="fa fa-plus"></i> Agregar Documentos</button>
                     @include('pedidos.parts.docs-table')
-                    {{--<div id="hide" class="col-lg-8 col-xs-8">
-                        <label class="hand-cursor">
-                            <input name="doc[]" type="file" nv-file-select uploader="$ctrl.uploader"/>
-                            <span class="fa fa-camera"></span>
-                            <span class="photo_text hidden-xs">Photo</span>
-                        </label>
-                    </div>--}}
                 </div>
             </div>
 
@@ -73,7 +58,7 @@
                     <div class="table-responsive">
                         @include('pedidos.parts.items-table')
                     </div>
-                    <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-right" disabled="true" title="Primero seleccione un tipo de categoria">
+                    <button id="btnAgregarItem" type="button" onclick="agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
                         <i class="fa fa-plus"> Agregar Item</i>
                     </button>
                     <br>

@@ -152,7 +152,7 @@ class DocumentoController extends Controller
         foreach ($documentos as $documento){
             $documento->size = Storage::disk('local')->size($documento->ubicacion);
         }
-        return Response::json(
+        return response()->json(
             $documentos
         );
     }

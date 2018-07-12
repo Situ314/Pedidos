@@ -251,10 +251,10 @@ function agregarItem() {
     // console.log("Agregando...");
     var tr = "<tr>";
         tr+="<th scope='row'>"+(auxU+1)+"</th>"+
-            "<td><input name='txtUnidad[]' id='txtUnidad"+auxU+"' class='hidden'/><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required disabled onchange='javascript:cambiarTextoUnidad("+auxU+");'>"+option_unidades+"</select></td>"+
-            "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' min='0.1' required></td>"+
             // "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
             "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase' onkeyup='javascript:buscarItem(this.value,"+auxU+");'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required onchange='javascript:cambiarUnidad("+auxU+");'>"+options_items+"</select></td>"+
+            "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' min='0.1' required></td>"+
+            "<td><input name='txtUnidad[]' id='txtUnidad"+auxU+"' class='hidden'/><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required disabled onchange='javascript:cambiarTextoUnidad("+auxU+");'>"+option_unidades+"</select></td>"+
             "<td>" +
             "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");' title='Editar item "+(auxU+1)+"'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
             "<a class='eliminar' onclick='javascript:eliminarFila(this);' title='Eliminar item "+(auxU+1)+"'><i class='fa fa-close'></i></a>"+
@@ -368,7 +368,7 @@ function agregarDocumento() {
         '</tr>';
     $('tbody#tbodyDoc').append(tr);
 
-    $('#imgPreview'+auxD).trigger('click');
+    $('#inputFile'+auxD).trigger('click');
     // var filename = $('#inputFile'+auxD).val().split('\\').pop();
     // console.log(filename);
 
