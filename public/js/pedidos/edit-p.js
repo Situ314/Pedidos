@@ -39,12 +39,8 @@ $( document ).ready(function() {
             $('.items-select2').append(options_items);
 
             for(var i=0;i<$('.items-select2').parent().length;i++){
-                // console.log( $('.items-select2').parent()[i] );
-                // console.log( $($('.items-select2').parent()[i]).data('content') );
 
                 if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
-                    console.log($('.items-select2').parent()[i].id);
-                    console.log($('.items-select2').parent()[i].id.slice(2));
                     var num = $('.items-select2').parent()[i].id.slice(2);
                     $('#item_id'+num).select2({
                         allowClear: true,
@@ -58,12 +54,8 @@ $( document ).ready(function() {
 
         }else{
             for(var i=0;i<$('.items-select2').parent().length;i++){
-                // console.log( $('.items-select2').parent()[i] );
-                // console.log( $($('.items-select2').parent()[i]).data('content') );
 
                 if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
-                    console.log($('.items-select2').parent()[i].id);
-                    console.log($('.items-select2').parent()[i].id.slice(2));
                     var num = $('.items-select2').parent()[i].id.slice(2);
                     $('#item_id'+num).select2({
                         allowClear: true,
@@ -103,7 +95,6 @@ function getUnidades() {
 }
 
 function eliminarFila(obj) {
-    console.log(obj);
     $(obj).parent().parent().remove();
 }
 
@@ -149,8 +140,6 @@ function editarCampo(id) {
 
 //AQUI YACE EL ERROR DE LAS UNIDADES
 function cambiarUnidad(id) {
-    // console.log("Select cambiar unidad: "+id);
-
     if(typeof $('#item_id'+id).find('option:selected').val()!="undefined"){
 
         $('#unidad_id'+id).prop('disabled', true);
@@ -170,10 +159,7 @@ function cambiarUnidad(id) {
 }
 
 function cambiarTextoUnidad(id) {
-    // console.log("Select unidad: " + id);
-
     if (typeof $('#unidad_id' + id).find('option:selected').val() != "undefined") {
-        console.log("Unidad: "+$('#item_id' + id).find('option:selected').data('unidad'));
         $('#txtUnidad' + id).val($('#unidad_id' + id).find('option:selected').val());
     } else {
         $('#txtUnidad' + id).val(0);

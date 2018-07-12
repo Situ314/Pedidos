@@ -56,7 +56,7 @@
                     <div class="table-responsive">
                         @include('pedidos.parts.items-table-edit')
                     </div>
-                    <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-right" disabled="true" title="Primero seleccione un tipo de categoria">
+                    <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
                         <i class="fa fa-plus"> Agregar Item</i>
                     </button>
                     <br>
@@ -80,7 +80,6 @@
 
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/edit-edit-p.js') }}
-
 
     {{ Html::script('/js/pedidos/agregar-item-boton.js') }}
 

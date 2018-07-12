@@ -55,7 +55,7 @@
                     <div class="table-responsive">
                         @include('asignador.parts.items-table')
                     </div>
-                    <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-right" disabled="true" title="Primero seleccione un tipo de categoria">
+                    <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
                         <i class="fa fa-plus"> Agregar Item</i>
                     </button>
                     <br>

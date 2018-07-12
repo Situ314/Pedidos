@@ -154,7 +154,8 @@
                     proy: {!! json_encode($proyectos->toArray()) !!},
                     emp: {{ $pedido->proyecto->empresa_id }},
                     pr: {{ $pedido->proyecto->id }},
-                    ped: {{ $pedido->id }}
+                    ped: {{ $pedido->id }},
+                    usu: {{\Illuminate\Support\Facades\Auth::id()}}
                 }
             ]
         };

@@ -48,6 +48,7 @@ class ResponsableController extends Controller
 
         $salidas = SalidaAlmacen::where('responsable_entrega_id','=',Auth::id())
             ->whereIn('pedido_id',$estados_pedidos_id_array)
+            ->orderBy('id','desc')
             ->get();
 
 //        DB::enableQueryLog();
@@ -173,6 +174,7 @@ class ResponsableController extends Controller
             ->orderBy('salida_almacen.id','desc')
             ->first();
 
+        $solicitud_saliente = 1;
         $solicitud_saliente = 1;
         $salidas = null;
         if($num_solicitud != null){ //DEBERIA PREGUNTAR SI TIENE UN PEDIDO RELACIONADO

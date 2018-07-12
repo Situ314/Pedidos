@@ -26,8 +26,6 @@ function edicion(){
 
     $('.select_unidad_temp').prop('disabled',false);
     for(var i=0;i<cantItemTemp;i++){
-        console.log(config.variables[0].item_pedido_temp[i].item.unidad_id);
-
         $('#unidad_id'+i).select2({
             allowClear: true,
             placeholder: "Seleccione...",
