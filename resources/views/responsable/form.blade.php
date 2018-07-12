@@ -30,7 +30,7 @@
         @endif
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="area" class="control-label">Area *</label>
+        <label for="area" class="control-label">* Area</label>
         {{Form::text('area',null, ['class'=>'form-control text-uppercase', 'required'])}}
         @if ($errors->has('area'))
             <span class="help-block">
@@ -42,7 +42,7 @@
 
 <div class="form-group">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="responsable_entrega_id" class="control-label">Responsable de Entrega *</label>
+        <label for="responsable_entrega_id" class="control-label">* Responsable de Entrega</label>
         <select name="responsable_entrega_id" class="js-placeholder-single" required>
             @foreach($responsables as $user)
                 @if(count($user->empleado) != 0)

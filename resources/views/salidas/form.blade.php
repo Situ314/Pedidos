@@ -5,7 +5,7 @@
         <input name="empresa_id" hidden value="{{$salida->proyecto->empresa_id}}">
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Proyecto Salida</label>
+        <label for="motivo" class="control-label"><i class="fa fa-home"></i> Proyecto Salida</label>
         <p id="txtProyecto">{{$salida->proyecto->nombre}}</p>
         <input name="proyecto_id" hidden value="{{$salida->proyecto->id}}">
     </div>
@@ -30,7 +30,7 @@
 
 <div class="form-group">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="responsable_entrega_id" class="control-label">Responsable de Entrega *</label>
+        <label for="responsable_entrega_id" class="control-label">* Responsable de Entrega</label>
         {{--        {{Form::select('responsable_entrega_id', $responsables->pluck('empleado_usuario','id'), null, ['class' => 'js-placeholder-single', 'required'])}}--}}
         <select name="responsable_entrega_id" class="js-placeholder-single" required>
             @foreach($responsables as $user)

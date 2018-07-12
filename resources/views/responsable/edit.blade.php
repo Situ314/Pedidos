@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <label for="motivo" class="control-label"><i class="fa fa-sort-numeric-asc"></i> Codigo</label>
+                            <label for="motivo" class="control-label"><i class="fa fa-barcode"></i> Codigo</label>
                             <p>{{$pedido->codigo}}</p>
                         </div>
 
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <label for="motivo" class="control-label"><i class="fa fa-institution"></i> Proyecto</label>
+                            <label for="motivo" class="control-label"><i class="fa fa-home"></i> Proyecto</label>
                             <p id="txtProyecto">{{$pedido->proyecto->nombre}}</p>
                         </div>
 
