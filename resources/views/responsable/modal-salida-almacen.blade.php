@@ -52,7 +52,7 @@
                         </tr>
                         <tr>
                             <td colspan="9" style="font-weight: bold;">
-                                Courrier: <span id="txtCourrierSalida" style="font-weight: normal !important;"></span>
+                                Delivery: <span id="txtCourrierSalida" style="font-weight: normal !important;"></span>
                             </td>
                         </tr>
                         </tbody>

@@ -60,7 +60,7 @@
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="responsable_entrega_id" class="control-label">Courrier</label>
+        <label for="responsable_entrega_id" class="control-label">Delivery</label>
         {{Form::select('courrier_id', $empleados->pluck('nombre_completo','id'), null, ['class' => 'js-placeholder-single'])}}
         @if ($errors->has('courrier_id'))
             <span class="help-block">

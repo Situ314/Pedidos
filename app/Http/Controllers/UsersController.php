@@ -135,7 +135,7 @@ class UsersController extends Controller
 
         $usuario = User::find($id);
         $usuario->username = $request->username;
-        $usuario->password = $request->password;
+        $usuario->password = bcrypt($request->password);
         $usuario->empleado_id = $request->empleado_id;
         $usuario->rol_id = $request->rol_id;
         $usuario->save();

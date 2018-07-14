@@ -13,15 +13,12 @@ $( document ).ready(function(){
     //Agregando rutas como variables clobales
     verificacion = rutas.verificacion.replace(":id","");
     verifiAut = rutas.verificacionAutorizador.replace(":id","");
-    // console.log(verificacion);
     getTabla();
 
     setInterval(setTabsCantidad, 5000);
 });
 
 $('ul#myTab li a').click(function (e) {
-    // console.log(this.id);
-    // console.log(this.id.split('-tab'));
     var estado = this.id.split('-tab')[0];
 
     var route = rutas.pedidos;
@@ -300,11 +297,7 @@ function getTabla() {
 
     var estado = null;
     for(var i=0 ; i < $('#myTab').children().length ; i++){
-        // console.log( $('#myTab').children()[i] );
-        // console.log( $($('#myTab').children()[i]).hasClass("active") );
         if( $($('#myTab').children()[i]).hasClass("active") ){
-            // console.log("Estado: ");
-            // console.log( $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad') );
             estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
         }
     }
@@ -731,7 +724,6 @@ function verItems(id) {
     }).done(function (response){
         var tableItems='';
         var contItemsPedidos = 1;
-        console.log(response);
         if(response.items_pedido.length>0 || response.items_temp_pedido.length>0){
             var bodyItems = '';
             for(var i=0;i<response.items_temp_pedido.length;i++){
@@ -814,10 +806,11 @@ function verProgreso(id) {
         beforeSend: function(e){
         }
     }).done(function (response){
-        console.log(response);
+
         $('#tbodyEstadosPedido').empty();
         var body = "";
         for(var i=0;i<response.estados.length;i++){
+
             var descripcion = null;
             if(response.estados_pedido[i].motivo!=null){
                 descripcion = response.estados_pedido[i].motivo;
@@ -825,10 +818,18 @@ function verProgreso(id) {
                 descripcion = response.estados[i].descripcion;
             }
 
+            var empleado = "";
+            //EMPLEADO VACIO
+            if(response.estados_pedido[i].usuario.empleado==null)
+                empleado = response.estados_pedido[i].usuario.username;
+            else
+                empleado=response.estados_pedido[i].usuario.empleado.nombres;
+
+
             body+='<tr>' +
                 '<td>'+response.estados[i].nombre+'</td>'+
                 '<td>'+response.estados_pedido[i].created_at+'</td>'+
-                '<td>'+response.estados_pedido[i].usuario.empleado.nombres+'</td>'+
+                '<td>'+empleado+'</td>'+
                 '<td>'+descripcion+'</td>'+
                 '</tr>';
         }
@@ -858,15 +859,12 @@ function verSalidas(id, estado) {
         beforeSend: function(e){
         }
     }).done(function (response){
-        console.log(response);
         $('#accordionSalidaItems').empty();
         var panelSalida = "";
         for(var i=0; i<response.length ; i++){
-            console.log(response[i]);
             var tableBody = "";
 
             for(var j=0; j<response[i].salida_items.length ;j++){
-                // console.log(response[i].salida_items[j]);
                 var obs = "";
 
                 if(response[i].salida_items[j].observacion != null){
@@ -988,22 +986,15 @@ function verSalidas(id, estado) {
 
 function buscarPedido() {
     var texto = $('#txtBuscarPedido').val();
-    console.log(texto);
     var estado = null;
     for(var i=0 ; i < $('#myTab').children().length ; i++){
-        // console.log( $('#myTab').children()[i] );
-        // console.log( $($('#myTab').children()[i]).hasClass("active") );
         if( $($('#myTab').children()[i]).hasClass("active") ){
-            // console.log("Estado: ");
-            // console.log( $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad') );
             estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
         }
     }
 }
 
 function verDocumentos(id) {
-    console.log(id);
-
     var route = rutas.docPed;
     var token = rutas.token;
 
@@ -1018,7 +1009,6 @@ function verDocumentos(id) {
         beforeSend: function(e){
         }
     }).done(function (response){
-        console.log(response);
         var tr = '';
         for(var i=0 ; i<response.length ;i++){
             var descargar = rutas.descDoc;
@@ -1041,8 +1031,6 @@ function verSalidasFinalizado(id) {
     var route = rutas.salidas;
     var token = rutas.token;
 
-    console.log(route);
-
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -1054,11 +1042,9 @@ function verSalidasFinalizado(id) {
         beforeSend: function(e){
         }
     }).done(function (response){
-        console.log(response);
         $('#accordionSalidaItems').empty();
         var panelSalida = "";
         for(var i=0; i<response.length ; i++){
-            console.log(response[i]);
             var tableBody = "";
 
             for(var j=0; j<response[i].salida_items.length ;j++){
