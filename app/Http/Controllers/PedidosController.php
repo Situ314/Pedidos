@@ -466,8 +466,8 @@ class PedidosController extends Controller
 
     public function postPedidos(Request $request){
         switch (Auth::user()->rol_id){
-            case 1:
-            case 2:
+            case 1: //ROOT
+            case 2: //ADMIN
             /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
 
                 ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
@@ -485,7 +485,7 @@ class PedidosController extends Controller
                     ->whereNull('t2.id')
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
-            case 3:
+            case 3: //ASIGNADOR
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -496,7 +496,7 @@ class PedidosController extends Controller
                     ->whereNull('t2.id')
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
-            case 4:
+            case 4: //RESPONSABLE
                 //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
                 $pedidos_asignados_array = DB::table('asignaciones as t1')
                     ->select('t1.pedido_id')
@@ -537,19 +537,40 @@ class PedidosController extends Controller
                 }
 
                 break;
-            case 5:
-                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
-                    ->select('t1.pedido_id as id')
-                    ->leftJoin('estados_pedidos as t2',function ($join){
-                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
-                            ->on('t1.id', '<', 't2.id');
-                    })
-                    ->where('t1.user_id',Auth::id())
-                    ->whereNull('t2.id')
-                    ->where('t1.estado_id','=',$request->estado_id);
+            case 5: //AUTORIZADOR
+                $estados_pedidos_id_array = null;
 
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                switch (intval($request->estado_id)){
+                    case 2:
+                        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                            ->select('t1.pedido_id as id')
+                            ->leftJoin('estados_pedidos as t2',function ($join){
+                                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                                    ->on('t1.id', '<', 't2.id');
+                            })
+                            ->where('t1.user_id',Auth::id())
+                            ->whereNull('t2.id')
+                            ->where('t1.estado_id','=',$request->estado_id);
+                        break;
+                    default:
+                        $usuarios_responsable_array = Responsable::select('solicitante_id')
+                            ->where('autorizador_id','=',Auth::id())
+                            ->get();
+
+                        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                            ->select('t1.pedido_id as id')
+                            ->leftJoin('estados_pedidos as t2',function ($join){
+                                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                                    ->on('t1.id', '<', 't2.id');
+                            })
+                            ->whereIn('t1.user_id',$usuarios_responsable_array)
+                            ->whereNull('t2.id')
+                            ->where('t1.estado_id','=',$request->estado_id);
+                        break;
+                }
                 break;
-            case 6:
+            case 6: //USUARIO
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
