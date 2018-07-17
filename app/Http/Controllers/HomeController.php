@@ -28,13 +28,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->rol_id < 5){
-            $estados = Estado::all();
-            return view('dash')
-                ->withEstados($estados);
-        }else{
-            return redirect()->action('PedidosController@index');
+        switch (Auth::user()->rol_id){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                $estados = Estado::all();
+                return view('dash')
+                    ->withEstados($estados);
+            break;
+            case 6:
+                return redirect()->action('PedidosController@index');
+                break;
+            case 7:
+                return redirect()->action('ResponsableEntregaController@index');
+                break;
         }
+
     }
 
     public function postPedidosGroupFecha($fecha_inicio, $fecha_final){

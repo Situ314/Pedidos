@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckResponsableEntrega;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -55,6 +56,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\CheckAdmin::class,
         'aut' => \App\Http\Middleware\CheckAutorizador::class,
         'asig' => \App\Http\Middleware\CheckAsignador::class,
-        'resp' => \App\Http\Middleware\CheckResponsable::class
+        'resp' => \App\Http\Middleware\CheckResponsable::class,
+        'respent'=>\App\Http\Middleware\CheckResponsableEntrega::class
     ];
 }

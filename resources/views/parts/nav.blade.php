@@ -52,8 +52,9 @@
                     </li>
                     @endif
                     <li>
-                        {{--<a href="{{route('dash.index')}}"><i class="fa fa-dashboard"></i> Dashboard</a>--}}
+
                     </li>
+                    @if(\Illuminate\Support\Facades\Auth::user()->rol_id != 7)
                     <li>
                         <a><i class="fa fa-space-shuttle"></i> Pedidos <span class="fa fa-chevron-down">
                             </span></a>
@@ -62,7 +63,8 @@
                             <li><a href="{{route('pedidos.index')}}">Listado</a></li>
                         </ul>
                     </li>
-                    @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4)
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4 || \Illuminate\Support\Facades\Auth::user()->rol_id == 7)
                         <li>
                             <a href="{{ route('responsable.index') }}"><i class="fa fa-print"></i> Impresiones</a>
                         </li>

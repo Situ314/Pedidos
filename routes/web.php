@@ -165,6 +165,10 @@ Route::group(['middleware' => 'auth'], function (){
     //******************************************************CAMBIO DE CONTRASEÑA
     Route::resource('/cambiar-pass','UpdatePasswordController');
     //******************************************************
+
+    //******************************************************CAMBIO DE CONTRASEÑA
+    Route::resource('/responsable-entrega','ResponsableEntregaController');
+    //******************************************************
 });
 //Route::get('/home', 'HomeController@index');
 /*Route::get('/batch',function (){
