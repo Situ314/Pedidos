@@ -86,6 +86,16 @@ class UsersController extends Controller
             $responsable->save();
         }
 
+        if($request->rol_id==5){ //CUANDO ES AUTORIZADOR SE GENERA EL MISMO
+            $array_responsable = [
+                'autorizador_id'=>$usuario->id,
+                'solicitante_id'=>$usuario->id
+            ];
+            $responsable = new Responsable($array_responsable);
+            $responsable->save();
+        }
+
+
         Session::flash('success', "Usuario ".$usuario->username." creado correctamente...");
         return redirect()->back();
     }
