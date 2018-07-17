@@ -104,6 +104,9 @@ class SalidaAlmacenController extends Controller
         $users = User::where('rol_id','=',4)
             ->get();
 
+        $resp_entrega = User::where('rol_id','=',7)
+            ->get();
+
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
 
@@ -121,6 +124,7 @@ class SalidaAlmacenController extends Controller
 
             ->withPedido($pedido)
             ->withResponsables($users)
+            ->withResponsablessentrega($resp_entrega)
             ->withEmpleados($empleados)
 
             ->withEmpresas($empresas)

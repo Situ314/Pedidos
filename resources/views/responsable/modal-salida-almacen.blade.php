@@ -47,7 +47,7 @@
                         </tr>
                         <tr>
                             <td colspan="9" style="font-weight: bold;">
-                                Responsable: <span id="txtResponsableSalida" style="font-weight: normal !important;"></span>
+                                Responsable de Entrega: <span id="txtResponsableSalida" style="font-weight: normal !important;"></span>
                             </td>
                         </tr>
                         <tr>

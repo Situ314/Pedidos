@@ -44,13 +44,24 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <label for="responsable_entrega_id" class="control-label">* Responsable de Entrega</label>
         <select name="responsable_entrega_id" class="js-placeholder-single" required>
-            @foreach($responsables as $user)
-                @if(count($user->empleado) != 0)
-                    <option value="{{$user->id}}">{{$user->empleado->nombre_completo}} ({{$user->username}})</option>
-                @else
-                    <option value="{{$user->id}}">{{$user->username}}</option>
-                @endif
-            @endforeach
+            <optgroup label="Responsables de Entrega">
+                @foreach($responsablessentrega as $user)
+                    @if(count($user->empleado) != 0)
+                        <option value="{{$user->id}}">{{$user->empleado->nombre_completo}} ({{$user->username}})</option>
+                    @else
+                        <option value="{{$user->id}}">{{$user->username}}</option>
+                    @endif
+                @endforeach
+            </optgroup>
+            <optgroup label="Responsables">
+                @foreach($responsables as $user)
+                    @if(count($user->empleado) != 0)
+                        <option value="{{$user->id}}">{{$user->empleado->nombre_completo}} ({{$user->username}})</option>
+                    @else
+                        <option value="{{$user->id}}">{{$user->username}}</option>
+                    @endif
+                @endforeach
+            </optgroup>
         </select>
         @if ($errors->has('responsable_entrega_id'))
             <span class="help-block">

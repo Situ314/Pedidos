@@ -126,6 +126,9 @@ class ResponsableController extends Controller
         $users = User::where('rol_id','=',4)
             ->get();
 
+        $resp_entrega = User::where('rol_id','=',7)
+            ->get();
+
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
 
@@ -140,6 +143,7 @@ class ResponsableController extends Controller
 
             ->withPedido($pedido)
             ->withResponsables($users)
+            ->withResponsablessentrega($resp_entrega)
             ->withEmpleados($empleados)
 
             ->withEmpresas($empresas)
@@ -174,7 +178,6 @@ class ResponsableController extends Controller
             ->orderBy('salida_almacen.id','desc')
             ->first();
 
-        $solicitud_saliente = 1;
         $solicitud_saliente = 1;
         $salidas = null;
         if($num_solicitud != null){ //DEBERIA PREGUNTAR SI TIENE UN PEDIDO RELACIONADO
