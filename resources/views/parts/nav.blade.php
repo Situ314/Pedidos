@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a class="site_title"><i class="fa fa-location-arrow" style="margin-left: -6px;"></i> <span>SPT</span></a>
+            <a class="site_title"><i class="fa fa-location-arrow" style="margin-left: -6px;"></i> <span>SCSP</span></a>
         </div>
 
         <div class="clearfix"></div>

@@ -33,11 +33,11 @@ class HomeController extends Controller
             case 2:
             case 3:
             case 4:
-            case 5:
                 $estados = Estado::all();
                 return view('dash')
                     ->withEstados($estados);
-            break;
+                break;
+            case 5:
             case 6:
                 return redirect()->action('PedidosController@index');
                 break;

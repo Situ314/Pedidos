@@ -70,13 +70,16 @@
     <div class="row">
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-md-offset-2">
             <div class="panel panel-default login-panel">
-                <div class="panel-heading">Bienvenido a Pedidos</div>
+                <div class="panel-heading">
+                    <img src="http://solicitudes.pragmainvest.com.bo/empresas/trebol/trebol.jpg" width="50"/>
+                    Bienvenido al Sistema de Pedidos
+                </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-                            <img src="{{ asset('images/avatar.png') }}">
+                            <img src="{{asset('images/avatar.png')}}">
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center col-rigth-padding">
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                                 {{ csrf_field() }}
                                 <div class="row">

@@ -25,7 +25,7 @@
                         @if(\Illuminate\Support\Facades\Auth::id()!=$responsable->solicitante->id)
                         <tr>
                             <th scope="row">@php echo $aux; $aux++; @endphp</th>
-                            <td>{{$responsable->solicitante->empleado->nombres}}</td>
+                            <td>{{$responsable->solicitante->empleado->nombre_completo}}</td>
                             <td>{{$responsable->solicitante->username}}</td>
                             <td>{{$responsable->solicitante->email}}</td>
                             <td>

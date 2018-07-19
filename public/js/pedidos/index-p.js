@@ -108,8 +108,8 @@ $('ul#myTab li a').click(function (e) {
                                 '<td>'+response[i].codigo+'</td>' +
                                 '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                                 '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].created_at+'</td>' +
                                 '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                                '<td>'+response[i].created_at+'</td>' +
                                 '<td><div class="btn-group" role="group">' +
                                 opciones+
                                 '</div></td>'+
@@ -384,8 +384,8 @@ function getTabla() {
                             '<td>'+response[i].codigo+'</td>' +
                             '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                             '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
                             '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                            '<td>'+response[i].created_at+'</td>' +
                             '<td><div class="btn-group" role="group">' +
                             opciones+
                             '</div></td>'+

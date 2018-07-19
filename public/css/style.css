@@ -7011,6 +7011,9 @@ textarea.form-control {
   margin-bottom: 5px!important;
   margin-left: 0px!important;
 }
+.col-rigth-padding {
+  padding: 35px;
+}
 @media print {
   .no-print {
     visibility: hidden;
