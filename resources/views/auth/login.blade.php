@@ -71,7 +71,7 @@
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 col-md-offset-2">
             <div class="panel panel-default login-panel">
                 <div class="panel-heading">
-                    <img src="http://solicitudes.pragmainvest.com.bo/empresas/trebol/trebol.jpg" width="50"/>
+                    <img src="http://solicitudes.pragmainvest.com.bo/empresas/tepco_srl/tepco_srl.jpg" width="100"/>
                     Bienvenido al Sistema de Pedidos
                 </div>
                 <div class="panel-body">
