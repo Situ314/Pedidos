@@ -28,7 +28,8 @@ class UsersController extends Controller
         $roles = Rol::all();
         $autorizadores = User::where('rol_id','=',5)
             ->get();
-        $empleados = Empleado::all();
+        $empleados = Empleado::where('estado','=','Activo')
+            ->get();
 
         if(Auth::user()->rol_id == 2){ //USUARIO ADMINISTRADOR
             $usuarios = $usuarios

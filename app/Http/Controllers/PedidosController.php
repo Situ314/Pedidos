@@ -660,13 +660,18 @@ class PedidosController extends Controller
 
                 break;
             case 5: //AUTORIZADOR
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
-                    ->where('t1.user_id',Auth::id())
+                    ->whereIn('t1.user_id', $usuarios_responsable_array)
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->get();

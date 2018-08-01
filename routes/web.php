@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
 //    return view('welcome');
     if(\Illuminate\Support\Facades\Auth::check()){
@@ -174,4 +173,4 @@ Route::group(['middleware' => 'auth'], function (){
 /*Route::get('/batch',function (){
     system("cmd /c C:\Users\djauregui\Desktop\pr.bat");
     system("./bin/winexe -U Administrador%Password //172.20.1.163 'D:\CuboBatchs\CI_batch.bat'");
-});*/
+});

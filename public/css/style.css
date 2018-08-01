@@ -6996,6 +6996,12 @@ textarea.form-control {
   font-size: 20px;
   color: #fff;
 }
+.login-panel .panel-heading .panel-heading-left-logo img {
+  width: 100px;
+}
+.login-panel .panel-heading .panel-heading-titulo {
+  font-size: 20px;
+}
 .login-panel .panel-body {
   background-color: #ededed;
   border-radius: 0px 0px 15px 15px;
@@ -7011,8 +7017,9 @@ textarea.form-control {
   margin-bottom: 5px!important;
   margin-left: 0px!important;
 }
-.col-rigth-padding {
-  padding: 35px;
+.form-login-padding {
+  padding-right: 25px;
+  padding-top: 15px;
 }
 @media print {
   .no-print {

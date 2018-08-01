@@ -133,7 +133,8 @@ class ResponsableController extends Controller
         $proyectos = Proyecto::all();
 
         //FILTRAR A EMPLEADOS A TRAVES DE SU CARGO - CHOFER, COURRIER, ETC
-        $empleados = Empleado::all();
+        $empleados = Empleado::where('estado','=','Activo')
+            ->get();
 
         return view('responsable.edit')
             ->withTipos($tipos)
