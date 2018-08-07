@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Empleado','empleado_id','id');
     }
 
+    public function empleado_nombres(){
+        return $this->belongsTo('App\Empleado','empleado_id','id')
+            ->select(['id','nombres','apellido_1','apellido_2','apellido_3']);
+    }
+
     /*public function proyectos(){
         return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id');
     }*/

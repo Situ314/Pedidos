@@ -570,6 +570,7 @@ class PedidosController extends Controller
 
         $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
             ->orderBy('id','desc')
+            ->with('asignados_nombres')
             ->get();
 
         foreach ($pedidos as $pedido){

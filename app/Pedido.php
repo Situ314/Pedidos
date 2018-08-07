@@ -63,4 +63,9 @@ class Pedido extends Model
     public function documentos(){
         return $this->hasMany('App\Documentos','pedido_id','id');
     }
+
+    public function asignados_nombres(){
+        return $this->belongsToMany('App\User','asignaciones','pedido_id','asignado_id')
+            ->with('empleado_nombres');
+    }
 }

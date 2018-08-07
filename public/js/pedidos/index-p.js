@@ -41,252 +41,7 @@ $('ul#myTab li a').click(function (e) {
                     '</div>');
             }
         }).done(function (response){
-            var head = "";
-            var body = "";
-            var table = "";
-
-            if(response.length!=0){
-                switch ( parseInt(variables.uR)){
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
-                            '<tbody>';
-                        break;
-                    case 6:
-                        head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
-                            '<tbody>';
-                        break;
-                }
-                for(var i=0;i<response.length;i++){
-                    switch (parseInt(variables.uR)){
-                        case 1:
-                        case 2:
-                        case 3:
-                            //************************************OPCIONES
-                            var opciones = "";
-                            switch (parseInt(estado)){
-                                case 1:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 2:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 3:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 4:
-                                case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 6:
-                                case 7:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                            }
-                            if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                            }
-                            //************************************
-
-                            //************************************CUERPO
-                            body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                                '<td>'+response[i].codigo+'</td>' +
-                                '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                                '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                                '<td>'+response[i].created_at+'</td>' +
-                                '<td><div class="btn-group" role="group">' +
-                                opciones+
-                                '</div></td>'+
-                                '</tr>';
-                            //************************************
-                            break;
-                        case 4:
-                            //************************************OPCIONES
-                            var opciones = "";
-                            switch (parseInt(estado)){
-                                case 1:
-                                case 2:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 3:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 4:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 6:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 7:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                            }
-                            if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                            }
-                            //************************************
-
-                            //************************************CUERPO
-                            body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                                '<td>'+response[i].codigo+'</td>' +
-                                '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                                '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].created_at+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                                '<td><div class="btn-group" role="group">' +
-                                opciones+
-                                '</div></td>'+
-                                '</tr>';
-                            //************************************
-                            break;
-                        case 5:
-                            //************************************OPCIONES
-                            var opciones = "";
-                            switch (parseInt(estado)){
-                                case 1:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 2:
-                                case 3:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 4:
-                                case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 6:
-                                case 7:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                            }
-                            if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                            }
-                            //************************************
-
-                            //************************************CUERPO
-                            body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                                '<td>'+response[i].codigo+'</td>' +
-                                '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                                '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                                '<td>'+response[i].created_at+'</td>' +
-                                '<td><div class="btn-group" role="group">' +
-                                opciones+
-                                '</div></td>'+
-                                '</tr>';
-                            //************************************
-                            break;
-                        case 6:
-                            //************************************OPCIONES
-                            var opciones = "";
-                            switch (parseInt(estado)){
-                                case 1:
-                                case 2:
-                                case 3:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 4:
-                                case 5:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 6:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 7:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                                case 8:
-                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                    break;
-                            }
-                            if(response[i].documentos.length > 0){
-                                opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                            }
-                            //************************************
-
-                            //************************************CUERPO
-                            body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                                '<td>'+response[i].codigo+'</td>' +
-                                '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                                '<td>'+response[i].proyecto.nombre+'</td>' +
-                                '<td>'+response[i].created_at+'</td>' +
-                                '<td><div class="btn-group" role="group">' +
-                                opciones+
-                                '</div></td>'+
-                                '</tr>';
-                            //************************************
-                            break;
-                    }
-                }
-
-                table=
-                    head+
-                    body+
-                    '</tbody>'+
-                    '</table>';
-            }else{
-                table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
-                    '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
-                    '</div>';
-            }
-
-            $('#contenido-tab').empty();
-            $('#contenido-tab').append(table);
+            actualizarTabla(response, estado);
         });
     }
 });
@@ -317,253 +72,275 @@ function getTabla() {
                                         '</div>');
         }
     }).done(function (response){
-        var head = "";
-        var body = "";
-        var table = "";
+        actualizarTabla(response, estado);
+    });
+}
 
-        if(response.length!=0){
-            switch ( parseInt(variables.uR)){
+function actualizarTabla(response, estado) {
+    var head = "";
+    var body = "";
+    var table = "";
+
+    if(response.length!=0){
+        switch ( parseInt(variables.uR)){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
+                    '<tbody>';
+                break;
+            case 6:
+                head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
+                    '<tbody>';
+                break;
+        }
+        for(var i=0;i<response.length;i++){
+            switch (parseInt(variables.uR)){
                 case 1:
                 case 2:
                 case 3:
+                    //************************************OPCIONES
+                    var opciones = "";
+                    switch (parseInt(estado)){
+                        case 1:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 2:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 3:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 4:
+                        case 5:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 6:
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados!=null && response[i].asignados.length > 0){
+                        for(var j=0;j<response[i].asignados.length;j++){
+                            console.log(response[i].asignados[j].empleado_nombres);
+                            responsable=response[i].asignados[j].empleado_nombres.nombres;
+                            if(response[i].asignados[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_1;
+
+                            if(response[i].asignados[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_3+' ';
+
+                        }
+                    }
+
+                    body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                        '<td>'+response[i].codigo+'</td>' +
+                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+responsable+'</td>' +
+                        '<td>'+response[i].created_at+'</td>' +
+                        '<td><div class="btn-group" role="group">' +
+                        opciones+
+                        '</div></td>'+
+                        '</tr>';
+                    //************************************
+                    break;
                 case 4:
+                    //************************************OPCIONES
+                    var opciones = "";
+                    switch (parseInt(estado)){
+                        case 1:
+                        case 2:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 3:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 4:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 5:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 6:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                        '<td>'+response[i].codigo+'</td>' +
+                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+response[i].created_at+'</td>' +
+                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td><div class="btn-group" role="group">' +
+                        opciones+
+                        '</div></td>'+
+                        '</tr>';
+                    //************************************
+                    break;
                 case 5:
-                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
-                        '<tbody>';
+                    //************************************OPCIONES
+                    var opciones = "";
+                    switch (parseInt(estado)){
+                        case 1:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 2:
+                        case 3:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 4:
+                        case 5:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 6:
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                        '<td>'+response[i].codigo+'</td>' +
+                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+response[i].created_at+'</td>' +
+                        '<td><div class="btn-group" role="group">' +
+                        opciones+
+                        '</div></td>'+
+                        '</tr>';
+                    //************************************
                     break;
                 case 6:
-                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
-                        '<tbody>';
+                    //************************************OPCIONES
+                    var opciones = "";
+                    switch (parseInt(estado)){
+                        case 1:
+                        case 2:
+                        case 3:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 4:
+                        case 5:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 6:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                        '<td>'+response[i].codigo+'</td>' +
+                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+response[i].created_at+'</td>' +
+                        '<td><div class="btn-group" role="group">' +
+                        opciones+
+                        '</div></td>'+
+                        '</tr>';
+                    //************************************
                     break;
             }
-            for(var i=0;i<response.length;i++){
-                switch (parseInt(variables.uR)){
-                    case 1:
-                    case 2:
-                    case 3:
-                        //************************************OPCIONES
-                        var opciones = "";
-                        switch (parseInt(estado)){
-                            case 1:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 4:
-                            case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 6:
-                            case 7:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                        }
-                        if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                        }
-                        //************************************
-
-                        //************************************CUERPO
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                            '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
-                            '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
-                            '</tr>';
-                        //************************************
-                        break;
-                    case 4:
-                        //************************************OPCIONES
-                        var opciones = "";
-                        switch (parseInt(estado)){
-                            case 1:
-                            case 2:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 4:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 6:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 7:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                        }
-                        if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                        }
-                        //************************************
-
-                        //************************************CUERPO
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                            '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                            '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
-                            '</tr>';
-                        //************************************
-                        break;
-                    case 5:
-                        //************************************OPCIONES
-                        var opciones = "";
-                        switch (parseInt(estado)){
-                            case 1:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 2:
-                            case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 4:
-                            case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 6:
-                            case 7:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                        }
-                        if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                        }
-                        //************************************
-
-                        //************************************CUERPO
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                            '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
-                            '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
-                            '</tr>';
-                        //************************************
-                        break;
-                    case 6:
-                        //************************************OPCIONES
-                        var opciones = "";
-                        switch (parseInt(estado)){
-                            case 1:
-                            case 2:
-                            case 3:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 4:
-                            case 5:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 6:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 7:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                            case 8:
-                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
-                                break;
-                        }
-                        if(response[i].documentos.length > 0){
-                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
-                        }
-                        //************************************
-
-                        //************************************CUERPO
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                            '<td>'+response[i].proyecto.nombre+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
-                            '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
-                            '</tr>';
-                        //************************************
-                        break;
-                }
-            }
-
-            table=
-                head+
-                body+
-                '</tbody>'+
-                '</table>';
-        }else{
-            table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
-                '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
-                '</div>';
         }
 
-        $('#contenido-tab').empty();
-        $('#contenido-tab').append(table);
-    });
+        table=
+            head+
+            body+
+            '</tbody>'+
+            '</table>';
+    }else{
+        table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
+            '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
+            '</div>';
+    }
+
+    $('#contenido-tab').empty();
+    $('#contenido-tab').append(table);
 }
 
 function verItems(id) {
