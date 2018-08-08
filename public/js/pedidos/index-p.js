@@ -83,24 +83,25 @@ function actualizarTabla(response, estado) {
 
     if(response.length!=0){
         switch ( parseInt(variables.uR)){
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
+            case 1://R
+            case 2://AD
+            case 3://AS
+            case 4://RE
+            case 5://AU
+                head += '<table class="table"><thead><tr><th>#</th><th>Codigo' +
+                    '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
                     '<tbody>';
                 break;
-            case 6:
+            case 6://US
                 head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
                     '<tbody>';
                 break;
         }
         for(var i=0;i<response.length;i++){
             switch (parseInt(variables.uR)){
-                case 1:
-                case 2:
-                case 3:
+                case 1://R
+                case 2://AD
+                case 3://AS
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -141,18 +142,18 @@ function actualizarTabla(response, estado) {
 
                     //************************************CUERPO
                     var responsable = "SIN ENCARGADO";
-                    if(response[i].asignados!=null && response[i].asignados.length > 0){
-                        for(var j=0;j<response[i].asignados.length;j++){
-                            console.log(response[i].asignados[j].empleado_nombres);
-                            responsable=response[i].asignados[j].empleado_nombres.nombres;
-                            if(response[i].asignados[j].empleado_nombres.apellido_1!=null)
-                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_1;
+                    console.log(response[i].asignados_nombres);
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
 
-                            if(response[i].asignados[j].empleado_nombres.apellido_2!=null)
-                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_2+' ';
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
 
-                            if(response[i].asignados[j].empleado_nombres.apellido_3!=null)
-                                responsable+=' '+response[i].asignados[j].empleado_nombres.apellido_3+' ';
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
 
                         }
                     }
@@ -170,7 +171,7 @@ function actualizarTabla(response, estado) {
                         '</tr>';
                     //************************************
                     break;
-                case 4:
+                case 4://RE
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -215,20 +216,37 @@ function actualizarTabla(response, estado) {
                     }
                     //************************************
 
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                        }
+                    }
+
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
                         '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                         '<td>'+response[i].proyecto.nombre+'</td>' +
-                        '<td>'+response[i].created_at+'</td>' +
                         '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+responsable+'</td>' +
+                        '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
                         opciones+
                         '</div></td>'+
                         '</tr>';
                     //************************************
                     break;
-                case 5:
+                case 5://AU
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -263,13 +281,28 @@ function actualizarTabla(response, estado) {
                         opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                     }
                     //************************************
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
 
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                        }
+                    }
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
                         '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                         '<td>'+response[i].proyecto.nombre+'</td>' +
                         '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
                         opciones+
@@ -277,7 +310,7 @@ function actualizarTabla(response, estado) {
                         '</tr>';
                     //************************************
                     break;
-                case 6:
+                case 6://US
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -312,12 +345,27 @@ function actualizarTabla(response, estado) {
                         opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
                     }
                     //************************************
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
 
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                        }
+                    }
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
                         '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
                         '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
                         opciones+

@@ -49,6 +49,9 @@ class EstadosTableSeeder extends Seeder
             'nombre' => 'FINALIZADO',
             'descripcion' => 'PEDIDO COMPLETADO'
         ]);
-
+        DB::table('estados')->insert([
+            'nombre' => 'EN ESPERA',
+            'descripcion' => 'EN ESPERA A SER ATENDIDO'
+        ]);
     }
 }
