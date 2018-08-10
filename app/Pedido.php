@@ -28,6 +28,11 @@ class Pedido extends Model
         return $this->hasOne('App\User','id','solicitante_id');
     }
 
+    public function solicitante_empleado(){
+        return $this->hasOne('App\User','id','solicitante_id')
+            ->with('empleado');
+    }
+
     public function items(){
         return $this->belongsToMany('App\Item','items_pedidos','pedido_id','item_id');
     }
@@ -50,6 +55,11 @@ class Pedido extends Model
 
     public function proyecto(){
         return $this->hasOne('App\Proyecto','id','proyecto_id');
+    }
+
+    public function proyecto_empresa(){
+        return $this->hasOne('App\Proyecto','id','proyecto_id')
+            ->with('empresa');
     }
 
     public function estados(){

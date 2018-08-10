@@ -51,6 +51,10 @@ class DevolucionesController extends Controller
                 $anuncion = "observado ...";
                 $estado = 6;
                 break;
+            case 3: //EN ESPERA
+                $anuncion = "espera ...";
+                $estado = 9;
+                break;
         }
 
         $array_devolucion = [

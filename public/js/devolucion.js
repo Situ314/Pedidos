@@ -2,14 +2,16 @@
  * Created by djauregui on 18/12/2017.
  */
 function modalDevolver(opt) {
-    console.log(opt);
     $('#modalDevolucionHeader').removeClass('modal-header-primary');
+    $('#modalDevolucionHeader').removeClass('modal-header-danger');
+    $('#modalDevolucionHeader').removeClass('modal-header-warning');
     $('#modalDevolucionHeader').removeClass('modal-header-danger');
 
     $('#modalDevolucionTitle').empty();
 
     $('#btnAceptarDevolucion').removeClass('btn-primary-custom');
     $('#btnAceptarDevolucion').removeClass('btn-danger-custom');
+    $('#btnAceptarDevolucion').removeClass('btn-warning-custom');
 
     switch (opt){
         case 1: //Rechazar
@@ -31,12 +33,12 @@ function modalDevolver(opt) {
             $('#btnAceptarDevolucion').text("Observar");
             break;
         case 3: //EN ESPERA (SOLO PARA RESPONSABLES)
-            $('#modalDevolucionHeader').addClass('modal-header-danger');
+            $('#modalDevolucionHeader').addClass('modal-header-warning');
             $('#modalDevolucionTitle').append('<i class="fa fa-pause"></i> En Espera');
 
             $('input[name=tipo_dev]').val(3);
 
-            $('#btnAceptarDevolucion').addClass('btn-danger-custom');
+            $('#btnAceptarDevolucion').addClass('btn-warning-custom');
             $('#btnAceptarDevolucion').text("En Espera");
             break;
     }

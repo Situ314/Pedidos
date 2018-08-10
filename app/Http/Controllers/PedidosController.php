@@ -570,14 +570,9 @@ class PedidosController extends Controller
 
         $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
             ->orderBy('id','desc')
-            ->with('asignados_nombres')
+            ->with(['asignados_nombres','estados_pedido','proyecto_empresa',
+                'documentos','solicitante_empleado'])
             ->get();
-
-        foreach ($pedidos as $pedido){
-            $pedido->proyecto->empresa;
-            $pedido->solicitante->empleado;
-            $pedido->documentos;
-        }
 
         return Response::json(
             $pedidos

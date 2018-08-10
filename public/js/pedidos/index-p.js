@@ -102,6 +102,7 @@ function actualizarTabla(response, estado) {
                 case 1://R
                 case 2://AD
                 case 3://AS
+
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -142,7 +143,6 @@ function actualizarTabla(response, estado) {
 
                     //************************************CUERPO
                     var responsable = "SIN ENCARGADO";
-                    console.log(response[i].asignados_nombres);
                     if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
                         for(var j=0;j<response[i].asignados_nombres.length;j++){
                             responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
@@ -160,9 +160,9 @@ function actualizarTabla(response, estado) {
 
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
-                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                        '<td>'+response[i].proyecto.nombre+'</td>' +
-                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
+                        '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
                         '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
@@ -172,6 +172,7 @@ function actualizarTabla(response, estado) {
                     //************************************
                     break;
                 case 4://RE
+
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -210,6 +211,29 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
+                        case 9:
+                            var penultimo_estado =  response[i].estados_pedido[response[i].estados_pedido.length-2].estado_id;
+                            for(var k=response[i].estados_pedido.length-1;k>0;k--){
+                                if(response[i].estados_pedido[k].estado_id!=9){
+                                    penultimo_estado = response[i].estados_pedido[k].estado_id;
+                                    break;
+                                }
+                            }
+                            switch (parseInt(penultimo_estado)){
+                                case 3: //PENULTIMO ESTADO - ASIGNADO
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                        '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                    break;
+                                case 4: //PENULTIMO ESTADO - PARCIAL
+                                    opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
+                                        '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                        '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                    break;
+                            }
+
+                            break;
                     }
                     if(response[i].documentos.length > 0){
                         opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
@@ -235,9 +259,9 @@ function actualizarTabla(response, estado) {
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
-                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                        '<td>'+response[i].proyecto.nombre+'</td>' +
-                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
+                        '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
                         '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
@@ -247,6 +271,7 @@ function actualizarTabla(response, estado) {
                     //************************************
                     break;
                 case 5://AU
+
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -299,9 +324,9 @@ function actualizarTabla(response, estado) {
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
-                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                        '<td>'+response[i].proyecto.nombre+'</td>' +
-                        '<td>'+response[i].solicitante.empleado.nombres+' '+response[i].solicitante.empleado.apellido_1+' '+response[i].solicitante.empleado.apellido_2+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
+                        '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
                         '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
@@ -311,6 +336,7 @@ function actualizarTabla(response, estado) {
                     //************************************
                     break;
                 case 6://US
+
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -363,8 +389,8 @@ function actualizarTabla(response, estado) {
                     //************************************CUERPO
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
-                        '<td>'+response[i].proyecto.empresa.nombre+'</td>' +
-                        '<td>'+response[i].proyecto.nombre+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                        '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
                         '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +

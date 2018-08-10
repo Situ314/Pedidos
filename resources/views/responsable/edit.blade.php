@@ -99,7 +99,7 @@
                             <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
                         </div>
                         <div class="pull-right">
-                            {{--<button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>--}}
+                            <button type="button" class="btn btn-warning-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>
                             <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
                         </div>
