@@ -28,7 +28,7 @@
                 <h3>Lista de Pedidos</h3>
             </div>
 
-            <div class="title_right">
+            {{--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                     <div class="input-group">
                         <input id="txtBuscarPedido" style="height: 34px !important;" type="text" class="form-control" placeholder=" Buscar...">
@@ -37,7 +37,7 @@
                     </span>
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
         <div class="clearfix"></div>
         <div class="row">
@@ -110,6 +110,9 @@
                                             break;
                                     }
                                 @endphp
+                                <li role="presentation" class="pull-right">
+                                    <a href="#busqueda-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-search"></i>BUSQUEDA</a>
+                                </li>
                             </ul>
                             <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
                                 <div id="contenido-tab" class="table-responsive">
@@ -138,6 +141,7 @@
         var rutas = {
             pedidos: "{{route('pedidos.estados')}}",
             cantidad: "{{route('pedidos.cantidad')}}",
+            buscar: "{{route('pedidos.buscar')}}",
             getItem: "{{route('pedidos.items')}}",
             getEstado: "{{route('pedidos.progreso')}}",
             editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",

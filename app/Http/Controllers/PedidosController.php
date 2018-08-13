@@ -468,13 +468,6 @@ class PedidosController extends Controller
         switch (Auth::user()->rol_id){
             case 1: //ROOT
             case 2: //ADMIN
-            /*$estados_pedidos_id_array = Pedido::select('pedidos.id')
-
-                ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
-
-                ->groupBy('pedidos.id')
-                ->havingRaw('MAX(estados_pedidos.estado_id) = '.$request->estado_id)
-                ->get();*/
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -708,4 +701,97 @@ class PedidosController extends Controller
             $pedido
         );
     }
+
+    public function buscarPedido(Request $reques){
+        $busqueda = trim($reques->texto);
+
+        $estados_pedidos_id_array = null;
+
+        switch (Auth::user()->rol_id){
+            case 1: //ROOT
+            case 2: //ADMIN
+            case 3: //ASIGNADOR
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+
+                    ->whereNull('t2.id');
+                break;
+            case 4: //RESPONSABLE
+                //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
+
+                break;
+            case 5: //AUTORIZADOR
+
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+
+                break;
+            case 6: //USUARIO
+
+                break;
+        }
+
+        $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
+            ->with(['asignados_nombres','estados','proyecto_empresa',
+                'documentos','solicitante_empleado'])
+            ->get();
+
+        $pedidos = $pedidos->filter(function ($value, $key) use ($busqueda){
+            $nombre_completo = "";
+            if($value->solicitante_empleado->empleado->nombres!=null && $value->solicitante_empleado->empleado->nombres!="")
+                $nombre_completo=$nombre_completo.$value->solicitante_empleado->empleado->nombres;
+
+            if($value->solicitante_empleado->empleado->apellido_1!=null && $value->solicitante_empleado->empleado->apellido_1!="")
+                $nombre_completo=$nombre_completo." ".$value->solicitante_empleado->empleado->apellido_1;
+
+            if($value->solicitante_empleado->empleado->apellido_2!=null && $value->solicitante_empleado->empleado->apellido_2!="")
+                $nombre_completo=$nombre_completo." ".$value->solicitante_empleado->empleado->apellido_2;
+
+            if($value->solicitante_empleado->empleado->apellido_3!=null && $value->solicitante_empleado->empleado->apellido_3!="")
+                $nombre_completo=$nombre_completo." ".$value->solicitante_empleado->empleado->apellido_3;
+
+            $asignado = "SIN ENCARGADO";
+            if(count($value->asignados_nombres)>0){
+                $var = count($value->asignados_nombres)-1;
+                if(count($value->asignados_nombres[$var])>0){
+                    if(isEmptyOrNullString($value->asignados_nombres[$var]->empleado_nombres->nombres))
+                        $asignado = $value->asignados_nombres[$var]->empleado_nombres->nombres;
+
+                    if(isEmptyOrNullString($value->asignados_nombres[$var]->empleado_nombres->apellido_1))
+                        $asignado = $asignado." ".$value->asignados_nombres[$var]->empleado_nombres->apellido_1;
+
+                    if(isEmptyOrNullString($value->asignados_nombres[$var]->empleado_nombres->apellido_2))
+                        $asignado = $asignado." ".$value->asignados_nombres[$var]->empleado_nombres->apellido_2;
+
+                    if(isEmptyOrNullString($value->asignados_nombres[$var]->empleado_nombres->apellido_3))
+                        $asignado = $asignado." ".$value->asignados_nombres[$var]->empleado_nombres->apellido_3;
+
+                }
+            }
+
+            $codigo = strtolower($value->codigo);
+            $proyecto = strtolower($value->proyecto_empresa->nombre);
+            $empresa = strtolower($value->proyecto_empresa->empresa->nombre);
+            $busqueda = strtolower($busqueda);
+            $nombre_completo = strtolower($nombre_completo);
+            $asignado = strtolower($asignado);
+
+            return strpos($codigo,$busqueda)!==false ||
+                strpos($empresa, $busqueda) !== false ||
+                strpos($nombre_completo, $busqueda) !== false ||
+                strpos($proyecto, $busqueda) !== false ||
+                strpos($asignado, $busqueda) !== false;
+        })->all();
+
+        return Response::json(
+            $pedidos
+        );
+    }
+}
+
+function IsNullOrEmptyString($str){
+    return (!isset($str) || trim($str) === '');
 }

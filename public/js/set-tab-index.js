@@ -38,9 +38,7 @@ function setTabsCantidad() {
 }
 
 function resetTabs() {
-    console.log($('#myTab').children());
-
-    for(var i=0 ; i<$('#myTab').children().length ; i++){
+    for(var i=0 ; i<$('#myTab').children().length-1 ; i++){
         // console.log(  $($('#myTab').children()[i]).children().children().prop('id') );
         $($('#myTab').children()[i]).children().children().text(0);
     }

@@ -43,6 +43,14 @@ $('ul#myTab li a').click(function (e) {
         }).done(function (response){
             actualizarTabla(response, estado);
         });
+    }else {
+        $('#contenido-tab').empty();
+        $('#contenido-tab').append('<div class="input-group">' +
+            '<input id="txtBuscarPedido" style="height: 34px !important;" type="text" class="form-control" placeholder=" Buscar...">'+
+            '<span class="input-group-btn">' +
+            '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
+            '</span>'+
+            '</div>');
     }
 });
 
@@ -51,29 +59,31 @@ function getTabla() {
     var token = rutas.token;
 
     var estado = null;
-    for(var i=0 ; i < $('#myTab').children().length ; i++){
+    for(var i=0 ; i < $('#myTab').children().length-1 ; i++){
         if( $($('#myTab').children()[i]).hasClass("active") ){
             estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
         }
     }
 
-    $.ajax({
-        url: route,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'POST',
-        data:{
-            estado_id: estado
-        },
-        dataType: 'JSON',
-        beforeSend: function(e){
-            $('#contenido-tab').empty();
-            $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
-                                        '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
-                                        '</div>');
-        }
-    }).done(function (response){
-        actualizarTabla(response, estado);
-    });
+    if(estado!=null){
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            data:{
+                estado_id: estado
+            },
+            dataType: 'JSON',
+            beforeSend: function(e){
+                $('#contenido-tab').empty();
+                $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
+                    '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
+                    '</div>');
+            }
+        }).done(function (response){
+            actualizarTabla(response, estado);
+        });
+    }
 }
 
 function actualizarTabla(response, estado) {
@@ -408,9 +418,12 @@ function actualizarTabla(response, estado) {
             '</tbody>'+
             '</table>';
     }else{
-        table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
-            '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
-            '</div>';
+        if(estado!=""){
+            table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
+                '<strong><i class="fa fa-check"></i></strong> No hay pedidos en este estado'+
+                '</div>';
+        }
+
     }
 
     $('#contenido-tab').empty();
@@ -695,13 +708,121 @@ function verSalidas(id, estado) {
 }
 
 function buscarPedido() {
+    var route = rutas.buscar;
+    var token = rutas.token;
     var texto = $('#txtBuscarPedido').val();
-    var estado = null;
-    for(var i=0 ; i < $('#myTab').children().length ; i++){
-        if( $($('#myTab').children()[i]).hasClass("active") ){
-            estado = $($('#myTab').children()[i]).children().children().prop('id').split('-tab-cantidad')[0];
-        }
+    if(!isEmptyOrSpaces(texto)){ //NO VACIO
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            data:{
+                texto: texto
+            },
+            dataType: 'JSON',
+            beforeSend: function(e){
+                $('#contenido-tab').empty();
+                $('#contenido-tab').append('<div class="input-group">' +
+                    '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
+                    '<span class="input-group-btn">' +
+                    '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
+                    '</span>'+
+                    '</div>');
+                $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
+                    '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
+                    '</div>');
+            }
+        }).done(function (response){
+            console.log(response);
+            var head = "";
+            var body = "";
+            var table = "";
+
+            switch ( parseInt(variables.uR)){
+                case 1://R
+                case 2://AD
+                case 3://AS
+                case 4://RE
+                case 5://AU
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo' +
+                        '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+                case 6://US
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+            }
+
+            //************************************CUERPO
+            /*response.forEach(function (elemento) {
+                // console.log(elemento);
+            });*/
+            var aux = 0;
+            $.each(response, function (index, value) {
+                var responsable = "SIN ENCARGADO";
+
+                if(response[index].asignados_nombres!=null && response[index].asignados_nombres.length > 0){
+                    for(var j=0;j<response[index].asignados_nombres.length;j++){
+                        responsable=response[index].asignados_nombres[j].empleado_nombres.nombres;
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                    }
+                }
+
+                var estado = "";
+                estado+='<label class="label label-info">'+response[index].estados[response[index].estados.length-1].nombre+'</label>';
+
+                var opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+
+                body += '<tr><th scope="row">' + (aux + 1) + '</th>' +
+                    '<td>' + response[index].codigo + '</td>' +
+                    '<td>' + response[index].proyecto_empresa.empresa.nombre + '</td>' +
+                    '<td>' + response[index].proyecto_empresa.nombre + '</td>' +
+                    '<td>' + response[index].solicitante_empleado.empleado.nombres + ' ' + response[index].solicitante_empleado.empleado.apellido_1 + ' ' + response[index].solicitante_empleado.empleado.apellido_2 + '</td>' +
+                    '<td>' + responsable + '</td>' +
+                    '<td>' + response[index].created_at + '</td>' +
+                    '<td>'+estado+'</td>'+
+                    '<td><div class="btn-group" role="group">' +
+                    opciones +
+                    '</div></td>' +
+                    '</tr>';
+
+                aux++;
+            });
+
+            table=
+                head+
+                body+
+                '</tbody>'+
+                '</table>';
+
+            $('#contenido-tab').empty();
+            $('#contenido-tab').append('<div class="input-group">' +
+                '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
+                '<span class="input-group-btn">' +
+                '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
+                '</span>'+
+                '</div>');
+            $('#contenido-tab').append(table);
+        });
+    }else{ //VACIO
+        $('#contenido-tab').append('<div class="alert alert-info alert-dismissible fade in" role="alert">'+
+            '<i class="fa fa-close"></i><strong> Vacio</strong> no escribio nada para realizar la busqueda'+
+            '</div>');
     }
+}
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
 }
 
 function verDocumentos(id) {

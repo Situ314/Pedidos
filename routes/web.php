@@ -59,6 +59,11 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'PedidosController@postEstadosPedido',
         'as'=>'pedidos.progreso'
     ]);
+
+    Route::post('post.pedidos.buscar',[
+        'uses'=>'PedidosController@buscarPedido',
+        'as'=>'pedidos.buscar'
+    ]);
     //******************************************************
 
     //******************************************************ASIGNADOR
