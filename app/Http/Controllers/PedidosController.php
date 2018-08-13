@@ -497,14 +497,14 @@ class PedidosController extends Controller
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                     ->where('t1.asignado_id','=',Auth::id())
+                    ->orWhere('pedidos.solicitante_id','=',Auth::id())
                     ->whereNull('t2.id');
 
                 //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
                 switch (intval($request->estado_id)){
-                    case 2:
-                    case 6:
-                    case 7:
+                    case 2: //AUTORIZADO
                         $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                             ->select('t1.pedido_id as id')
                             ->leftJoin('estados_pedidos as t2',function ($join){
@@ -516,18 +516,20 @@ class PedidosController extends Controller
                             ->whereNull('t2.id')
                             ->where('t1.estado_id','=',$request->estado_id);
                         break;
-                    default:
+                    default: //LOS DEMAS ESTADOS
                         $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                             ->select('t1.pedido_id as id')
                             ->leftJoin('estados_pedidos as t2',function ($join){
                                 $join->on('t1.pedido_id', '=', 't2.pedido_id')
                                     ->on('t1.id', '<', 't2.id');
                             })
+                            ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                             ->whereIn('t1.pedido_id',$pedidos_asignados_array)
                             ->whereNull('t2.id')
                             ->where('t1.estado_id','=',$request->estado_id);
                         break;
                 }
+//                dd($pedidos_asignados_array->get(), $request->estado_id);
 
                 break;
             case 5: //AUTORIZADOR
@@ -790,8 +792,8 @@ class PedidosController extends Controller
             $pedidos
         );
     }
-}
 
-function IsNullOrEmptyString($str){
-    return (!isset($str) || trim($str) === '');
+    function IsNullOrEmptyString($str){
+        return (!isset($str) || trim($str) === '');
+    }
 }

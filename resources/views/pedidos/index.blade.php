@@ -169,7 +169,8 @@
         };
         var variables = {
             estados: {!! json_encode($estados) !!},
-            uR: {{ \Illuminate\Support\Facades\Auth::user()->rol_id }}
+            uR: {{ \Illuminate\Support\Facades\Auth::user()->rol_id }},
+            uI: {{\Illuminate\Support\Facades\Auth::id()}}
         };
     </script>
     {{ Html::script('/js/select2.full.js') }}
