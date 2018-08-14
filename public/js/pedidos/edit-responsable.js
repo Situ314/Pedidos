@@ -65,8 +65,6 @@ $(document).ready(function(){
                 beforeSend: function(e){
                 }
             }).done(function (response){
-                console.log(response);
-
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
                 $('#txtEmpresaSalida').text( $('select[name=empresa_id] option:selected').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
@@ -128,7 +126,6 @@ $(document).ready(function(){
 
     //BOTON DE DESPLIEGUE DE MODAL DE MUESTRA DE DOCUMENTO DE SALIDA
     $('#btnConfirmacionSalidaAlmacen').click(function () {
-        console.log("Acepto...");
         $('#formUpdateResponsable').trigger('submit', [true]);
     });
 

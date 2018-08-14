@@ -105,12 +105,15 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <label for="tipo_cat_id" class="control-label">* Tipo de Pedido</label>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         {{Form::select('tipo_cat_id', $tipos->pluck('nombre','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
         @if ($errors->has('tipo_cat_id'))
             <span class="help-block">
                 <strong>{{ $errors->first('tipo_cat_id') }}</strong>
             </span>
         @endif
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <button type="button" class="btn btn-primary-custom" data-toggle="modal" data-target="#modalBuscarItem"><i class="fa fa-search"></i> Buscar Item</button>
     </div>
 </div>

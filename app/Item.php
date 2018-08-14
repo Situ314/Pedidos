@@ -34,6 +34,10 @@ class Item extends Model
     }
 
     public function tipo_categoria(){
-        return $this->hasOne('App\Categoria','id','tipo_categoria_id');
+        return $this->hasOne('App\TipoCategoria','id','tipo_categoria_id');
     }
+
+//    public function tipo_categoria(){
+//        return $this->hasOne('App\Categoria','id','id','tipo_categoria_id')
+//    }
 }

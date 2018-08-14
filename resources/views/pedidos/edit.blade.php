@@ -72,22 +72,26 @@
     </div>
     {{Form::close()}}
 
+    <!-- MODALS -->
+    @include('pedidos.modals.modal-buscar-item')
+
 @endsection
 
 @section('footerScripts')
     @parent
     {{ Html::script('/js/select2.full.js') }}
-
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/edit-edit-p.js') }}
-
     {{ Html::script('/js/pedidos/agregar-item-boton.js') }}
+    <!-- JS CON FUNCION DE BUSQUEDA, MODAL DE BUSQUEDA ITEM-->
+    {{ Html::script('/js/pedidos/buscar-item.js') }}
 
     <script type="text/javascript">
 
         var config = {
             rutas:[
                 {
+                    buscarItem: "{{route('buscar.item')}}",
                     token: "{{Session::token()}}"
                 }
             ],

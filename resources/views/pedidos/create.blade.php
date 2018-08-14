@@ -79,6 +79,9 @@
     </div>
     {{Form::close()}}
 
+    <!-- MODALS -->
+    @include('pedidos.modals.modal-buscar-item')
+
 @endsection
 
 @section('footerScripts')
@@ -86,6 +89,8 @@
     {{ Html::script('/js/pedidos/create-p.js') }}
     {{ Html::script('/js/items/buscar-item.js') }}
     {{ Html::script('/js/archivos/readeble-size.js') }}
+    <!-- JS CON FUNCION DE BUSQUEDA, MODAL DE BUSQUEDA ITEM-->
+    {{ Html::script('/js/pedidos/buscar-item.js') }}
 
     <script type="text/javascript">
 

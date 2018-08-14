@@ -86,16 +86,11 @@ class ItemsController extends Controller
     }
 
     public function buscarItem(Request $request){
-//        echo $request->nombre."<br>";
-        $items = Item::where('nombre','like', strtoupper($request->nombre).'%')
+        $busqueda = strtoupper(trim($request->nombre));
+        $items = Item::where('nombre','like', '%'.$busqueda.'%')
+                ->with('tipo_categoria')
                 ->get();
 
-        /*$queries = DB::getQueryLog();
-        echo end($queries); // only last query*/
-
-        foreach ($items as $item){
-            $item->tipo_categoria;
-        }
         return Response::json(
             $items
         );

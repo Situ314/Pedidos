@@ -545,7 +545,7 @@ class PedidosController extends Controller
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
-                    ->whereIn('t1.user_id',$usuarios_responsable_array)
+                    ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
                     ->whereNull('t2.id')
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
@@ -577,8 +577,8 @@ class PedidosController extends Controller
     public function postCantidad(){
         $cantidad = null;
         switch (Auth::user()->rol_id){
-            case 1:
-            case 2:
+            case 1: //ROOT
+            case 2: //ADMIN
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -590,7 +590,7 @@ class PedidosController extends Controller
                     ->groupBy('t1.estado_id')
                     ->get();
                 break;
-            case 3:
+            case 3: //ASIGNADOR
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -662,7 +662,8 @@ class PedidosController extends Controller
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
-                    ->whereIn('t1.user_id', $usuarios_responsable_array)
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->get();
