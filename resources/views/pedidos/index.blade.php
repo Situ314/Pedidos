@@ -149,6 +149,10 @@
             verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
             asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
 
+            //PEDIDOS IMPRESION
+            impSol: "{{route('impimir.pedido.solicitados',':id')}}",
+            impEnt: "{{route('impimir.pedido.entregados',':id')}}",
+
             //SALIDAS
             salidas: "{{route('salida.alm')}}",
             salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",

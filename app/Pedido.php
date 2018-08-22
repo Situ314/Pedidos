@@ -34,7 +34,8 @@ class Pedido extends Model
     }
 
     public function items(){
-        return $this->belongsToMany('App\Item','items_pedidos','pedido_id','item_id');
+        return $this->belongsToMany('App\Item','items_pedidos','pedido_id','item_id')
+            ->withPivot('cantidad');
     }
 
     public function items_pedido(){
@@ -45,8 +46,18 @@ class Pedido extends Model
         return $this->hasMany('App\ItemTemporalPedido','pedido_id','id');
     }
 
+    public function items_temporales(){
+        return $this->belongsToMany('App\ItemTemporal','items_temporales_pedidos','pedido_id','item_temp_id')
+            ->withPivot('cantidad');
+    }
+
     public function items_entrega(){
         return $this->hasMany('App\ItemPedidoEntregado','pedido_id','id');
+    }
+
+    public function items_entregar(){
+        return $this->belongsToMany('App\Item','items_pedido_entregado','pedido_id','item_id')
+            ->withPivot('cantidad');
     }
 
     public function estados_pedido(){

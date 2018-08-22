@@ -10,18 +10,32 @@
             <div id="bodyPedido" class="modal-body">
                 <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel-items-listado">
-                        <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h4 class="panel-title">Items Solicitados</h4>
-                        </a>
+                        <div class="panel-heading">
+                            <h4 class="panel-title row">
+                                <a class="panel-title-titulo" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Items Solicitados
+                                </a>
+                                <div class="pull-right">
+                                    <a id="btnImprimirItemsSolicitados" href="{{route('impimir.pedido.solicitados',':id')}}" class="btn btn-sm btn-primary-custom" target="_blank"><i class="fa fa-print"></i></a>
+                                </div>
+                            </h4>
+                        </div>
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div id="panel-body-items" class="panel-body">
                             </div>
                         </div>
                     </div>
                     <div class="panel-items-listado">
-                        <a class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            <h4 class="panel-title">Items a Entregar</h4>
-                        </a>
+                        <div class="panel-heading">
+                            <h4 class="panel-title row">
+                                <a class="panel-title-titulo" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                                    Items a Entregar
+                                </a>
+                                <div class="pull-right">
+                                    <a id="btnImprimirItemsEntregar" href="{{route('impimir.pedido.entregados',':id')}}" class="btn btn-sm btn-primary-custom" target="_blank"><i class="fa fa-print"></i></a>
+                                </div>
+                            </h4>
+                        </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div id="panel-body-items-entregado" class="panel-body">
                             </div>

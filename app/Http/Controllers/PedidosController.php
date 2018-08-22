@@ -836,4 +836,100 @@ class PedidosController extends Controller
     function IsNullOrEmptyString($str){
         return (!isset($str) || trim($str) === '');
     }
+
+    public function getPedidoImprimirItemsSolicitados($id){
+        //VERIFICAR PEDIDO
+        $pedido = Pedido::find($id);
+        $pedido_verificado = null;
+
+        switch (Auth::user()->rol->id){
+            case 1: //ROOT
+            case 2: //ADMIN
+            case 3: //ASIGNADOR
+                $pedido_verificado = $pedido;
+                break;
+            case 4: //RESPONSABLE
+
+                break;
+            case 5: //AUTORIZADOR
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
+                $pedido_verificado = Pedido::where('id','=',$id)
+                    ->whereIn('solicitante_id',$usuarios_responsable_array)
+                    ->get();
+                break;
+            case 6: //USUARIO
+            case 7: //RESP. ENTREGA
+                $pedido_verificado = Pedido::where('id','=',$id)
+                    ->where('solicitante_id','=',Auth::id())
+                    ->get();
+                break;
+        }
+
+        if(count($pedido_verificado)>0){
+            $pdf = \PDF::loadView('pdf.pdf-items-solicitados', array(
+                'pedido'=>$pedido
+            ));
+
+            return $pdf->stream('Items solicitados '.$id.'.pdf');
+        }else{
+            return redirect()->action('PedidosController@index')
+                ->withErrors(array('No tiene permiso para ver el pedido'));
+        }
+    }
+
+    public function getPedidoImprimirItemsEntregados($id){
+
+        //VERIFICAR PEDIDO
+        $pedido = Pedido::find($id);
+        $pedido_verificado = null;
+
+        switch (Auth::user()->rol->id){
+            case 1: //ROOT
+            case 2: //ADMIN
+            case 3: //ASIGNADOR
+                $pedido_verificado = $pedido;
+                break;
+            case 4: //RESPONSABLE
+
+                break;
+            case 5: //AUTORIZADOR
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
+                $pedido_verificado = Pedido::where('id','=',$id)
+                    ->whereIn('solicitante_id',$usuarios_responsable_array)
+                    ->get();
+                break;
+            case 6: //USUARIO
+            case 7: //RESP. ENTREGA
+                $pedido_verificado = Pedido::where('id','=',$id)
+                    ->where('solicitante_id','=',Auth::id())
+                    ->get();
+                break;
+        }
+
+        if(count($pedido_verificado)>0){
+            $pdf = \PDF::loadView('pdf.pdf-items-entregar', array(
+                'pedido'=>$pedido
+            ));
+
+//            dd($pedido->items_entregar, count($pedido->items_entregar), $pedido->codigo);
+            if(count($pedido->items_entregar)>0){
+                return $pdf->stream('Items entregar '.$id.'.pdf');
+            }else{
+                return redirect()->action('PedidosController@index')
+                    ->withErrors(array('Todavia no se asignaron items a entregar'));
+            }
+
+        }else{
+            return redirect()->action('PedidosController@index')
+                ->withErrors(array('No tiene permiso para ver el pedido'));
+        }
+    }
 }

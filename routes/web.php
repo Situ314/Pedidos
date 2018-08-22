@@ -64,6 +64,16 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=>'PedidosController@buscarPedido',
         'as'=>'pedidos.buscar'
     ]);
+
+    Route::get('/imprimir/{id}/imprimir-sol',[
+        'uses'=>'PedidosController@getPedidoImprimirItemsSolicitados',
+        'as'=>'impimir.pedido.solicitados'
+    ]);
+
+    Route::get('/imprimir/{id}/imprimir-ent',[
+        'uses'=>'PedidosController@getPedidoImprimirItemsEntregados',
+        'as'=>'impimir.pedido.entregados'
+    ]);
     //******************************************************
 
     //******************************************************ASIGNADOR
@@ -99,6 +109,7 @@ Route::group(['middleware' => 'auth'], function (){
     ]);
     //******************************************************
 
+    //******************************************************ITEMS
     Route::post('/post.items.buscar',[
         'uses'=>'ItemsController@buscarItem',
         'as'=>'buscar.item',

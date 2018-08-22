@@ -469,6 +469,9 @@ function verItems(id) {
     var route = rutas.getItem;
     var token = rutas.token;
 
+    var imp_sol = rutas.impSol;
+    var imp_ent = rutas.impEnt;
+
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -539,6 +542,9 @@ function verItems(id) {
         $('#panel-body-items-entregado').append(tableItemsEntregado);
 
         $('#verItemsPedidoModal').modal('show');
+
+        $('#btnImprimirItemsSolicitados').prop('href',imp_sol.replace(':id',id));
+        $('#btnImprimirItemsEntregar').prop('href',imp_ent.replace(':id',id));
 
     });
 
