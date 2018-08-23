@@ -43,16 +43,17 @@ class ResponsableController extends Controller
                     ->on('t1.id', '<', 't2.id');
             })
             ->whereNull('t2.id')
-            ->where('t1.estado_id','=',4)
-            ->orWhere('t1.estado_id','=',5);
+            ->where(function ($query){
+                $query->where('t1.estado_id','<>',8);
+            })->where(function ($query){
+              $query->where('t1.estado_id','=',4)
+                  ->orWhere('t1.estado_id','=',5);
+            });
 
         $salidas = SalidaAlmacen::where('responsable_entrega_id','=',Auth::id())
             ->whereIn('pedido_id',$estados_pedidos_id_array)
             ->orderBy('id','desc')
             ->get();
-
-//        DB::enableQueryLog();
-//        dd($estados_pedidos_id_array->get(), $salidas->get(), $salidas->toSQL(), $salidas->getBindings(), DB::getQueryLog());
 
         return view('responsable.impresiones.index')
             ->withSalidas($salidas);

@@ -78,48 +78,6 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
-
-        /*$array_empresas = explode('|',$request->empresa_id);
-        $empresa_id = $array_empresas[0];
-        if(Empresa::find($empresa_id)==null){
-            $array_empresas = [
-                'id' =>$empresa_id,
-                'nombre'=>$array_empresas[1],
-                'descripcion'=>$array_empresas[2]
-            ];
-            $empresa = new Empresa($array_empresas);
-            $empresa->save();
-        }
-
-        $array_proyecto = explode('|', $request->proyecto_id);
-        $proyecto_id = $array_proyecto[0];
-
-        if(Proyecto::find($array_proyecto[0])==null){
-            $array_proyecto = [
-                'id'=>$array_proyecto[0],
-                'nombre'=>$array_proyecto[1],
-                'descripcion'=>$array_proyecto[2],
-                'empresa_id'=>$empresa_id
-            ];
-            $proyecto = new Proyecto($array_proyecto);
-            $proyecto->save();
-        }
-
-        $array_empleado = explode("|",$request->solicitante_id);
-        $solicitante = $array_empleado[0];
-
-        $empleado = Empleado::find($array_empleado[0]);
-        if($empleado==null){
-            $array_empleado = [
-                'id'=>$array_empleado[0],
-                'nombres'=>preg_replace('!\s+!', ' ', $array_empleado[1]) //ARREGLANDO MULTIPLES ESPACIOS GENERADOS
-            ];
-            $empleado = new Empleado($array_empleado);
-            $empleado->save();
-        }*/
-
-//        dd($request->all());
-
         $array_pedido = [
             'codigo'=>$this->codigo_aleatorio(),
             'num_solicitud'=>null,
@@ -179,7 +137,7 @@ class PedidosController extends Controller
 
         //AGREGANDO ESTADO
         $estado = null;
-        if(Auth::user()->rol_id < 5){
+        if(Auth::user()->rol_id < 5 || Auth::user()->rol_id == 7){ //SI MENOR A AUTORIZADOR O RESPONSABLE DE ENTR.
             $estado = 2;
         }else{
             $estado = 1;
@@ -464,6 +422,7 @@ class PedidosController extends Controller
         );
     }
 
+    //METODO QUE DEVUELVE LOS PEDIDOS DEPENDIENDO DEL ESTADO
     public function postPedidos(Request $request){
         switch (Auth::user()->rol_id){
             case 1: //ROOT
@@ -549,6 +508,7 @@ class PedidosController extends Controller
                     ->where('t1.estado_id','=',$request->estado_id);
                 break;
             case 6: //USUARIO
+            case 7:
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -573,6 +533,7 @@ class PedidosController extends Controller
         );
     }
 
+    //METODO QUE ACTUALIZA LA CANTIDAD DE LOS TABS
     public function postCantidad(){
         $cantidad = null;
         switch (Auth::user()->rol_id){
@@ -668,6 +629,7 @@ class PedidosController extends Controller
                     ->get();
                 break;
             case 6:
+            case 7:
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -675,7 +637,7 @@ class PedidosController extends Controller
                             ->on('t1.id', '<', 't2.id');
                     })
                     ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
-//                    ->where('t1.user_id',Auth::id())
+    //                    ->where('t1.user_id',Auth::id())
                     ->where('pedidos.solicitante_id',Auth::id())
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
@@ -704,6 +666,7 @@ class PedidosController extends Controller
         );
     }
 
+    //METODO QUE REALIZA LA BUSQUEDA DE LOS PEDIDOS
     public function buscarPedido(Request $reques){
         $busqueda = trim($reques->texto);
 
@@ -763,6 +726,7 @@ class PedidosController extends Controller
 
                 break;
             case 6: //USUARIO
+            case 7: //RESPONSABLE DE ENTREGA
 
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')

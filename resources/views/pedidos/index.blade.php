@@ -106,6 +106,17 @@
                                                 }
                                             }
                                             break;
+                                        case 7:
+                                            foreach ($estados as $estado){
+                                                if($estado->id>=2){
+                                                    if($estado->id == 2){
+                                                        echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }else{
+                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                                }
+                                            }
+                                            break;
                                     }
                                 @endphp
                                 <li role="presentation" class="pull-right">

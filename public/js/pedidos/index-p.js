@@ -102,6 +102,7 @@ function actualizarTabla(response, estado) {
                     '<tbody>';
                 break;
             case 6://US
+            case 7://R.ENT.
                 head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
                     '<tbody>';
                 break;
@@ -142,6 +143,10 @@ function actualizarTabla(response, estado) {
                         case 8:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 9:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                     }
@@ -346,6 +351,10 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
+                        case 9:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
                     }
                     if(response[i].documentos.length > 0){
                         opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
@@ -381,6 +390,7 @@ function actualizarTabla(response, estado) {
                     //************************************
                     break;
                 case 6://US
+                case 7://R.ENT.
 
                     //************************************OPCIONES
                     var opciones = "";
@@ -409,6 +419,10 @@ function actualizarTabla(response, estado) {
                         case 8:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 9:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                     }
@@ -790,15 +804,13 @@ function buscarPedido() {
                         '<tbody>';
                     break;
                 case 6://US
+                case 7://R.ENT.
                     head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
                     break;
             }
 
             //************************************CUERPO
-            /*response.forEach(function (elemento) {
-                // console.log(elemento);
-            });*/
             var aux = 0;
             $.each(response, function (index, value) {
                 var responsable = "SIN ENCARGADO";
