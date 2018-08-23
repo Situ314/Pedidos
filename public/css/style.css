@@ -7718,14 +7718,6 @@ a.disabled {
   background-color: #f0ad4e !important;
   color: #fff;
 }
-.panel-title.panel-flex {
-  padding-left: 10px;
-  color: #5a739c !important;
-  display: flex;
-  justify-content: flex-start;
-  align-content: center;
-  align-items: center;
-}
 .panel-title > a {
   color: #5a739c !important;
   margin-top: 15px;

@@ -849,7 +849,14 @@ class PedidosController extends Controller
                 $pedido_verificado = $pedido;
                 break;
             case 4: //RESPONSABLE
-
+                $pedido_verificado = Pedido::leftJoin('asignaciones','asignaciones.pedido_id','=','pedidos.id')
+                    ->where(function ($query) use ($id){
+                        $query->where('pedidos.id','=',$id);
+                    })->where(function ($query){
+                        $query->where('asignaciones.asignado_id','=',Auth::id())
+                            ->orWhere('pedidos.solicitante_id','=',Auth::id());
+                    })
+                    ->get();
                 break;
             case 5: //AUTORIZADOR
                 //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
@@ -894,7 +901,14 @@ class PedidosController extends Controller
                 $pedido_verificado = $pedido;
                 break;
             case 4: //RESPONSABLE
-
+                $pedido_verificado = Pedido::leftJoin('asignaciones','asignaciones.pedido_id','=','pedidos.id')
+                    ->where(function ($query) use ($id){
+                        $query->where('pedidos.id','=',$id);
+                    })->where(function ($query){
+                        $query->where('asignaciones.asignado_id','=',Auth::id())
+                            ->orWhere('pedidos.solicitante_id','=',Auth::id());
+                    })
+                    ->get();
                 break;
             case 5: //AUTORIZADOR
                 //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
@@ -919,7 +933,6 @@ class PedidosController extends Controller
                 'pedido'=>$pedido
             ));
 
-//            dd($pedido->items_entregar, count($pedido->items_entregar), $pedido->codigo);
             if(count($pedido->items_entregar)>0){
                 return $pdf->stream('Items entregar '.$id.'.pdf');
             }else{
