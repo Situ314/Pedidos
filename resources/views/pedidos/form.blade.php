@@ -88,9 +88,8 @@
 @endif
 
 <div class="form-group">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <p style="color: red;">NOTA: En caso de no poder seleccionar la empresa o proyecto al que quiere realizar
-            el pedido debe escribir en el campo de <i>(* Motivo de Pedido)</i> la empresa o proyecto por el cual debe realizarse el pedido</p>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-style: solid; background-color: #d2dfeb; border-color: #2a3f54; font-size: 14px;">
+        <p style="color: red;"><b>NOTA: En el campo <i>(* Motivo de Pedido)</i> debe escribir la empresa y proyecto por el cual se realizara el requerimiento</b></p>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <label for="motivo" class="control-label">* Motivo de Pedido</label>

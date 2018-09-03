@@ -342,6 +342,12 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 6:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>';
+                            if(variables.uI==response[i].solicitante_id){
+                                opciones+='<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>';
+                            }
+                            opciones+='<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
                         case 7:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
@@ -376,10 +382,17 @@ function actualizarTabla(response, estado) {
                         }
                     }
                     //************************************CUERPO
+                    var proyecto = "SIN PROYECTO";
+                    var empresa = "SIN EMPRESA";
+                    if(response[i].proyecto_empresa!=null){
+                        proyecto = response[i].proyecto_empresa.nombre;
+                        empresa = response[i].proyecto_empresa.empresa.nombre
+                    }
+
                     body+='<tr><th scope="row">'+(i+1)+'</th>' +
                         '<td>'+response[i].codigo+'</td>' +
-                        '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
-                        '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
+                        '<td>'+proyecto+'</td>' +
+                        '<td>'+empresa+'</td>' +
                         '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
                         '<td>'+responsable+'</td>' +
                         '<td>'+response[i].created_at+'</td>' +
