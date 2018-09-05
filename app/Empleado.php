@@ -32,4 +32,8 @@ class Empleado extends Model
     public function proyecto(){
         return $this->belongsTo('App\Proyecto','sol_proyecto_id','id');
     }
+
+    public function contacto_empleado(){
+        return $this->hasOne('App\ContactoEmpleado','empleado_id','id');
+    }
 }

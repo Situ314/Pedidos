@@ -31,15 +31,21 @@
             <button type="button" onclick="javascript:crearUsuario();" class="btn btn-sm btn-success-custom pull-right">+ Crear</button>
             <div class="clearfix"></div>
         </div>
+        {{--<div class="x_content" style="-webkit-flex: 1 1 auto; overflow-y: auto; height: 500px;">--}}
         <div class="x_content">
             <div class="table-responsive">
                 <table class="table table-hover table-responsive">
                     <thead>
                     <tr>
                         <th>#</th>
+                        @if(\Illuminate\Support\Facades\Auth::user()->rol_id==1)
+                            <th>ID</th>
+                        @endif
                         <th>Nombres</th>
                         <th>Usuario</th>
-                        <th>Correo</th>
+                        <th>Correo Personal</th>
+                        <th>Correo Corporativo</th>
+                        <th>Estado</th>
                         <th>Rol</th>
                         <th>Opciones</th>
                     </tr>
@@ -48,19 +54,65 @@
                     @foreach($users as $user)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
+                            @if(\Illuminate\Support\Facades\Auth::user()->rol_id==1)
+                            <td>
+                                @if(count($user->empleado)!=0)
+                                    {{ $user->empleado->id }}
+                                @else
+                                    <label class="label label-danger">S/E</label>
+                                @endif
+                            </td>
+                            @endif
                             <td>
                                 @if(count($user->empleado)!=0)
                                     {{ $user->empleado->nombre_completo }}
                                 @else
-                                    <label class="label label-danger">Sin empleado</label>
+                                    <label class="label label-danger">S/E</label>
                                 @endif
                             </td>
                             <td>{{ $user->username }}</td>
                             <td>
                                 @if(count($user->empleado)!=0)
-                                    {{ $user->empleado->laboral_empleado->email_corporativo }}
+                                    @if($user->empleado->contacto_empleado!=null)
+                                        @if(empty(trim($user->empleado->contacto_empleado->email)))
+                                            <label class="label label-warning">S/C</label>
+                                        @else
+                                            {{ $user->empleado->contacto_empleado->email }}
+                                        @endif
+                                    @else
+                                        <label class="label label-warning">S/C</label>
+                                    @endif
                                 @else
-                                    <label class="label label-danger">Sin empleado</label>
+                                    <label class="label label-danger">S/E</label>
+                                @endif
+                            </td>
+                            <td>
+                                @if(count($user->empleado)!=0)
+                                    @if($user->empleado->laboral_empleado!=null)
+                                        @if(empty(trim($user->empleado->laboral_empleado->email_corporativo)))
+                                            <label class="label label-warning">S/C</label>
+                                        @else
+                                            {{ $user->empleado->laboral_empleado->email_corporativo }}
+                                        @endif
+                                    @else
+                                        <label class="label label-warning">S/C</label>
+                                    @endif
+                                @else
+                                    <label class="label label-danger">S/E</label>
+                                @endif
+                            </td>
+                            <td>
+                                @if(count($user->empleado)!=0)
+                                    @if($user->empleado->estado=='Activo')
+                                        <label class="label label-success">{{$user->empleado->estado}}</label>
+                                    @elseif($user->empleado->estado=='Inactivo')
+                                        <label class="label label-danger">{{$user->empleado->estado}}</label>
+                                    @elseif($user->empleado->estado=='Externo')
+                                        <label class="label label-info">{{$user->empleado->estado}}</label>
+                                    @endif
+
+                                @else
+                                    <label class="label label-danger">S/E</label>
                                 @endif
                             </td>
                             <td>{{ $user->rol->nombre }}</td>
