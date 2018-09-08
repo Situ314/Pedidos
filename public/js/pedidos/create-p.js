@@ -35,7 +35,6 @@ $( document ).ready(function() {
             // for(var i=0;i<categorias.length;i++){
             for(var i=0;i<items.length;i++){
                 if(selected_op == items[i].tipo_categoria_id){
-                    // console.log(items[i]);
                     // options_categorias += "<option value='"+categorias[i].id+"'>"+categorias[i].nombre+"</option>";
                     options_items += "<option value='"+items[i].id+"' data-unidad='"+items[i].unidad_id+"'>"+items[i].nombre+"</option>";
                 }
@@ -50,16 +49,10 @@ $( document ).ready(function() {
             // $('.items-select2').append(options_categorias);
             $('.items-select2').append(options_items);
 
-            console.log($('.items-select2').parent());
-            console.log($('.items-select2').parent().length);
 
             for(var i=0;i<$('.items-select2').parent().length;i++){
-                // console.log( $('.items-select2').parent()[i] );
-                // console.log( $($('.items-select2').parent()[i]).data('content') );
 
                 if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
-                    console.log($('.items-select2').parent()[i].id);
-                    console.log($('.items-select2').parent()[i].id.slice(2));
                     var num = $('.items-select2').parent()[i].id.slice(2);
                     $('#item_id'+num).select2({
                         allowClear: true,
@@ -73,12 +66,8 @@ $( document ).ready(function() {
 
         }else{
             for(var i=0;i<$('.items-select2').parent().length;i++){
-                // console.log( $('.items-select2').parent()[i] );
-                // console.log( $($('.items-select2').parent()[i]).data('content') );
 
                 if($($('.items-select2').parent()[i]).data('content')==0){ //ES SELECT
-                    console.log($('.items-select2').parent()[i].id);
-                    console.log($('.items-select2').parent()[i].id.slice(2));
                     var num = $('.items-select2').parent()[i].id.slice(2);
                     $('#item_id'+num).select2({
                         allowClear: true,
@@ -110,20 +99,15 @@ $( document ).ready(function() {
     $('select[name=empresa_id]').change(function () {
         var selected_op = $(this).find('option:selected').val();
         if(typeof selected_op != "undefined") {
-            console.log(selected_op);
-            console.log(proyectos_empleado);
-            console.log(jQuery.isEmptyObject(proyectos_empleado));
 
             options_proyectos = "";
             var proyectos_s = proyectos_solicitudes.pr;
             for(var i=0 ; i<proyectos_s.length ; i++){
-                // console.log(proyectos_s[i]);
                 if(selected_op == proyectos_s[i].empresa_id){
                     options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].nombre+'</option>';
                 }
             }
             if(!jQuery.isEmptyObject(proyectos_empleado)){ //TODOS LOS PROYECTOS ESTAN EM SOLICITUDES INCLUIDO EL SUYO
-                // console.log(proyecto_e);
                 var proyecto_e = proyectos_empleado.pr;
                 if(selected_op == proyecto_e.empresa_id){
                     options_proyectos += '<option value="'+proyecto_e.id+'" data-emp="'+proyecto_e.empresa_id+'">'+proyecto_e.nombre+'</option>';
@@ -181,12 +165,9 @@ function getEmpresas() {
         select_proyectos.empty();
 
         $.each(response['empresas'], function (key, val) {
-           // console.log(key+"=>"+val);
-           //  console.log(key+"=>"+val['nombre']);
             select_empresas.append("<option value='"+val['id']+"|"+val['nombre']+"|"+val['razon']+"' data-foo='"+val['id']+"'>"+val['nombre']+"</option>");
 
             $.each(val['proyecto'], function (key2, val2) {
-                // console.log(val2['nombre']);
                 options_proyectos += "<option value='"+val2['id']+"|"+val2['nombre']+"|"+val2['descripcion']+"' data-foo='"+val['id']+"'>"+val2['nombre']+"</option>";
             });
         });
@@ -207,10 +188,8 @@ function getEmpresas() {
 function getUnidades() {
     var unidades = config.variables[0].unidades;
     for(var i = 0; i<unidades.length ; i++){
-        // console.log(unidades[i]);
         option_unidades += "<option value='"+unidades[i].id+"'>"+unidades[i].nombre+" ("+unidades[i].descripcion+")</option>"
     }
-    // console.log(option_unidades);
 }
 
 function getEmpleados(){
@@ -242,13 +221,12 @@ function getEmpleados(){
         }).val('').trigger('change');
 
     }).fail(function (response){
-        console.log(response);
+        // console.log(response);
     });
 }
 
 var auxU = 1;
 function agregarItem() {
-    // console.log("Agregando...");
     var tr = "<tr>";
         tr+="<th scope='row'>"+(auxU+1)+"</th>"+
             // "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
@@ -277,13 +255,11 @@ function agregarItem() {
 }
 
 function eliminarFila(obj) {
-    console.log(obj);
     $(obj).parent().parent().remove();
 }
 
 function editarCampo(id) {
     var select_td = "#td"+id;
-    // console.log($(select_td).data("content"));
 
     if($(select_td).data("content")==0){ //ES SELECT - CAMBIAR A TEXTO
         $('#item_id'+id).prop("required", false);
@@ -323,7 +299,6 @@ function editarCampo(id) {
 }
 
 function cambiarUnidad(id) {
-    // console.log("Select: "+id);
     if(typeof $('#item_id'+id).find('option:selected').val()!="undefined"){
 
         $('#unidad_id'+id).prop('disabled', true);
@@ -343,10 +318,8 @@ function cambiarUnidad(id) {
 }
 
 function cambiarTextoUnidad(id) {
-    console.log("Select item: "+id);
 
     if(typeof $('#unidad_id'+id).find('option:selected').val()!="undefined"){
-        console.log($('#item_id'+id).find('option:selected').data('unidad'));
         $('#txtUnidad'+id).val($('#unidad_id'+id).find('option:selected').val());
     }else{
         $('#txtUnidad'+id).val(0);
@@ -370,7 +343,6 @@ function agregarDocumento() {
 
     $('#inputFile'+auxD).trigger('click');
     // var filename = $('#inputFile'+auxD).val().split('\\').pop();
-    // console.log(filename);
 
     auxD++;
 }
