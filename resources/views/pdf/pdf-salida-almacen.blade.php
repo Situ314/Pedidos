@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="pull-right">
-        <img width="164px" height="60px" src="http://solicitudes.pragmainvest.com.bo/empresas/tepco_srl/tepco_srl.jpg">
+        <img width="164px" height="60px" src="{{ asset('images/tepco_srl.jpg') }}">
     </div>
     <table class="table table-bordered table-condensed">
         <tbody>

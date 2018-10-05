@@ -818,7 +818,7 @@ function buscarPedido() {
                     break;
                 case 6://US
                 case 7://R.ENT.
-                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
                     break;
             }

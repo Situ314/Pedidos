@@ -107,10 +107,17 @@
                        <span class=" fa fa-angle-down"></span>
                    </a>
                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                       @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 6)
+                            <li>
+                                <a data-toggle="modal" onclick="misAutorizadores();" >
+                                    <i class="fa fa-user-secret pull-right"></i>  Mis Autorizadores
+                                </a>
+                            </li>
+                       @endif
                        <li>
                            <a href="{{ route('cambiar-pass.edit', \Illuminate\Support\Facades\Auth::id()) }}" >
                                 <i class="fa fa-lock pull-right"></i>  Cambiar Contraseña
-                            </a>
+                           </a>
                         </li>
                         <li>
                             <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

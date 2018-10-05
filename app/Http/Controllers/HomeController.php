@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Estado;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +65,22 @@ class HomeController extends Controller
 
         return Response::json(
             $pedidos
+        );
+    }
+
+    public function postMisAutorizadores(){
+        $autorizadores = User::whereHas('solicitantes',function ($query){
+            $query->where('solicitante_id','=',Auth::id());
+        })
+        ->get();
+
+        $html = view('modals.partials.partial-table-mis-autorizadores',[
+            'autorizadores'=>$autorizadores
+        ]);
+        $html = $html->render();
+
+        return Response::json(
+            $html
         );
     }
 }

@@ -37,6 +37,11 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'dash.fecha'
     ]);
 
+    Route::post('/dash/misauts',[
+        'uses'=>'HomeController@postMisAutorizadores',
+        'as'=>'dash.mis.aut'
+    ]);
+
     //******************************************************PEDIDOS
     Route::resource('/pedidos', 'PedidosController');
 

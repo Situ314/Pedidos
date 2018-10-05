@@ -30,3 +30,26 @@ function getCantidadEstados() {
         }
     });
 }
+
+function misAutorizadores() {
+    var ruta = configGlobal.rutas[0].postAutorizadores;
+    var token = configGlobal.rutas[0].token;
+
+    $.ajax({
+        url: ruta,
+        headers: {'X-CSRF-TOKEN': token},
+        method: 'POST',
+        dataType: 'JSON',
+        beforeSend: function(e){
+
+        }
+    }).done(function (response){
+        console.log(response);
+        $('#bodyModalAutorizadores').empty();
+        $('#bodyModalAutorizadores').append(response);
+
+        $('#modalAutorizadores').modal('show');
+    }).fail(function (response){
+
+    });
+}

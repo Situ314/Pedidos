@@ -192,39 +192,6 @@ function getUnidades() {
     }
 }
 
-function getEmpleados(){
-    $.ajax({
-        url: 'http://rrhh.pragmainvest.com.bo/servicios/get.empleados',
-        method: 'GET',
-        dataType: 'JSON',
-        beforeSend: function(e){
-            $("select#solicitante_id").select2({
-                allowClear: true,
-                placeholder: "Cargando destinos ...",
-                width: '100%'
-            }).val('').trigger('change');
-
-            $('select#solicitante_id').prop('disabled', true);
-        }
-    }).done(function (response){
-        var selectDestinos = $('select#solicitante_id');
-        selectDestinos.empty();
-
-        $.each(response['empleados'], function(key, value){
-            selectDestinos.append("<option value='"+value['id']+"|"+value['nombres']+" "+value['ap']+" "+value['am']+"|"+value['email_corporativo']+"'>"+value['nombres']+" "+value['ap']+" "+value['am']+"</option>");
-        });
-        $('select#solicitante_id').prop('disabled', false);
-        $("select#solicitante_id").select2({
-            allowClear: true,
-            placeholder: "Seleccione empleado ...",
-            width: '100%'
-        }).val('').trigger('change');
-
-    }).fail(function (response){
-        // console.log(response);
-    });
-}
-
 var auxU = 1;
 function agregarItem() {
     var tr = "<tr>";

@@ -28,6 +28,8 @@
         </footer>
         <!-- /footer content -->
     </div>
+
+    @include('modals.modal-autorizadores')
 </div>
 
 @include('parts.javascript')
@@ -36,6 +38,7 @@
         rutas:[
             {
                 getCantidades: "{{route('pedidos.cantidad')}}",
+                postAutorizadores: "{{route('dash.mis.aut')}}",
                 token: "{{Session::token()}}"
             }
         ]

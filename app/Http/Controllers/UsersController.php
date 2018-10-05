@@ -149,16 +149,26 @@ class UsersController extends Controller
         $usuario->password = bcrypt($request->password);
         $usuario->empleado_id = $request->empleado_id;
         $usuario->rol_id = $request->rol_id;
-        $usuario->save();
+        $usuario->update();
 
         if ($usuario->rol_id == 6){ //SI USUARIO - VERIFICAR AUTORIZADOR
             $responsable = Responsable::where('solicitante_id','=',$usuario->id)
                 ->first();
 
-            if($responsable->autorizador_id != $request->autorizador_id){ //CAMBIO DE AUTORIZADOR
-                $responsable->autorizador_id = $request->autorizador_id;
+            if($responsable!=null){
+                if($responsable->autorizador_id != $request->autorizador_id){ //CAMBIO DE AUTORIZADOR
+                    $responsable->autorizador_id = $request->autorizador_id;
+                    $responsable->update();
+                }
+            }else{ //CREAR RESPONSABLE
+                $array_responsable = [
+                    'autorizador_id'=>$request->autorizador_id,
+                    'solicitante_id'=>$usuario->id
+                ];
+                $responsable = new Responsable($array_responsable);
                 $responsable->save();
             }
+
         }
 
         Session::flash('success', "Usuario ".$usuario->username." modificado correctamente...");

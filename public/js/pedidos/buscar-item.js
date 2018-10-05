@@ -27,7 +27,7 @@ function buscarItemCategoria() {
             var body = "";
             var table = "";
             head += '<table class="table"><thead>'+
-                '<tr><th>#</th><th>Item</th><th>Categoria</th><th>Opcion</th></tr></thead>'+
+                '<tr><th>#</th><th>Item</th><th>Tipo de Pedido</th><th>Opcion</th></tr></thead>'+
                 '<tbody>';
 
             for(var i=0; i<response.length;i++){
