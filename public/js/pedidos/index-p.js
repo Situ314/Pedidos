@@ -18,14 +18,43 @@ $( document ).ready(function(){
     setInterval(setTabsCantidad, 5000);
 });
 
+$('.js-placeholder-single').select2({
+    allowClear: true,
+    placeholder: "Seleccione...",
+    width: '100%'
+}).val('').trigger('change');
+
 $('ul#myTab li a').click(function (e) {
     var estado = this.id.split('-tab')[0];
-
+    console.log("ESTADO==>"+ estado);
     var route = rutas.pedidos;
     var token = rutas.token;
 
-    if(estado!=""){
+    if(estado=="busqueda"){
 
+        $('#contenido-tab').empty();
+        $('#contenido-tab').append('<div class="input-group col-md-12"><div class="col-md-3">' +
+            '<select id="selectTipo" class="form-control js-placeholder-single">' +
+            '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
+            '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
+            '<option value="item">BÚSQUEDA POR ITEMS</option>' +
+            '</select>'+
+            '</div>' +
+            '<div class="col-md-9">' +
+            '<div class="input-group">' +
+            '<input id="txtBuscarPedido" style="height: 34px !important;" type="text" class="form-control" placeholder=" Buscar...">'+
+            '<span class="input-group-btn">' +
+            '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
+            '</span>'+
+            '</div>' +
+            '</div></div>');
+
+        $('.js-placeholder-single').select2({
+            allowClear: true,
+            placeholder: "Seleccione...",
+            width: '100%'
+        }).val('').trigger('change');
+    }else{
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
@@ -43,14 +72,6 @@ $('ul#myTab li a').click(function (e) {
         }).done(function (response){
             actualizarTabla(response, estado);
         });
-    }else {
-        $('#contenido-tab').empty();
-        $('#contenido-tab').append('<div class="input-group">' +
-            '<input id="txtBuscarPedido" style="height: 34px !important;" type="text" class="form-control" placeholder=" Buscar...">'+
-            '<span class="input-group-btn">' +
-            '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
-            '</span>'+
-            '</div>');
     }
 });
 
@@ -178,7 +199,7 @@ function actualizarTabla(response, estado) {
                         '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
                         '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
                         '<td>'+responsable+'</td>' +
-                        '<td>'+response[i].created_at+'</td>' +
+                        '<td>'+response [i].created_at+'</td>' +
                         '<td><div class="btn-group" role="group">' +
                         opciones+
                         '</div></td>'+
@@ -775,10 +796,20 @@ function verSalidas(id, estado) {
     });
 }
 
+function tipoBusqueda() {
+    var tipo = $('#selectTipo').val();
+
+    if(tipo == "columnas"){
+        buscarPedido();
+    }else{
+        buscarPedidoXItem();
+    };
+}
 function buscarPedido() {
     var route = rutas.buscar;
     var token = rutas.token;
     var texto = $('#txtBuscarPedido').val();
+    var tipo = $('#selectTipo').val();
     if(!isEmptyOrSpaces(texto)){ //NO VACIO
         $.ajax({
             url: route,
@@ -790,12 +821,21 @@ function buscarPedido() {
             dataType: 'JSON',
             beforeSend: function(e){
                 $('#contenido-tab').empty();
-                $('#contenido-tab').append('<div class="input-group">' +
+                $('#contenido-tab').append('<div class="input-group col-md-12"><div class="col-md-3">' +
+                    '<select id="selectTipo" class="form-control js-placeholder-single">' +
+                    '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
+                    '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
+                    '<option value="item">BÚSQUEDA POR ITEMS</option>' +
+                    '</select>'+
+                    '</div>' +
+                    '<div class="col-md-9">' +
+                    '<div class="input-group">' +
                     '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
                     '<span class="input-group-btn">' +
-                    '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
+                    '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
                     '</span>'+
-                    '</div>');
+                    '</div>' +
+                    '</div></div>');
                 $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
                     '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
                     '</div>');
@@ -844,7 +884,35 @@ function buscarPedido() {
                 }
 
                 var estado = "";
-                estado+='<label class="label label-info">'+response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                switch ( parseInt(response[index].estados[response[index].estados.length-1].id)){
+                    case 1://INICIAL
+                        estado+='<label class="label label-info"> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 2://AUTORIZADO
+                        estado+='<label class="label label-info"><i class="fa fa-check"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 3://ASIGNADO
+                        estado+='<label class="label label-info"><i class="fa fa-user"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 4://PARCIAL
+                        estado+='<label class="label label-warning">'+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 5://ENTREGADO
+                        estado+='<label class="label label-warning"><i class="fa fa-paper-plane"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 6://OBSERVADO
+                        estado+='<label class="label label-warning"><i class="fa fa-eye"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 7://RECHAZADO
+                        estado+='<label class="label label-danger">'+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 8://FINALIZADO
+                        estado+='<label class="label label-success"><i class="fa fa-check"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 9://EN ESPERA
+                        estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                }
 
                 var opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                     '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
@@ -872,19 +940,236 @@ function buscarPedido() {
                 '</table>';
 
             $('#contenido-tab').empty();
-            $('#contenido-tab').append('<div class="input-group">' +
+            $('#contenido-tab').append('<div class="input-group col-md-12"><div class="col-md-3">' +
+                '<select id="selectTipo" class="form-control js-placeholder-single">' +
+                '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
+                '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
+                '<option value="item">BÚSQUEDA POR ITEMS</option>' +
+                '</select>'+
+                '</div>' +
+                '<div class="col-md-9">' +
+                '<div class="input-group">' +
                 '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
                 '<span class="input-group-btn">' +
-                '<button class="btn btn-default" type="button" onclick="buscarPedido();"><i class="fa fa-search"></i></button>' +
+                '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
                 '</span>'+
-                '</div>');
+                '</div>' +
+                '</div>'+
+            '</div>');
+            $('#contenido-tab').append('<h4 style="color: white; background-color: #2a3f54;padding: 10px"><i class="fa fa-search"></i> Búsqueda por Columnas</h4>');
             $('#contenido-tab').append(table);
+
+            $('.js-placeholder-single').select2({
+                allowClear: true,
+                placeholder: "Seleccione...",
+                width: '100%'
+            }).val('').trigger('change');
+        });
+
+
+    }else{ //VACIO
+        $('#contenido-tab').append('<div class="alert alert-info alert-dismissible fade in" role="alert">'+
+            '<i class="fa fa-close"></i><strong> Vacio</strong> no escribio nada para realizar la busqueda'+
+            '</div>');
+    }
+
+
+}
+
+function buscarPedidoXItem() {
+    var route = rutas.buscarItem;
+    var token = rutas.token;
+    var texto = $('#txtBuscarPedido').val();
+    if(!isEmptyOrSpaces(texto)){ //NO VACIO
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            data:{
+                texto: texto
+            },
+            dataType: 'JSON',
+            beforeSend: function(e){
+                $('#contenido-tab').empty();
+                $('#contenido-tab').append(
+                    '<div class="input-group col-md-12"><div class="col-md-3">' +
+                    '<select id="selectTipo" class="form-control js-placeholder-single">' +
+                    '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
+                    '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
+                    '<option value="item">BÚSQUEDA POR ITEMS</option>' +
+                    '</select>'+
+                    '</div>' +
+                    '<div class="col-md-9">' +
+                    '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
+                    '<span class="input-group-btn">' +
+                    '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
+                    '</span>'+
+                    '</div>' +
+                    '</div>');
+                $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
+                    '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
+                    '</div>');
+            }
+        }).done(function (response){
+            console.log(response);
+            var head = "";
+            var body = "";
+            var table = "";
+
+            switch ( parseInt(variables.uR)){
+                case 1://R
+                case 2://AD
+                case 3://AS
+                case 4://RE
+                case 5://AU
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo' +
+                        '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Items</th><th>Estado</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+                case 6://US
+                case 7://R.ENT.
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Items</th><th>Estado</th><th>Opciones</th></tr></thead>'+
+                        '<tbody>';
+                    break;
+            }
+
+            //************************************CUERPO
+            var aux = 0;
+            $.each(response, function (index, value) {
+                var responsable = "SIN ENCARGADO";
+
+                if(response[index].asignados_nombres!=null && response[index].asignados_nombres.length > 0){
+                    for(var j=0;j<response[index].asignados_nombres.length;j++){
+                        responsable=response[index].asignados_nombres[j].empleado_nombres.nombres;
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                        if(response[index].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                            responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                    }
+                }
+
+                var estado = "";
+                switch ( parseInt(response[index].estados[response[index].estados.length-1].id)){
+                    case 1://INICIAL
+                        estado+='<label class="label label-info">'+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 2://AUTORIZADO
+                        estado+='<label class="label label-info"><i class="fa fa-check"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 3://ASIGNADO
+                        estado+='<label class="label label-info"><i class="fa fa-user"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 4://PARCIAL
+                        estado+='<label class="label label-warning">'+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 5://ENTREGADO
+                        estado+='<label class="label label-warning"><i class="fa fa-paper-plane"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 6://OBSERVADO
+                        estado+='<label class="label label-warning"><i class="fa fa-eye"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 7://RECHAZADO
+                        estado+='<label class="label label-danger">'+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 8://FINALIZADO
+                        estado+='<label class="label label-success"><i class="fa fa-check"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                    case 9://EN ESPERA
+                        estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ response[index].estados[response[index].estados.length-1].nombre+'</label>';
+                        break;
+                }
+
+
+                var opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+
+                var listaItems = "";
+                for(var i=0; i<response[index].items.length;i++){
+                   // console.log(response[index].items[i].nombre);
+                    var buscarNombre = response[index].items[i].nombre.toLowerCase();
+                    if(buscarNombre.indexOf(texto.toLowerCase()) > -1){
+                        console.log(response[index].items[i].nombre);
+                        listaItems += '<li>'+response[index].items[i].nombre+'</li>'
+                    }
+                }
+                for(var i=0; i<response[index].items_temporales.length;i++){
+                    // console.log(response[index].items[i].nombre);
+                    var buscarNombre = response[index].items_temporales[i].nombre.toLowerCase();
+                    if(buscarNombre.indexOf(texto.toLowerCase()) > -1){
+                        console.log(response[index].items_temporales[i].nombre);
+                        listaItems += '<li style="background-color: rgba(255,252,22,0.25)">'+response[index].items_temporales[i].nombre+'</li>'
+                    }
+                }
+                for(var i=0; i<response[index].items_entregar.length;i++){
+                    // console.log(response[index].items[i].nombre);
+                    var buscarNombre = response[index].items_entregar[i].nombre.toLowerCase();
+                    if(buscarNombre.indexOf(texto.toLowerCase()) > -1){
+                        console.log(response[index].items_entregar[i].nombre);
+                        listaItems += '<li style="background-color: rgba(27,126,90,0.3)">'+response[index].items_entregar[i].nombre+'</li>'
+                    }
+                }
+
+
+                body += '<tr><th scope="row">' + (aux + 1) + '</th>' +
+                    '<td>' + response[index].codigo + '</td>' +
+                    '<td>' + response[index].proyecto_empresa.empresa.nombre + '</td>' +
+                    '<td>' + response[index].proyecto_empresa.nombre + '</td>' +
+                    '<td>' + response[index].solicitante_empleado.empleado.nombres + ' ' + response[index].solicitante_empleado.empleado.apellido_1 + ' ' + response[index].solicitante_empleado.empleado.apellido_2 + '</td>' +
+                    '<td>' + responsable + '</td>' +
+                    '<td><ul style="list-style-type: none;padding-left: 0;">' + listaItems + '</ul></td>' +
+                    '<td>'+estado+'</td>'+
+                    '<td><div class="btn-group" role="group">' +
+                    opciones +
+                    '</div></td>' +
+                    '</tr>';
+
+                aux++;
+            });
+
+            table=
+                head+
+                body+
+                '</tbody>'+
+                '</table>';
+
+            $('#contenido-tab').empty();
+            $('#contenido-tab').append('<div class="input-group col-md-12"><div class="col-md-3">' +
+                '<select id="selectTipo" class="form-control js-placeholder-single">' +
+                '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
+                '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
+                '<option value="item">BÚSQUEDA POR ITEMS</option>' +
+                '</select>'+
+                '</div>' +
+                '<div class="col-md-9">' +
+                '<div class="input-group">' +
+                '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
+                '<span class="input-group-btn">' +
+                '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
+                '</span>'+
+                '</div>' +
+                '</div></div>');
+            $('#contenido-tab').append('<h4 style="color: white; background-color: #2a3f54;padding: 10px"><i class="fa fa-search"></i> Búsqueda por Items</h4>');
+            $('#contenido-tab').append('<div style="text-align: center" class="row"><div class="col-md-4"><p>ITEMS PEDIDOS</p></div><div class="col-md-4"><p style="background-color: rgba(255,252,22,0.25)">ITEMS TEMPORALES</p></div><div class="col-md-4"><p style="background-color: rgba(27,126,90,0.3)">ITEMS ENTREGADOS</p></div></div>');
+            $('#contenido-tab').append(table);
+
+            $('.js-placeholder-single').select2({
+                allowClear: true,
+                placeholder: "Seleccione...",
+                width: '100%'
+            }).val('').trigger('change');
         });
     }else{ //VACIO
         $('#contenido-tab').append('<div class="alert alert-info alert-dismissible fade in" role="alert">'+
             '<i class="fa fa-close"></i><strong> Vacio</strong> no escribio nada para realizar la busqueda'+
             '</div>');
     }
+
+
 }
 
 function isEmptyOrSpaces(str){

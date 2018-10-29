@@ -23,7 +23,11 @@ Route::get('/buscar',[
     'uses'=>'PedidosController@getPedido',
     'as'=>'pedidos.buscar'
 ]);
-
+//
+//Route::get('/buscarItem',[
+//    'uses'=>'PedidosController@getPedidoItem',
+//    'as'=>'pedidos.buscaritem'
+//]);
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function (){
@@ -68,6 +72,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('post.pedidos.buscar',[
         'uses'=>'PedidosController@buscarPedido',
         'as'=>'pedidos.buscar'
+    ]);
+
+    Route::post('post.pedidos.buscarItem',[
+        'uses'=>'PedidosController@buscarPedidoItem',
+        'as'=>'pedidos.buscaritem'
     ]);
 
     Route::get('/imprimir/{id}/imprimir-sol',[

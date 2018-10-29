@@ -22,7 +22,7 @@
         <!-- footer content -->
         <footer>
             <div class="text-center">
-                <a href="#">&COPY; 2017 Pragma Invest S.A</a>
+                <a href="#">&COPY; {{\Carbon\Carbon::now()->year}} Pragma Invest S.A</a>
             </div>
             <div class="clearfix"></div>
         </footer>

@@ -20,6 +20,7 @@ use App\TipoCategoria;
 use App\TipoDocumento;
 use App\Unidad;
 use App\User;
+use App\ItemPedidoEntregado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -667,8 +668,8 @@ class PedidosController extends Controller
     }
 
     //METODO QUE REALIZA LA BUSQUEDA DE LOS PEDIDOS
-    public function buscarPedido(Request $reques){
-        $busqueda = trim($reques->texto);
+    public function buscarPedido(Request $request){
+        $busqueda = trim($request->texto);
 
         $estados_pedidos_id_array = null;
 
@@ -744,7 +745,7 @@ class PedidosController extends Controller
             ->with(['asignados_nombres','estados','proyecto_empresa',
                 'documentos','solicitante_empleado'])
             ->get();
-
+      //  dd($pedidos);
         $pedidos = $pedidos->filter(function ($value, $key) use ($busqueda){
             $nombre_completo = "";
             if($value->solicitante_empleado->empleado->nombres!=null && $value->solicitante_empleado->empleado->nombres!="")
@@ -791,6 +792,138 @@ class PedidosController extends Controller
                 strpos($proyecto, $busqueda) !== false ||
                 strpos($asignado, $busqueda) !== false;
         })->all();
+
+        return Response::json(
+            $pedidos
+        );
+    }
+
+    //METODO QUE REALIZA LA BUSQUEDA DE LOS PEDIDOS
+    public function buscarPedidoItem(Request $request){
+        $busqueda = trim($request->texto);
+
+        $estados_pedidos_id_array = null;
+
+        switch (Auth::user()->rol_id){
+            case 1: //ROOT
+            case 2: //ADMIN
+            case 3: //ASIGNADOR
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+
+                    ->whereNull('t2.id');
+                break;
+            case 4: //RESPONSABLE
+                //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
+                $pedidos_asignados_array = DB::table('asignaciones as t1')
+                    ->select('t1.pedido_id')
+                    ->leftJoin('asignaciones as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('t1.asignado_id','=',Auth::id())
+                    ->orWhere('pedidos.solicitante_id','=',Auth::id())
+                    ->whereNull('t2.id');
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+                    ->whereNull('t2.id');
+                break;
+            case 5: //AUTORIZADOR
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $usuarios_responsable_array = Responsable::select('solicitante_id')
+                    ->where('autorizador_id','=',Auth::id())
+                    ->get();
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
+                    ->whereNull('t2.id');
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+
+                break;
+            case 6: //USUARIO
+            case 7: //RESPONSABLE DE ENTREGA
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.solicitante_id',Auth::id())
+                    ->whereNull('t2.id');
+                break;
+        }
+
+
+       // dd($pedidos);
+
+        $items = Item::all();
+        $items_temp = ItemTemporal::all();
+
+        $items = $items -> filter(function ($value, $key) use ($busqueda){
+            $busqueda = strtolower($busqueda);
+            $item = strtolower($value->nombre);
+
+            return strpos($item,$busqueda)!==false;
+        })->pluck('id');
+
+        $items_temp = $items_temp -> filter(function ($value, $key) use ($busqueda){
+            $busqueda = strtolower($busqueda);
+            $item = strtolower($value->nombre);
+
+            return strpos($item,$busqueda)!==false;
+        })->pluck('id');
+     //   dd($items);
+
+        $pedidosEnItem = ItemPedido::whereIn('item_id',$items)
+            ->pluck('pedido_id');
+
+        $entregadoEnItem = ItemPedidoEntregado::whereIn('item_id',$items)
+            ->pluck('pedido_id');
+
+        $temporalEnItem = ItemTemporalPedido::whereIn('item_temp_id',$items_temp)
+            ->pluck('pedido_id');
+
+       // dd($pedidosEnItem);
+//        $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
+//           // ->whereIn('pedidos.id',$pedidosEnItem)
+//            ->WhereIn('pedidos.id',$entregadoEnItem)
+//            ->with(['items','items_entregar','items_temporales','asignados_nombres','estados','proyecto_empresa',
+//                'documentos','solicitante_empleado'])
+//            ->get();
+
+        $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
+            ->where(function($query) use ($pedidosEnItem, $entregadoEnItem, $temporalEnItem){
+                $query->whereIn('pedidos.id',$pedidosEnItem)
+                    ->orWhereIn('pedidos.id',$temporalEnItem)
+                    ->orWhereIn('pedidos.id',$entregadoEnItem);
+            })
+            ->with(['items','items_entregar','items_temporales','asignados_nombres','estados','proyecto_empresa',
+                'documentos','solicitante_empleado'])
+            ->get();
+       // dd($pedidos);
+//        $pedidos = $pedidos->whereIn('pedidos.id',$pedidosEnItem)
+//            //->orWhereIn('pedidos.id',$entregadoEnItem)
+//
+//            ->get();
 
         return Response::json(
             $pedidos

@@ -22,11 +22,13 @@
             <div class="x_content">
                 <div class="row">
                     @foreach($users as $user)
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 profile_details">
+                        @if($user->solicitante != null)
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 profile_details">
                             <div class="well profile_view">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixed_height_260 scroll-vertical">
                                     <h4 class="control-label">
                                         <i>
+
                                             @if(count($user->solicitante->empleado) > 0)
                                                 {{$user->solicitante->empleado->laboral_empleado->cargo->nombre}}
                                             @else
@@ -70,6 +72,7 @@
                                         <img src="{{asset('images/user.png')}}" alt="" class="img-circle img-responsive">
                                     </div>
                                 </div>
+
                                 <div class="col-xs-12 bottom text-center">
                                     @if($user->solicitante->rol_id != 5)
                                         <button type="button" title="Modificar equipo" class="btn btn-info-custom btn-xs" onclick="editarAutorizadores({{$user->solicitante_id}});">
@@ -84,8 +87,10 @@
                                         </a>
                                     @endif
                                 </div>
+
                             </div>
                         </div>
+                        @endif
                     @endforeach
                 </div>
                 <div class="ln_solid"></div>

@@ -92,6 +92,7 @@ function CambiarAgregar(item) {
             }).val(item).trigger('change');
         }else{
             agregarItemBuscadoListado(item);
+            return false;
             // CambiarAgregar(item);
         }
     });

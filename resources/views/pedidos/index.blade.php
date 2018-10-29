@@ -120,7 +120,7 @@
                                     }
                                 @endphp
                                 <li role="presentation" class="pull-right">
-                                    <a href="#busqueda-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-search"></i>BUSQUEDA</a>
+                                    <a href="#busqueda-tab" id="busqueda-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-search"></i> BUSQUEDA</a>
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
@@ -151,6 +151,7 @@
             pedidos: "{{route('pedidos.estados')}}",
             cantidad: "{{route('pedidos.cantidad')}}",
             buscar: "{{route('pedidos.buscar')}}",
+            buscarItem: "{{route('pedidos.buscaritem')}}",
             getItem: "{{route('pedidos.items')}}",
             getEstado: "{{route('pedidos.progreso')}}",
             editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
