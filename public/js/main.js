@@ -21,6 +21,7 @@ function getCantidadEstados() {
         beforeSend: function(e){
         }
     }).done(function (response){
+        console.log(response);
         arrayCantidades = [];
         for(var i=0;i<response.length;i++){
             arrayCantidades.push({

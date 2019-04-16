@@ -1,6 +1,5 @@
 <div id="verSalidasPedidoModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header modal-header-info">
@@ -15,6 +14,5 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
             </div>
         </div>
-
     </div>
 </div>

@@ -12,9 +12,12 @@ use App\Pedido;
 use App\TipoCategoria;
 use App\Unidad;
 use App\User;
+use App\TipoCompra;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Session;
 class AsignacionesController extends Controller
@@ -51,6 +54,7 @@ class AsignacionesController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         try{
             $pedido = Pedido::find($request->pedido_id);
 
@@ -66,6 +70,7 @@ class AsignacionesController extends Controller
 
             $aux_item_pedido = 0;
 
+//            dd($request->all());
             for($i=0 ; $i<count($request->txtItem) ; $i++){
                 if($request->item_id_edit[$i]!=0){ //ES ANTIGUO - VERIFICAR
                     if($request->txtItem[$i]!=""){ //ES UN ITEM ESCRITO
@@ -91,6 +96,15 @@ class AsignacionesController extends Controller
                         //*************************************************************
                     }else{ //ES UN ITEM EN BASE DE DATOS
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
+
+                        $getItem = Item::find($request->item_id[$aux_item_pedido]);
+//                        dd($getItem);
+                        if($getItem->unidad_id != $request->txtUnidad[$i]){
+
+                            $getItem->unidad_id = $request->txtUnidad[$i];
+                            $getItem->save();
+                        }
+
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
                             'pedido_id'=>$request->pedido_id,
@@ -122,6 +136,14 @@ class AsignacionesController extends Controller
                         $item_pedido_entregado = new ItemPedidoEntregado($array_item_pedido_entregado);
                         $item_pedido_entregado->save();
                     }else{ //ES UN ITEM EN BASE DE DATOS
+
+                        $getItem = Item::find($request->item_id[$aux_item_pedido]);
+//                        dd($getItem);
+                        if($getItem->unidad_id != $request->txtUnidad[$i]){
+
+                            $getItem->unidad_id = $request->txtUnidad[$i];
+                            $getItem->save();
+                        }
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
@@ -194,6 +216,62 @@ class AsignacionesController extends Controller
         $items = Item::all();
         $usuarios = User::all()
             ->where('rol_id','=',4);
+        $tipo_compras = TipoCompra::all();
+        $a_month_ago = Carbon::now()->subMonth();
+//        dd($a_month_ago);
+//        foreach ($usuarios as $key =>$usuario){
+//            $pedidos_asignados_array = DB::table('asignaciones as t1')
+//                ->select('t1.pedido_id')
+//                ->leftJoin('asignaciones as t2',function ($join){
+//                    $join->on('t1.pedido_id', '=', 't2.pedido_id')
+//                        ->on('t1.id', '<', 't2.id');
+//                })
+//                ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+//                ->where('t1.asignado_id','=',$usuario->id)
+//                ->whereNull('t2.id');
+//
+//            //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+//            //GET PARCIALES
+//            $estados_pedidos_id_array_parciales = DB::table('estados_pedidos as t1')
+//                ->select('t1.pedido_id as id')
+//                ->leftJoin('estados_pedidos as t2',function ($join){
+//                    $join->on('t1.pedido_id', '=', 't2.pedido_id')
+//                        ->on('t1.id', '<', 't2.id');
+//                })
+//                ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+//                ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+//                ->whereNull('t2.id')
+//                ->where('t1.estado_id','=','4');
+//
+//            $pedidos_parciales = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array_parciales)
+//                ->whereDate('created_at','<',$a_month_ago)
+//                ->orderBy('id','asc')
+//                ->get();
+//
+//
+//            //GET ASIGNADOS
+//            $estados_pedidos_id_array_asignados = DB::table('estados_pedidos as t1')
+//                ->select('t1.pedido_id as id')
+//                ->leftJoin('estados_pedidos as t2',function ($join){
+//                    $join->on('t1.pedido_id', '=', 't2.pedido_id')
+//                        ->on('t1.id', '<', 't2.id');
+//                })
+//                ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+//                ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+//                ->whereNull('t2.id')
+//                ->where('t1.estado_id','=','3');
+//
+//            $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array_asignados)
+//                ->whereDate('created_at','<',$a_month_ago)
+//                ->orderBy('id','asc')
+//                ->get();
+////            dd($usuario->id , $pedidos);
+//            if(count($pedidos)>0 || count($pedidos_parciales)>0){
+//                $usuarios->forget($key);
+//            }
+//        }
+
+//        dd($usuarios->all());
 
         return view('asignador.edit')
             ->withTipos($tipos)
@@ -201,8 +279,8 @@ class AsignacionesController extends Controller
             ->withUnidades($unidades)
             ->withItems($items)
             ->withUsers($usuarios)
-
-            ->withPedido($pedido);
+            ->withPedido($pedido)
+            ->withTipoCompras($tipo_compras);
     }
 
     /**

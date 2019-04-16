@@ -45,3 +45,4 @@ function edicion(){
         width: '100%'
     }).val('').trigger('change');
 }
+

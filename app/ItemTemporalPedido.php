@@ -18,10 +18,18 @@ class ItemTemporalPedido extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad', 'pedido_id', 'item_temp_id'
+        'cantidad', 'pedido_id', 'item_temp_id', 'tipo_compra_id'
     ];
 
     public function item(){
         return $this->belongsTo('App\ItemTemporal','item_temp_id','id');
+    }
+
+    public function tipo_compra(){
+        return $this->belongsTo('App\TipoCompra','tipo_compra_id','id');
+    }
+
+    public function control_stock(){
+        return $this->hasMany('App\ControlStock','items_temporales_pedidos_id','id');
     }
 }

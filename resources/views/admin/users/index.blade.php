@@ -119,8 +119,9 @@
                             <td>
                                 <div class="btn-group" role="group">
                                     @if($user->deleted_at == null)
-                                        <button type="button" class="btn btn-sm btn-danger-custom col-xs-6" onclick="javascript:deshabilitarUsuario({{$user->id}});" title="Deshabilitar usuario {{ $user->username }}"><i class="fa fa-lock"></i></button>
-                                        <button type="button" class="btn btn-sm btn-info-custom col-xs-6" onclick="javascript:updateUsuario({{$user->id}});" title="Editar usuario {{ $user->username }}"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger-custom col-xs-4" onclick="javascript:deshabilitarUsuario({{$user->id}});" title="Deshabilitar usuario {{ $user->username }}"><i class="fa fa-lock"></i></button>
+                                        <button type="button" class="btn btn-sm btn-info-custom col-xs-4" onclick="javascript:updateUsuario({{$user->id}});" title="Editar usuario {{ $user->username }}"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-warning-custom col-xs-4" onclick="javascript:updatePassword({{$user->id}});" title="Editar usuario {{ $user->username }}"><i class="fa fa-key"></i></button>
                                     @else
                                         <button type="button" class="btn btn-sm btn-success-custom" onclick="javascript:habilitarUsuario({{$user->id}});" title="Habilitar usuario {{ $user->username }}"><i class="fa fa-unlock"></i></button>
                                     @endif
@@ -138,6 +139,8 @@
     {{--AGREGANDO MODALES--}}
     @include('admin.modals.modal-user-update')
     @include('admin.modals.modal-user-create')
+    @include('admin.modals.modal-user-password')
+
 @endsection
 
 @section('footerScripts')
@@ -149,6 +152,7 @@
     <script type="text/javascript">
         var rutas = {
             update: "{{ route('admin-usuarios.update',['id'=>':id']) }}",
+            update_password: "{{ route('admin-usuario.update.password',['id'=>':id']) }}",
             edit: "{{ route('admin-usuarios.edit',['id'=>':id']) }}",
             del: "{{route('admin-usuarios.destroy',['id'=>':id'])}}",
             res: "{{route('usuario.restore',['id'=>':id'])}}",

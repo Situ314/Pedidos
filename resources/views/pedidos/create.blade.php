@@ -135,7 +135,8 @@
                     categorias: {!! json_encode($categroias->toArray()) !!},
                     unidades: {!! json_encode($unidades->toArray()) !!},
                     items: {!! json_encode($items->toArray()) !!},
-                    tipos: {!! json_encode($tipos->toArray()) !!}
+                    tipos: {!! json_encode($tipos->toArray()) !!},
+                    tipo_compras: {!! json_encode($tipo_compras->toArray()) !!}
                 }
             ]
         };

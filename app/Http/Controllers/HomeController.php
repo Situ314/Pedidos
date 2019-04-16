@@ -40,6 +40,8 @@ class HomeController extends Controller
                 break;
             case 5:
             case 6:
+            case 8:
+            case 9:
                 return redirect()->action('PedidosController@index');
                 break;
             case 7:

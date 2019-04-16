@@ -55,6 +55,10 @@ class DevolucionesController extends Controller
                 $anuncion = "espera ...";
                 $estado = 9;
                 break;
+            case 4: //OBSERVADO POR CONTROL ACTIVO FIJO
+                $anuncion = "observado por activo fijo ...";
+                $estado = 11;
+                break;
         }
 
         $array_devolucion = [

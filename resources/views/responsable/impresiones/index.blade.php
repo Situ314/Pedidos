@@ -39,10 +39,48 @@
         </div>
     </div>
 
+    @include('responsable.modal-en-proceso')
+    @include('pedidos.modals.modal-estados')
 @endsection
 
 @section('footerScripts')
     @parent
+    <script type="text/javascript">
+        var rutas = {
+            pedidos: "{{route('pedidos.estados')}}",
+            cantidad: "{{route('pedidos.cantidad')}}",
+            buscar: "{{route('pedidos.buscar')}}",
+            buscarItem: "{{route('pedidos.buscaritem')}}",
+            getItem: "{{route('pedidos.items')}}",
+            getEstado: "{{route('pedidos.progreso')}}",
+            editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
+            procesoPedido: "{{route('pedidos.proceso')}}",
+            verificacion: "{{route('verificacion.show',['id'=>':id'])}}",
+            verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
+            verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
+            asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+
+            //PEDIDOS IMPRESION
+            impSol: "{{route('impimir.pedido.solicitados',':id')}}",
+            impEnt: "{{route('impimir.pedido.entregados',':id')}}",
+
+            //SALIDAS
+            salidas: "{{route('salida.alm')}}",
+            salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
+            pdf: "{{route('salidas.pdf',['id'=>':id'])}}",
+
+            //DOCUMENTOS
+            docStor: "{{route('documento.store')}}",
+            storage: "{{ asset('storage/archivo') }}",
+            docGet: "{{route('doc.get',['id'=>':id'])}}",
+            docPed: "{{route('post.docs')}}",
+            descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
+
+            //COMP.P
+            comP: "{{route('responsable.completar',['id'=>':id'])}}",
+            token: "{{Session::token()}}"
+        };
+    </script>
     {{ Html::script('/js/responsable/salida-p.js') }}
 
 @endsection

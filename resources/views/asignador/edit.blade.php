@@ -56,7 +56,7 @@
                         @include('asignador.parts.items-table')
                     </div>
                     <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
-                        <i class="fa fa-plus"> Agregar Item</i>
+                        <i class="fa fa-plus"> </i>Agregar Item
                     </button>
                     <br>
                     <div class="ln_solid"></div>
@@ -67,7 +67,8 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
                             <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
-                            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"> Asignar</i></button>
+                            <button type="button" class="btn btn-info-custom" onclick="javascript:modalDevolver(4);"><i class="fa fa-tag"></i> Observar por AF</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -110,7 +111,8 @@
                     cantItemTemp: {{count($pedido->items_temp_pedido)}},
                     cantItem: {{count($pedido->items_pedido)}},
                     item_pedido: {!! json_encode($pedido->items_pedido) !!},
-                    item_pedido_temp: {!! json_encode($pedido->items_temp_pedido) !!}
+                    item_pedido_temp: {!! json_encode($pedido->items_temp_pedido) !!},
+                    tipo_compras: {!! json_encode($tipo_compras->toArray()) !!}
                 }
             ]
         };

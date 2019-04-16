@@ -41,6 +41,15 @@ function modalDevolver(opt) {
             $('#btnAceptarDevolucion').addClass('btn-warning-custom');
             $('#btnAceptarDevolucion').text("En Espera");
             break;
+        case 4: //RETORNAR POR ACTIVO FIJO
+            $('#modalDevolucionHeader').addClass('modal-header-info');
+            $('#modalDevolucionTitle').append('<i class="fa fa-tag"></i> Devolver a Control de Activo Fijo');
+
+            $('input[name=tipo_dev]').val(4);
+
+            $('#btnAceptarDevolucion').addClass('btn-info-custom');
+            $('#btnAceptarDevolucion').text("Observar por AF");
+            break;
     }
     $('#modalDevolucion').modal('show');
 }

@@ -4,11 +4,11 @@
     </div>
 @endif
 
-{{-- SI TIENE EMPLEADO --}}
+ {{--SI TIENE EMPLEADO --}}
 @if(count(\Illuminate\Support\Facades\Auth::user()->empleado) != 0)
-    {{-- SI TIENE USUARIO EN SOLICITUDES --}}
+     {{--SI TIENE USUARIO EN SOLICITUDES --}}
     @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) != 0)
-        {{-- SI PROYECTOS RELACIONADOS CON EL USUARIO --}}
+         {{--SI PROYECTOS RELACIONADOS CON EL USUARIO --}}
         @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)!=0 )
 
             @php $bandera = true; @endphp
@@ -31,7 +31,7 @@
 
                             @endforeach
 
-                            {{-- SI HUBO UNA EMPRESA IGUAL AL PROYECTO --}}
+                             {{--SI HUBO UNA EMPRESA IGUAL AL PROYECTO --}}
                             @if($bandera)
                                 @if(!in_array(\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id,$array_empresas))
                                     <option value="{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa_id}}">{{\Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa->nombre}}</option>
@@ -49,7 +49,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <label for="proyecto_id" class="control-label">* Proyecto</label>
-                        {{Form::select('proyecto_id', array(null), null, ['class' => 'js-placeholder-single', 'required', 'disabled'])}}
+                        {{Form::select('proyecto_id', array(null), $pedido->id, ['class' => 'js-placeholder-single', 'required'])}}
                         @if ($errors->has('proyecto_id'))
                             <span class="help-block">
                             <strong>{{ $errors->first('proyecto_id') }}</strong>
@@ -86,6 +86,8 @@
     @endif
 
 @endif
+
+
 
 <div class="form-group">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

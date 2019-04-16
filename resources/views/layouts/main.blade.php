@@ -13,6 +13,7 @@
 
     <!-- page content -->
         <div class="right_col" role="main">
+
             @include('parts.messages')
 
             @yield('content')
@@ -43,6 +44,7 @@
             }
         ]
     };
+
 </script>
 
 @yield('footerScripts')

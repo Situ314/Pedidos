@@ -7,9 +7,33 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 <title>Pedidos </title>
-
+<link rel="icon" href="{!! asset('images/tepco_ico.ico') !!}"/>
 <link href="/css/style.css" rel="stylesheet">
 <link href="http://localhost:5004/bootstrap.css" rel="stylesheet">
+
+<style>
+    @-webkit-keyframes argh-my-eyes {
+        0%   { background-color: #2a3f54; }
+        49% { background-color: #2a3f54; }
+        50% { background-color: #6a0d02; }
+        99% { background-color: #6a0d02; }
+        100% { background-color: #2a3f54; }
+    }
+    @-moz-keyframes argh-my-eyes {
+        0%   { background-color: #2a3f54; }
+        49% { background-color: #2a3f54; }
+        50% { background-color: #6a0d02; }
+        99% { background-color: #6a0d02; }
+        100% { background-color: #2a3f54; }
+    }
+    @keyframes argh-my-eyes {
+        0%   { background-color: #2a3f54; }
+        49% { background-color: #2a3f54; }
+        50% { background-color: #6a0d02; }
+        99% { background-color: #6a0d02; }
+        100% { background-color: #2a3f54; }
+    }
+</style>
 <!-- Bootstrap -->
 {{ Html::style('css/bootstrap.min.css') }}
 

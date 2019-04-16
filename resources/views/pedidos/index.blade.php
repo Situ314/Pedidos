@@ -45,7 +45,9 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2><i class="fa fa-location-arrow"></i> Pedidos <small>Pedidos realizados</small></h2>
+                        @if(\Illuminate\Support\Facades\Auth::user()->rol_id != 9)
                         <a class="btn btn-md btn-success-custom pull-right" href="{{route('pedidos.create')}}"><i class="fa fa-plus"></i> Crear</a>
+                        @endif
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -67,14 +69,18 @@
                                         case 2:
                                             break;
                                         case 3:
+
                                             foreach ($estados as $estado){
-                                                if($estado->id!=1){
+                                                 if($estado->id != 10){
+                                                    if($estado->id == 3){
+                                                        echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
                                                     if($estado->id == 2){
                                                     echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
                                                     }else{
                                                     echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
                                                     }
-                                                }
+                                                 }
                                             }
                                             break;
                                         case 4:
@@ -89,11 +95,17 @@
                                             }
                                             break;
                                         case 5:
+
                                             foreach ($estados as $estado){
-                                                if($estado->id == 1){
-                                                echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
-                                                }else{
-                                                    echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                 if($estado->id != 10){
+                                                    if($estado->id == 3){
+                                                        echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                                    if($estado->id == 1){
+                                                    echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }else{
+                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
                                                 }
                                             }
                                             break;
@@ -117,6 +129,36 @@
                                                 }
                                             }
                                             break;
+                                        case 8:
+                                        foreach ($estados as $estado){
+                                        if($estado->id != 10){
+                                            if($estado->id == 3){
+                                                echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                            }
+                                             if($estado->id == 2){
+                                                    echo '<li role= "presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }else{
+                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                            }
+                                        }
+
+                                        break;
+                                        case 9:
+
+                                            foreach ($estados as $estado){
+                                                 if($estado->id != 10){
+                                                    if($estado->id == 3){
+                                                        echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                                    if($estado->id == 1){
+                                                    echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }else{
+                                                    echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                                 }
+                                            }
+                                         break;
                                     }
                                 @endphp
                                 <li role="presentation" class="pull-right">
@@ -125,6 +167,7 @@
                             </ul>
                             <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
                                 <div id="contenido-tab" class="table-responsive">
+
                                 </div>
                             </div>
                         </div>
@@ -147,40 +190,41 @@
 @section('footerScripts')
     @parent
     <script type="text/javascript">
-        var rutas = {
-            pedidos: "{{route('pedidos.estados')}}",
-            cantidad: "{{route('pedidos.cantidad')}}",
-            buscar: "{{route('pedidos.buscar')}}",
-            buscarItem: "{{route('pedidos.buscaritem')}}",
-            getItem: "{{route('pedidos.items')}}",
-            getEstado: "{{route('pedidos.progreso')}}",
-            editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
-            procesoPedido: "{{route('pedidos.proceso')}}",
-            verificacion: "{{route('verificacion.show',['id'=>':id'])}}",
-            verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
-            verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
-            asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+            var rutas = {
+                pedidos: "{{route('pedidos.estados')}}",
+                cantidad: "{{route('pedidos.cantidad')}}",
+                buscar: "{{route('pedidos.buscar')}}",
+                buscarItem: "{{route('pedidos.buscaritem')}}",
+                getItem: "{{route('pedidos.items')}}",
+                getEstado: "{{route('pedidos.progreso')}}",
+                editPedido: "{{route('pedidos.edit',['id'=>':id'])}}",
+                procesoPedido: "{{route('pedidos.proceso')}}",
+                verificacion: "{{route('verificacion.show',['id'=>':id'])}}",
+                verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
+                verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
+                asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+                verificacionAF:  "{{route('revisor.edit',['id'=>':id'])}}",
 
-            //PEDIDOS IMPRESION
-            impSol: "{{route('impimir.pedido.solicitados',':id')}}",
-            impEnt: "{{route('impimir.pedido.entregados',':id')}}",
+                //PEDIDOS IMPRESION
+                impSol: "{{route('impimir.pedido.solicitados',':id')}}",
+                impEnt: "{{route('impimir.pedido.entregados',':id')}}",
 
-            //SALIDAS
-            salidas: "{{route('salida.alm')}}",
-            salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
-            pdf: "{{route('salidas.pdf',['id'=>':id'])}}",
+                //SALIDAS
+                salidas: "{{route('salida.alm')}}",
+                salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
+                pdf: "{{route('salidas.pdf',['id'=>':id'])}}",
 
-            //DOCUMENTOS
-            docStor: "{{route('documento.store')}}",
-            storage: "{{ asset('storage/archivo') }}",
-            docGet: "{{route('doc.get',['id'=>':id'])}}",
-            docPed: "{{route('post.docs')}}",
-            descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
+                //DOCUMENTOS
+                docStor: "{{route('documento.store')}}",
+                storage: "{{ asset('storage/archivo') }}",
+                docGet: "{{route('doc.get',['id'=>':id'])}}",
+                docPed: "{{route('post.docs')}}",
+                descDoc: "{{route('doc.descargar',['id'=>':id'])}}",
 
-            //COMP.P
-            comP: "{{route('responsable.completar',['id'=>':id'])}}",
-            token: "{{Session::token()}}"
-        };
+                //COMP.P
+                comP: "{{route('responsable.completar',['id'=>':id'])}}",
+                token: "{{Session::token()}}"
+            };
         var variables = {
             estados: {!! json_encode($estados) !!},
             uR: {{ \Illuminate\Support\Facades\Auth::user()->rol_id }},

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Proyecto;
 
 class UserSolicitud extends Model
 {
@@ -17,6 +18,6 @@ class UserSolicitud extends Model
     protected $table = 'users';
 
     public function proyectos(){
-        return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id');
+        return $this->belongsToMany('App\Proyecto','proyectos_users','user_id','proyecto_id')->with(['padre']);
     }
 }

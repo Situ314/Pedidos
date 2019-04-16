@@ -37,7 +37,12 @@
                             <p><b><i class="fa fa-home"></i> Proyecto: </b></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <p>{{$pedido->proyecto->nombre}}</p>
+                            @if(count($pedido->proyecto->padre)>0)
+                                <p>{{$pedido->proyecto->padre->nombre}} &#10148 {{$pedido->proyecto->nombre}}</p>
+                            @else
+                                <p>{{$pedido->proyecto->nombre}}</p>
+                            @endif
+
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <p><b><i class="fa fa-user"></i> Solicitante: </b></p>
@@ -119,6 +124,7 @@
                             <th>Item</th>
                             <th>Cantidad</th>
                             <th>Unidad</th>
+                            <th>Tipo de Compra</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -129,6 +135,11 @@
                                 <td><p>{{$item->item->nombre}}</p></td>
                                 <td><p>{{$item->cantidad}}</p></td>
                                 <td><p>{{$item->item->unidad->full_name}}</p></td>
+                                @if($item->tipo_compra!=null)
+                                    <td><p>{{$item->tipo_compra->nombre}}</p></td>
+                                @else
+                                    <td><p>SIN REGISTRO DE TIPO DE COMPRA</p></td>
+                                @endif
                             </tr>
                         @endforeach
                         @foreach($pedido->items_pedido as $item)
@@ -137,6 +148,11 @@
                                 <td><p>{{$item->item->nombre}}</p></td>
                                 <td><p>{{$item->cantidad}}</p></td>
                                 <td><p>{{$item->item->unidad->full_name}}</p></td>
+                                @if($item->tipo_compra!=null)
+                                    <td><p>{{$item->tipo_compra->nombre}}</p></td>
+                                @else
+                                    <td><p>SIN REGISTRO DE TIPO DE COMPRA</p></td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>

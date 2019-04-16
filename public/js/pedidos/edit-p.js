@@ -3,7 +3,7 @@
  */
 var option_unidades = "";
 var options_items = "";
-
+var option_tipo_compras = "";
 $( document ).ready(function() {
     $('.js-placeholder-single').select2({
         allowClear: true,
@@ -14,11 +14,11 @@ $( document ).ready(function() {
     $('.items-select2').prop('disabled', true);
 
     getUnidades();
-
+    getTipoCompras();
     var auxItems = false;
 
     $('select[name=tipo_cat_id]').change(function () {
-        var selected_op = $(this).find('option:selected').val();
+        var selected_op = $('select[name=tipo_cat_id]').find('option:selected').val();
         if(typeof selected_op != "undefined"){
             var items = config.variables[0].items;
             options_items = "";
@@ -83,14 +83,128 @@ $( document ).ready(function() {
 
     //********************************SECCION QUE CORRIGE Y PERMITE LA EDICION
     edicion();
+    // console.log("PROEYCTOS SOLICITUUUUDES"+ proyectos_solicitudes);
+    if(typeof  proyectos_solicitudes != 'undefined')
+        getProyectos();
+    //CUANDO CAMBIA LA EMPRESA
+    $('select[name=empresa_id]').change(function () {
+        if(typeof proyectos_solicitudes != 'undefined')
+            getProyectos();
+    });
 });
 
+var options_proyectos = "";
+function getEmpresas() {
+    $.ajax({
+        url: 'http://solicitudes.pragmainvest.com.bo/servicios/empresas',
+        method: 'GET',
+        dataType: 'JSON',
+        beforeSend: function (e) {
+            $('select[name=empresa_id]').prop('disabled', true);
+            $('select[name=empresa_id]').select2({
+                allowClear: true,
+                placeholder: "Cargando empresas ...",
+                width: '100%'
+            }).val('').trigger('change');
+
+            $('select[name=proyecto_id]').prop('disabled', true);
+            $('select[name=proyecto_id]').select2({
+                allowClear: true,
+                placeholder: "Cargando proyectos ...",
+                width: '100%'
+            }).val('').trigger('change');
+        }
+    }).done(function (response) {
+        var select_empresas = $('select[name=empresa_id]');
+        select_empresas.empty();
+
+        var select_proyectos = $('select[name=proyecto_id]');
+        select_proyectos.empty();
+
+        $.each(response['empresas'], function (key, val) {
+            select_empresas.append("<option value='"+val['id']+"|"+val['nombre']+"|"+val['razon']+"' data-foo='"+val['id']+"'>"+val['nombre']+"</option>");
+
+            $.each(val['proyecto'], function (key2, val2) {
+                options_proyectos += "<option value='"+val2['id']+"|"+val2['nombre']+"|"+val2['descripcion']+"' data-foo='"+val['id']+"'>"+val2['nombre']+"</option>";
+            });
+        });
+        // select_proyectos.append(options_proyectos);
+
+        select_empresas.prop('disabled', false);
+        select_empresas.select2({
+            allowClear: true,
+            placeholder: "Seleccione empresa ...",
+            width: '100%'
+        }).val('').trigger('change');
+
+    }).fail(function (response) {
+
+    });
+}
+
+function getProyectos() {
+    var selected_op = $('select[name=empresa_id]').find('option:selected').val();
+    console.log(selected_op);
+    if(typeof selected_op != "undefined" && typeof proyectos_solicitudes != 'undefined') {
+
+        options_proyectos = "";
+
+        var proyectos_s = proyectos_solicitudes.pr;
+        console.log(proyectos_s);
+
+        for(var i=0 ; i<proyectos_s.length ; i++){
+
+            if(selected_op == proyectos_s[i].empresa_id){
+
+                var proyecto_full = "";
+                    // options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
+                if(proyectos_s[i].padre == null)
+                    options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].nombre+'</option>';
+                else
+                    options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
+            }
+        }
+        if(!jQuery.isEmptyObject(proyectos_empleado)){ //TODOS LOS PROYECTOS ESTAN EM SOLICITUDES INCLUIDO EL SUYO
+            var proyecto_e = proyectos_empleado.pr;
+            console.log(proyectos_empleado);
+            console.log('PPRYECTO II: '+proyecto_e.id +' '+config.variables[0].proyectoPedido);
+            if(selected_op == proyecto_e.empresa_id){
+
+                    options_proyectos += '<option value="'+proyecto_e.id+'" data-emp="'+proyecto_e.empresa_id+'">'+proyecto_e.nombre+'</option>';
+            }
+        }
+
+        $('select[name=proyecto_id]').prop('disabled', false);
+        $('select[name=proyecto_id]').empty();
+        $('select[name=proyecto_id]').append(options_proyectos);
+
+        $('select[name=proyecto_id]').select2({
+            allowClear: true,
+            placeholder: "Seleccione un proyecto...",
+            width: '100%'
+        }).val(config.variables[0].proyectoPedido).trigger('change');
+    }else{
+        $('select[name=proyecto_id]').prop('disabled', true);
+        $('select[name=proyecto_id]').select2({
+            allowClear: true,
+            placeholder: "Seleccione una empresa...",
+            width: '100%'
+        }).val('').trigger('change');
+    }
+}
 var options_proyectos = "";
 
 function getUnidades() {
     var unidades = config.variables[0].unidades;
     for(var i = 0; i<unidades.length ; i++){
         option_unidades += "<option value='"+unidades[i].id+"'>"+unidades[i].nombre+" ("+unidades[i].descripcion+")</option>"
+    }
+}
+
+function getTipoCompras() {
+    var tipo_compras = config.variables[0].tipo_compras;
+    for(var i = 0; i<tipo_compras.length ; i++){
+        option_tipo_compras += "<option value='"+tipo_compras[i].id+"'>"+tipo_compras[i].nombre+"</option>"
     }
 }
 
@@ -140,16 +254,16 @@ function editarCampo(id) {
 
 //AQUI YACE EL ERROR DE LAS UNIDADES
 function cambiarUnidad(id) {
-    if(typeof $('#item_id'+id).find('option:selected').val()!="undefined"){
 
-        $('#unidad_id'+id).prop('disabled', true);
+    if(typeof $('#item_id'+id).find('option:selected').val()!="undefined"){
+        // $('#unidad_id'+id).prop('disabled', true);
         $('#unidad_id'+id).select2({
             allowClear: true,
             placeholder: "Primero seleccione una categoria...",
             width: '100%'
         }).val($('#item_id'+id).find('option:selected').data('unidad')).trigger('change');
     }else{
-        $('#unidad_id'+id).prop('disabled', true);
+        // $('#unidad_id'+id).prop('disabled', true);
         $('#unidad_id'+id).select2({
             allowClear: true,
             placeholder: "Primero seleccione una categoria...",
@@ -164,4 +278,56 @@ function cambiarTextoUnidad(id) {
     } else {
         $('#txtUnidad' + id).val(0);
     }
+}
+
+//FUNCIONES PARA DOCUMENTOS
+var auxD = 1;
+function agregarDocumento() {
+    if( $('table#tableDoc').hasClass('hidden') ){
+        $('table#tableDoc').removeClass('hidden');
+    }
+
+    var tr = '<tr>' +
+        '<td scope="row" width="2%;">'+auxD+'</td>'+
+        '<td><input name="doc[]" id="inputFile'+auxD+'" class="hidden" onchange="mostrarNombre(this, '+auxD+');" type="file"><p id="fileName'+auxD+'"></p></td>'+
+        '<td><p id="fileSize'+auxD+'"></p></td>'+
+        '<td><a class="eliminar" onclick="eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
+        '</tr>';
+    $('tbody#tbodyDoc').append(tr);
+
+    $('#inputFile'+auxD).trigger('click');
+    // var filename = $('#inputFile'+auxD).val().split('\\').pop();
+
+    auxD++;
+}
+
+var auxD = 1;
+function agregarDocumentoEdit() {
+    if( $('table#tableDoc').hasClass('hidden') ){
+        $('table#tableDoc').removeClass('hidden');
+    }
+
+    $numero = $('table#tableDoc tr').length;
+    var tr = '<tr>' +
+        '<td scope="row" width="2%;">'+$numero+'</td>'+
+        '<td><input name="doc[]" id="inputFile'+$numero+'" class="hidden" onchange="mostrarNombre(this, '+$numero+');" type="file"><p id="fileName'+$numero+'"></p></td>'+
+        '<td><p id="fileSize'+$numero+'"></p></td>'+
+        '<td><a class="eliminar" onclick="eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
+        '</tr>';
+    $('tbody#tbodyDoc').append(tr);
+
+    $('#inputFile'+$numero).trigger('click');
+    // var filename = $('#inputFile'+auxD).val().split('\\').pop();
+
+    $numero++;
+}
+
+function mostrarNombre(obj, id) {
+    // console.log(obj);
+    // console.log(obj.files);
+    // console.log(obj.files.item(0).name);
+    // console.log(obj.files.item(0).size);
+    // console.log(getReadableFileSizeString(obj.files.item(0).size));
+    $('#fileName'+id).text( obj.files.item(0).name );
+    $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) );
 }

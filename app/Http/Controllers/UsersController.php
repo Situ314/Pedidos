@@ -140,16 +140,26 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, array(
-            'password' => 'required|min:8'
-        ));
+//        $this->validate($request, array(
+//            'password' => 'required|min:8'
+//        ));
 
         $usuario = User::find($id);
         $usuario->username = $request->username;
-        $usuario->password = bcrypt($request->password);
+//        $usuario->password = bcrypt($request->password);
         $usuario->empleado_id = $request->empleado_id;
         $usuario->rol_id = $request->rol_id;
+        if ($usuario->rol_id != 5 || $request->rol_id == 5){ //SI USUARIO - VERIFICAR AUTORIZADOR
+            $responsable = new Responsable();
+
+            $responsable -> autorizador_id = $id;
+            $responsable -> solicitante_id = $id;
+
+            $responsable->save();
+            
+        }
         $usuario->update();
+
 
         if ($usuario->rol_id == 6){ //SI USUARIO - VERIFICAR AUTORIZADOR
             $responsable = Responsable::where('solicitante_id','=',$usuario->id)
@@ -221,5 +231,27 @@ class UsersController extends Controller
         return Response::json(
             $error
         );
+    }
+
+    /**
+     * Update password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, $id)
+    {
+        $this->validate($request, array(
+            'password' => 'required|min:8',
+            'password_repeat' => 'required|same:password',
+        ));
+
+        $usuario = User::find($id);
+        $usuario->password = bcrypt($request->password);
+        $usuario->update();
+
+        Session::flash('success', "Contraseña del usuario ".$usuario->username." modificada correctamente...");
+        return redirect()->back();
     }
 }

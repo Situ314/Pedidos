@@ -12,6 +12,7 @@ use App\Pedido;
 use App\Proyecto;
 use App\Responsable;
 use App\SalidaAlmacen;
+use App\TipoCompra;
 use App\SalidaItem;
 use App\TipoCategoria;
 use App\Unidad;
@@ -47,7 +48,8 @@ class ResponsableController extends Controller
                 $query->where('t1.estado_id','<>',8);
             })->where(function ($query){
               $query->where('t1.estado_id','=',4)
-                  ->orWhere('t1.estado_id','=',5);
+                  ->orWhere('t1.estado_id','=',5)
+                  ->orWhere('t1.estado_id','=',9);
             });
 
         $salidas = SalidaAlmacen::where('responsable_entrega_id','=',Auth::id())
@@ -123,7 +125,7 @@ class ResponsableController extends Controller
         $categorias = Categoria::all();
         $unidades = Unidad::all();
         $items = Item::all();
-
+        $tipo_compras = TipoCompra::all();
         $users = User::where('rol_id','=',4)
             ->get();
 
@@ -131,7 +133,7 @@ class ResponsableController extends Controller
             ->get();
 
         $empresas = Empresa::all();
-        $proyectos = Proyecto::all();
+        $proyectos = Proyecto::with('padre')->get();
 
         //FILTRAR A EMPLEADOS A TRAVES DE SU CARGO - CHOFER, COURRIER, ETC
         $empleados = Empleado::where('estado','=','Activo')
@@ -142,12 +144,11 @@ class ResponsableController extends Controller
             ->withCategroias($categorias)
             ->withUnidades($unidades)
             ->withItems($items)
-
             ->withPedido($pedido)
             ->withResponsables($users)
             ->withResponsablessentrega($resp_entrega)
             ->withEmpleados($empleados)
-
+            ->withTipoCompras($tipo_compras)
             ->withEmpresas($empresas)
             ->withProyectos($proyectos);
     }
@@ -180,6 +181,7 @@ class ResponsableController extends Controller
             ->orderBy('salida_almacen.id','desc')
             ->first();
 
+//        dd($num_solicitud);
         $solicitud_saliente = 1;
         $salidas = null;
         if($num_solicitud != null){ //DEBERIA PREGUNTAR SI TIENE UN PEDIDO RELACIONADO
@@ -335,33 +337,8 @@ class ResponsableController extends Controller
      * METODO QUE PERMITE ELIMINA LOS ITEMS QUE NO HAYAN SIDO ENTREGADOS Y CAMBIA DE ESTADO
      */
     public function getCompletarPedido(Request $request, $id){
-        $salida_almacen = SalidaAlmacen::select('id')->where('pedido_id','=',$id);
-
-        $salida_items = SalidaItem::whereIn('salida_id',$salida_almacen->get());
-
-        $array_items = [];
-        foreach ($salida_items->get() as $item){
-            array_push($array_items,$item->item_pedido_entregado->id);
-            if($item->cantidad != $item->item_pedido_entregado->cantidad){
-                $item->item_pedido_entregado->cantidad = $item->cantidad;
-                $item->item_pedido_entregado->save();
-            }
-        }
-
-        $items_borrar = ItemPedidoEntregado::where('pedido_id','=',$id)
-                ->whereNotIn('id', $array_items)
-                ->delete();
-
-        $array_estado = [
-            'motivo'=>strtoupper($request->motivo_entrega),
-            'user_id'=>Auth::id(),
-            'estado_id'=>5,
-            'pedido_id'=>$id
-        ];
-        $estado_pedido = new EstadoPedido($array_estado);
-        $estado_pedido->save();
-
-        Session::flash('success', "Pedido con codigo ".Pedido::find($id)->codigo." cambio a entregado, items de entrega modificados...");
-        return redirect()->action('PedidosController@index');
+        return view('responsable.dash');
     }
+
+
 }

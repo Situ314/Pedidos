@@ -15,7 +15,7 @@ class CheckResponsable
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->rol_id == 4 || $request->user()->rol_id == 1 || $request->user()->rol_id == 2 || $request->user()->rol_id == 7){
+        if($request->user()->rol_id == 4 || $request->user()->rol_id == 1 || $request->user()->rol_id == 2 || $request->user()->rol_id == 7 || $request->user()->rol_id == 8){
             return $next($request);
         }
         return redirect()->back()

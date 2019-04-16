@@ -11,6 +11,7 @@ use App\Proyecto;
 use App\SalidaAlmacen;
 use App\TipoCategoria;
 use App\Unidad;
+use App\TipoCompra;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 
 use Response;
 
+//set_time_limit ( 50000 );
+set_time_limit(3333);
 class SalidaAlmacenController extends Controller
 {
     public function __construct()
@@ -107,6 +110,8 @@ class SalidaAlmacenController extends Controller
         $resp_entrega = User::where('rol_id','=',7)
             ->get();
 
+        $tipo_compras = TipoCompra::all();
+
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
 
@@ -126,7 +131,7 @@ class SalidaAlmacenController extends Controller
             ->withResponsables($users)
             ->withResponsablessentrega($resp_entrega)
             ->withEmpleados($empleados)
-
+            ->withTipoCompras($tipo_compras)
             ->withEmpresas($empresas)
             ->withProyectos($proyectos)
 
@@ -188,6 +193,9 @@ class SalidaAlmacenController extends Controller
 
     public function pdfSalida($id){
         $salida = SalidaAlmacen::find($id);
+
+//        dd($salida);
+//        return view('pdf.pdf-salida-almacen')->with('salida',$salida);
 
         $pdf = \PDF::loadView('pdf.pdf-salida-almacen', array(
             'salida'=>$salida

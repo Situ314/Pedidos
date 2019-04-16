@@ -25,6 +25,7 @@
             <td>{{ $salida->num_ot }}</td>
             <td>
                 <a href="{{route('salidas.pdf',$salida->id)}}" target="_blank" class="btn btn-sm btn-info-custom" title="Imprimir pedido {{ $salida->pedido->codigo }}"><i class="fa fa-print"></i> </a>
+                <button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso({{$salida->pedido->id}});"><i class="fa fa-header"></i></button>
             </td>
         </tr>
         @endforeach

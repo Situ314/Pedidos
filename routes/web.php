@@ -10,8 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
-//    return view('welcome');
+    return view('welcome');
+//    if(\Illuminate\Support\Facades\Auth::check()){
+//        return redirect('dash');
+//    }else{
+//        return redirect('login');
+//    }
+});
+
+Route::get('/', function () {
+   // return view('welcome');
     if(\Illuminate\Support\Facades\Auth::check()){
         return redirect('dash');
     }else{
@@ -23,14 +33,15 @@ Route::get('/buscar',[
     'uses'=>'PedidosController@getPedido',
     'as'=>'pedidos.buscar'
 ]);
-//
-//Route::get('/buscarItem',[
-//    'uses'=>'PedidosController@getPedidoItem',
-//    'as'=>'pedidos.buscaritem'
-//]);
+
+Route::get('/buscarItem',[
+    'uses'=>'PedidosController@getPedidoItem',
+    'as'=>'pedidos.buscaritem'
+]);
+
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function (){
+Route::group(['middleware' => 'auth'],  function (){
     Route::get('/dash', [
         'uses'=> 'HomeController@index',
         'as'=> 'dash.index'
@@ -52,6 +63,16 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('post.pedidos',[
         'uses'=>'PedidosController@postPedidos',
         'as'=>'pedidos.estados'
+    ]);
+
+    Route::post('post.pedidos.gestion',[
+        'uses'=>'PedidosController@postPedidosGestion',
+        'as'=>'pedidos.estados.gestion'
+    ]);
+
+    Route::get('post.2018',[
+        'uses'=>'PedidosController@index_2018',
+        'as'=>'pedidos.index2k18'
     ]);
 
     Route::post('post.pedidos.cantidad',[
@@ -79,6 +100,11 @@ Route::group(['middleware' => 'auth'], function (){
         'as'=>'pedidos.buscaritem'
     ]);
 
+    Route::post('post.pedidos.responsable',[
+        'uses'=>'PedidosController@postPedidosXResponsable',
+        'as'=>'pedidos.pedidosxresp'
+    ]);
+
     Route::get('/imprimir/{id}/imprimir-sol',[
         'uses'=>'PedidosController@getPedidoImprimirItemsSolicitados',
         'as'=>'impimir.pedido.solicitados'
@@ -87,6 +113,26 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/imprimir/{id}/imprimir-ent',[
         'uses'=>'PedidosController@getPedidoImprimirItemsEntregados',
         'as'=>'impimir.pedido.entregados'
+    ]);
+
+    Route::get('/dashboard/responsables',[
+        'uses'=>'PedidosController@getDashboardResponsable',
+        'as'=>'pedidos.dashboardR'
+    ]);
+
+    Route::get('/dashboard/asignador',[
+        'uses'=>'PedidosController@getDashboardAsignador',
+        'as'=>'pedidos.asignador'
+    ]);
+
+    Route::get('/informe/correo',[
+        'uses'=>'PedidosController@enviarCorreo',
+        'as'=>'correo.responsable.informe'
+    ]);
+
+    Route::get('/informe/correo/responsable',[
+        'uses'=>'PedidosController@enviarCorreoResponsable',
+        'as'=>'correo.responsable.informe.personal'
     ]);
     //******************************************************
 
@@ -98,6 +144,15 @@ Route::group(['middleware' => 'auth'], function (){
 
     //******************************************************AUTORIZADOR
     Route::resource('/autorizador','AutorizadorController');
+
+    Route::get('/get.cambiarUsu/{usu}/{opcion}',[
+        'uses'=>'AutorizadorController@getCambiarRango',
+        'as'=>'autorizador.cambiar'
+    ]);
+    //******************************************************
+
+    //******************************************************REVISOR
+    Route::resource('/revisor','RevisorController');
 
     Route::get('/get.cambiarUsu/{usu}/{opcion}',[
         'uses'=>'AutorizadorController@getCambiarRango',
@@ -171,6 +226,10 @@ Route::group(['middleware' => 'auth'], function (){
         'uses'=> 'UsersController@restore',
         'as'=> 'usuario.restore'
     ]);
+    Route::put('/admin-usuarios/{id}/cambiarPassword',[
+        'uses'=> 'UsersController@updatePassword',
+        'as'=> 'admin-usuario.update.password'
+    ]);
     //******************************************************AUTORIZADORES
     Route::resource('/admin-autorizadores','AdminAutorizadoresController');
     Route::get('/admin-autorizadores/{id}/equipo',[
@@ -191,6 +250,8 @@ Route::group(['middleware' => 'auth'], function (){
     ]);
     //******************************************************
 
+    //******************************************************PARÁMETROS
+    Route::resource('/parametros','ParametroController');
     //******************************************************CAMBIO DE CONTRASEÑA
     Route::resource('/cambiar-pass','UpdatePasswordController');
     //******************************************************
@@ -199,9 +260,48 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('/responsable-entrega','ResponsableEntregaController');
     //******************************************************
 
+    //******************************************************REPORTES
+    Route::get('/reporte/general',[
+        'uses'=>'ReporteController@getGeneral',
+        'as'=>'reporte.general'
+    ]);
+
+    Route::get('/reporte/items',[
+        'uses'=>'ReporteController@getItems',
+        'as'=>'reporte.items'
+    ]);
+
+    Route::post('/reporte/general/filtrado',[
+        'uses'=>'ReporteController@postFiltrado',
+        'as'=>'reporte.filtrado'
+    ]);
+
+    Route::post('/reporte/general/filtradoItems',[
+        'uses'=>'ReporteController@postFiltradoItems',
+        'as'=>'reporte.filtrado.items'
+    ]);
+
+    Route::get('/reporte/general/excel',[
+        'uses'=>'ExcelController@downloadExcel',
+        'as'=>'reporte.excel'
+    ]);
+
+    Route::get('/reporte/items/excel',[
+        'uses'=>'ExcelController@downloadExcelItems',
+        'as'=>'reporte.excel.items'
+    ]);
+
+    Route::get('/pdfPedidoResponsable/{id}',[
+        'uses'=>'PedidosController@pdfInforme',
+        'as'=>'imprimir.responsable.informe'
+    ]);
+
+    Route::get('/ss',function (){
+        echo ini_get('max_execution_time');
+    });
 });
-//Route::get('/home', 'HomeController@index');
-/*Route::get('/batch',function (){
-    system("cmd /c C:\Users\djauregui\Desktop\pr.bat");
-    system("./bin/winexe -U Administrador%Password //172.20.1.163 'D:\CuboBatchs\CI_batch.bat'");
-});
+////Route::get('/home', 'HomeController@index');
+///*Route::get('/batch',function (){
+//    system("cmd /c C:\Users\djauregui\Desktop\pr.bat");
+//    system("./bin/winexe -U Administrador%Password //172.20.1.163 'D:\CuboBatchs\CI_batch.bat'");
+//});

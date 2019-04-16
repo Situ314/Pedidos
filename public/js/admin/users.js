@@ -103,6 +103,23 @@ function updateUsuario(id) {
 
         $('#modalUserUpdate').modal('show');
     });
+}
+
+function updatePassword(id) {
+    $('#modalHeaderUser').removeClass("modal-header-success");
+    $('#modalHeaderUser').addClass("modal-header-warning");
+
+    var action = rutas.update_password;
+    action = action.replace(':id',id);
+
+    $('#formUpdatePassword').attr("action",action);
+
+    var route = rutas.edit;
+    route = route.replace(':id',id);
+    var token = rutas.token;
+
+    $('#modalUserPassword').modal('show');
+
 
 }
 

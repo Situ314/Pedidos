@@ -3,6 +3,7 @@
  */
 // var options_categorias = "";
 var option_unidades = "";
+var option_tipo_compras = "";
 var options_items = "";
 var options_proyectos = "";
 $( document ).ready(function() {
@@ -22,7 +23,7 @@ $( document ).ready(function() {
     // getEmpresas();
 
     getUnidades();
-
+    getTipoCompras();
     // getEmpleados();
 
     $('select[name=tipo_cat_id]').change(function () {
@@ -36,7 +37,7 @@ $( document ).ready(function() {
             for(var i=0;i<items.length;i++){
                 if(selected_op == items[i].tipo_categoria_id){
                     // options_categorias += "<option value='"+categorias[i].id+"'>"+categorias[i].nombre+"</option>";
-                    options_items += "<option value='"+items[i].id+"' data-unidad='"+items[i].unidad_id+"'>"+items[i].nombre+"</option>";
+                    options_items += "<option value='"+items[i].id+"' data-unidad='"+items[i].unidad_id+"' data-compra='"+items[i].tipo_compra_id+"'>"+items[i].nombre+"</option>";
                 }
             }
             $('.items-select2').prop('disabled', false);
@@ -102,13 +103,22 @@ $( document ).ready(function() {
 
             options_proyectos = "";
             var proyectos_s = proyectos_solicitudes.pr;
+            console.log(proyectos_s);
+
             for(var i=0 ; i<proyectos_s.length ; i++){
+
                 if(selected_op == proyectos_s[i].empresa_id){
-                    options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].nombre+'</option>';
+                    var proyecto_full = "";
+                    options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
+                    // if(proyectos_s[i].padre == null)
+                    //     options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].nombre+'</option>';
+                    // else
+                    //     options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
                 }
             }
             if(!jQuery.isEmptyObject(proyectos_empleado)){ //TODOS LOS PROYECTOS ESTAN EM SOLICITUDES INCLUIDO EL SUYO
                 var proyecto_e = proyectos_empleado.pr;
+                console.log(proyectos_empleado);
                 if(selected_op == proyecto_e.empresa_id){
                     options_proyectos += '<option value="'+proyecto_e.id+'" data-emp="'+proyecto_e.empresa_id+'">'+proyecto_e.nombre+'</option>';
                 }
@@ -192,6 +202,13 @@ function getUnidades() {
     }
 }
 
+function getTipoCompras() {
+    var tipo_compras = config.variables[0].tipo_compras;
+    for(var i = 0; i<tipo_compras.length ; i++){
+        option_tipo_compras += "<option value='"+tipo_compras[i].id+"'>"+tipo_compras[i].nombre+"</option>"
+    }
+}
+
 var auxU = 1;
 function agregarItem() {
     var tr = "<tr>";
@@ -200,6 +217,7 @@ function agregarItem() {
             "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase' onkeyup='javascript:buscarItem(this.value,"+auxU+");'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required onchange='javascript:cambiarUnidad("+auxU+");'>"+options_items+"</select></td>"+
             "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' min='0.1' required></td>"+
             "<td><input name='txtUnidad[]' id='txtUnidad"+auxU+"' class='hidden'/><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required disabled onchange='javascript:cambiarTextoUnidad("+auxU+");'>"+option_unidades+"</select></td>"+
+            "<td><input name='tipoCompra[]' id='txtTipoCompra"+auxU+"' class='hidden'/><select name='tipo_compra_id[]' id='tipo_compra_id"+auxU+"' class='js-placeholder-single' required onchange='javascript:cambiarTextoTipoCompra("+auxU+");'>"+option_tipo_compras+"</select></td>"+
             "<td>" +
             "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");' title='Editar item "+(auxU+1)+"'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
             "<a class='eliminar' onclick='javascript:eliminarFila(this);' title='Eliminar item "+(auxU+1)+"'><i class='fa fa-close'></i></a>"+
@@ -208,6 +226,11 @@ function agregarItem() {
     $('#tbodyItems').append(tr);
 
     $('#unidad_id'+auxU).select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
+    }).val('').trigger('change');
+    $('#tipo_compra_id'+auxU).select2({
         allowClear: true,
         placeholder: "Seleccione...",
         width: '100%'
@@ -274,6 +297,13 @@ function cambiarUnidad(id) {
             placeholder: "Primero seleccione una categoria...",
             width: '100%'
         }).val($('#item_id'+id).find('option:selected').data('unidad')).trigger('change');
+
+        $('#tipo_compra_id'+id).prop('disabled', false);
+        $('#tipo_compra_id'+id).select2({
+            allowClear: true,
+            placeholder: "Seleccione un tipo de compra...",
+            width: '100%'
+        }).val($('#item_id'+id).find('option:selected').data('compra')).trigger('change');
     }else{
         $('#unidad_id'+id).prop('disabled', true);
         $('#unidad_id'+id).select2({
@@ -290,6 +320,15 @@ function cambiarTextoUnidad(id) {
         $('#txtUnidad'+id).val($('#unidad_id'+id).find('option:selected').val());
     }else{
         $('#txtUnidad'+id).val(0);
+    }
+}
+
+function cambiarTextoTipoCompra(id) {
+
+    if(typeof $('#tipo_compra_id'+id).find('option:selected').val()!="undefined"){
+        $('#txtTipoCompra'+id).val($('#tipo_compra_id'+id).find('option:selected').val());
+    }else{
+        $('#txtTipoCompra'+id).val(0);
     }
 }
 
@@ -315,11 +354,11 @@ function agregarDocumento() {
 }
 
 function mostrarNombre(obj, id) {
-    // console.log(obj);
-    // console.log(obj.files);
-    // console.log(obj.files.item(0).name);
-    // console.log(obj.files.item(0).size);
-    // console.log(getReadableFileSizeString(obj.files.item(0).size));
+    console.log(obj);
+    console.log(obj.files);
+    console.log(obj.files.item(0).name);
+    console.log(obj.files.item(0).size);
+    console.log(getReadableFileSizeString(obj.files.item(0).size));
     $('#fileName'+id).text( obj.files.item(0).name );
     $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) );
 }

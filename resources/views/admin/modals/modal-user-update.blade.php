@@ -75,19 +75,19 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <label for="password" class="control-label">Contraseña *</label>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        {{Form::password('password', ['class' => 'form-control', 'required'])}}
-                        @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--}}
+                        {{--<label for="password" class="control-label">Contraseña *</label>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--}}
+                        {{--{{Form::password('password', ['class' => 'form-control', 'required'])}}--}}
+                        {{--@if ($errors->has('password'))--}}
+                            {{--<span class="help-block">--}}
+                                {{--<strong>{{ $errors->first('password') }}</strong>--}}
+                            {{--</span>--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
             </div>
             <div class="modal-footer">

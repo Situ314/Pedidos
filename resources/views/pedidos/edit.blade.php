@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{ Form::open( array('route' => ['pedidos.update',$pedido->id], 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
+    {{ Form::open( array('route' => ['pedidos.update',$pedido->id], 'files'=>true, 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
 
     <div class="row">
         <div class="col-md-12 col-xs-12">
@@ -34,8 +34,59 @@
                     </div>
                     @include('pedidos.form-edit')
                 </div>
-            </div>
+                <div class="x_title">
+                    <h2>Documentos <small>Ya subidos al crear</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    @if(count($documentos) == 0)
+                        <div class="alert alert-info alert-dismissible fade in" role="alert">
+                            <strong><i class="fa fa-check"></i></strong> No hay documentos subidos
+                        </div>
+                    @else
+                        <table id="tableDocSubidos" class="table table-striped table-condensed">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Documento</th>
+                                <th>Tipo</th>
+                                <th>Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @php $auxItem=0;@endphp
+                            @foreach($documentos as $doc)
+                                <tr>
+                                    <td>{{$auxItem+1}}</td>
+                                    <td>{{$doc->nombre}}</td>
+                                    <td>{{$doc->mime}}</td>
+                                    <td><a href="{{route('doc.descargar',$doc->id)}}" class="btn btn-success-custom" title="Descargar {{$doc->nombre}}"><i class="fa fa-download"></i></a></td>
+                                </tr>
+                                @php $auxItem++; @endphp
+                            @endforeach
+                            </tbody>
+                        </table>
+                     @endif
+                </div>
 
+                <div class="x_title">
+                    <h2>Documento <small>De ser necesario puede agregar más documentos</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br>
+                    <button type="button" class="btn btn-success-custom" onclick="javascript:agregarDocumentoEdit();"><i class="fa fa-plus"></i> Agregar Documentos</button>
+                    @include('pedidos.parts.docs-table-edit')
+                </div>
+            </div>
         </div>
     </div>
 
@@ -83,10 +134,39 @@
     {{ Html::script('/js/pedidos/edit-p.js') }}
     {{ Html::script('/js/pedidos/edit-edit-p.js') }}
     {{ Html::script('/js/pedidos/agregar-item-boton.js') }}
+    {{ Html::script('/js/archivos/readeble-size.js') }}
     <!-- JS CON FUNCION DE BUSQUEDA, MODAL DE BUSQUEDA ITEM-->
     {{ Html::script('/js/pedidos/buscar-item.js') }}
 
     <script type="text/javascript">
+
+        @php $bandera = true; @endphp
+
+        @if(count(\Illuminate\Support\Facades\Auth::user()->empleado) != 0)
+            {{-- SI TIENE USUARIO EN SOLICITUDES --}}
+            @if(count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud) != 0)
+                {{-- SI PROYECTOS RELACIONADOS CON EL USUARIO --}}
+                @if( count(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos)!=0 )
+                    var proyectos_solicitudes =
+                    {
+                        pr: {!! json_encode(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos) !!}
+                    };
+                    @foreach(\Illuminate\Support\Facades\Auth::user()->empleado->usuario_solicitud->proyectos as $proyecto)
+                    @if($proyecto->id == \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->id)
+                    @php $bandera = false; @endphp
+                    @endif
+                    @endforeach
+
+                    @if($bandera)
+                        var proyectos_empleado = {
+                                pr: {!! json_encode(\Illuminate\Support\Facades\Auth::user()->empleado->proyecto) !!}
+                            };
+                                @else
+                        var proyectos_empleado = {};
+                    @endif
+                @endif
+            @endif
+        @endif
 
         var config = {
             rutas:[
@@ -100,11 +180,13 @@
                     categorias: {!! json_encode($categroias->toArray()) !!},
                     unidades: {!! json_encode($unidades->toArray()) !!},
                     items: {!! json_encode($items->toArray()) !!},
+                    proyectoPedido: {{$pedido->proyecto_id}},
                     categoriaSelect: {{$pedido->tipo_categoria_id}},
                     cantItemTemp: {{count($pedido->items_temp_pedido)}},
                     cantItem: {{count($pedido->items_pedido)}},
                     item_pedido: {!! json_encode($pedido->items_pedido) !!},
-                    item_pedido_temp: {!! json_encode($pedido->items_temp_pedido) !!}
+                    item_pedido_temp: {!! json_encode($pedido->items_temp_pedido) !!},
+                    tipo_compras: {!! json_encode($tipo_compras->toArray()) !!}
                 }
             ]
         };

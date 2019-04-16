@@ -64,13 +64,17 @@ class Pedido extends Model
         return $this->hasMany('App\EstadoPedido','pedido_id','id');
     }
 
+    public function estados_pedido_detalle(){
+        return $this->hasMany('App\EstadoPedido','pedido_id','id')
+            ->with('estado');
+    }
     public function proyecto(){
         return $this->hasOne('App\Proyecto','id','proyecto_id');
     }
 
     public function proyecto_empresa(){
         return $this->hasOne('App\Proyecto','id','proyecto_id')
-            ->with('empresa');
+            ->with(['empresa','padre']);
     }
 
     public function estados(){
@@ -81,12 +85,23 @@ class Pedido extends Model
         return $this->hasMany('App\SalidaAlmacen','pedido_id','id');
     }
 
+    public function salidas_almacen_items(){
+        return $this->hasMany('App\SalidaAlmacen','pedido_id','id')
+            ->with('salida_items');
+    }
+
     public function documentos(){
         return $this->hasMany('App\Documentos','pedido_id','id');
     }
 
     public function asignados_nombres(){
         return $this->belongsToMany('App\User','asignaciones','pedido_id','asignado_id')
+            ->with('empleado_nombres');
+    }
+
+    public function asignados_nombres_with_trashed(){
+        return $this->belongsToMany('App\User','asignaciones','pedido_id','asignado_id')
+            ->withTrashed()
             ->with('empleado_nombres');
     }
 }

@@ -24,4 +24,8 @@ class SalidaItem extends Model
     public function item_pedido_entregado(){
         return $this->hasOne('App\ItemPedidoEntregado','id','item_pedido_entregado_id');
     }
+
+    public function salida_almacen(){
+        return $this->belongsTo('App\SalidaAlmacen','id','salida_id');
+    }
 }

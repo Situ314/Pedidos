@@ -139,7 +139,13 @@ $(document).ready(function(){
             for(var i=0;i<proyectos.length;i++){
                 if(selected_op == proyectos[i].empresa_id){
                     console.log(proyectos[i]);
-                    options_proyectos += "<option value='"+proyectos[i].id+"'>"+proyectos[i].nombre+"</option>";
+                    if(proyectos[i].padre == null)
+                        options_proyectos += "<option value='"+proyectos[i].id+"'>"+proyectos[i].nombre+"</option>";
+                    else
+                    options_proyectos += "<option value='"+proyectos[i].id+"'>"+proyectos[i].padre.nombre+' &#10148 '+proyectos[i].nombre+"</option>";
+                        // options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
+
+
                 }
             }
 

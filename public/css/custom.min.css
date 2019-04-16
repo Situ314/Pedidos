@@ -884,12 +884,12 @@ a:visited {
     float: left;
     cursor: pointer
 }
-.panel_toolbox>li>a {
+.panel_toolbox>li>a:not(#print-asignados,#print-pendientes,#print-despachados,#print-espera,#email-asignados,#email-pendientes,#email-despachados,#email-espera) {
     padding: 5px;
     color: #C5C7CB;
     font-size: 14px
 }
-.panel_toolbox>li>a:hover {
+.panel_toolbox>li>a:hover:not(#print-asignados,#print-pendientes,#print-despachados,#print-espera,#email-asignados,#email-pendientes,#email-despachados,#email-espera) {
     background: #F5F7FA
 }
 .line_30 {

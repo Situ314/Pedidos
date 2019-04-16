@@ -37,11 +37,20 @@ class Item extends Model
         return $this->hasOne('App\TipoCategoria','id','tipo_categoria_id');
     }
 
+    public function pedidos(){
+        return $this->belongsToMany('App\Pedido','items_pedidos','pedido_id','item_id')
+            ->withPivot('cantidad');
+    }
+
+    public function items_pedidos(){
+        return $this->hasMany('App\ItemPedido','item_id');
+    }
     //MUTATOR
     // SET Nombre
     public function setNombreAttribute($value){
         $this->attributes['nombre'] = mb_strtoupper($value, 'UTF-8');
     }
+
 
 //    public function tipo_categoria(){
 //        return $this->hasOne('App\Categoria','id','id','tipo_categoria_id')

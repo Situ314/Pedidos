@@ -9,7 +9,7 @@
         <tr>
             <th width="8%;">Empresa</th>
             <td width="18%;">{{$pedido->proyecto->empresa->nombre}}</td>
-            <th rowspan="2" class="text-center" width="30%;" style="vertical-align: middle; font-size: 16px; background-color: #c0e674;">ITEMS SOLICITADOS</th>
+            <th rowspan="2" class="text-center" width="30%;" style="vertical-align: middle; font-size: 16px; background-color: #c0e674;">INFORME DE PEDIDOS ASIGNADOS</th>
             <th width="4%;">Codigo</th>
             <td colspan="3" width="15%;" class="text-center">{{$pedido->codigo}}</td>
         </tr>

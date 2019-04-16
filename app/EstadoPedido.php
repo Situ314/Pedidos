@@ -24,4 +24,8 @@ class EstadoPedido extends Model
     public function usuario(){
         return $this->hasOne('App\User','id','user_id');
     }
+
+    public function estado(){
+        return $this->hasOne('App\Estado','id','estado_id');
+    }
 }

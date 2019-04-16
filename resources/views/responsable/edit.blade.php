@@ -51,7 +51,11 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-home"></i> Proyecto</label>
-                            <p id="txtProyecto">{{$pedido->proyecto->nombre}}</p>
+                            @if(count($pedido->proyecto->padre)>0)
+                                <p>{{$pedido->proyecto->padre->nombre}} &#10148 {{$pedido->proyecto->nombre}}</p>
+                            @else
+                                <p>{{$pedido->proyecto->nombre}}</p>
+                            @endif
                         </div>
 
                     </div>
@@ -100,7 +104,7 @@
                         </div>
                         <div class="pull-right">
                             <button type="button" class="btn btn-warning-custom" onclick="javascript:modalDevolver(3);"><i class="fa fa-pause"></i> En Espera</button>
-                            <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
+                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
                         </div>
                     </div>
@@ -112,7 +116,7 @@
     {{ Form::close() }}
 
 
-    {{ Form::select( 'tipo_cat_id', $tipos->pluck('nombre','id'), array(null) ) }}
+    {{ Form::select( 'tipo_cat_id', $tipos->pluck('nombre','id'), array(null),['style'=>'visibility:hidden'] ) }}
 
     <!-- MODAL DEVOLUCION -->
     @include('modals.modal-devolucion')
@@ -133,7 +137,7 @@
 
     <script type="text/javascript">
 
-        var config = {
+       var config = {
             rutas:[
                 {
                     salidaMax: "{{ route('salida.id.max') }}",
@@ -145,7 +149,9 @@
                     categorias: {!! json_encode($categroias->toArray()) !!},
                     unidades: {!! json_encode($unidades->toArray()) !!},
                     items: {!! json_encode($items->toArray()) !!},
+                    tipo_compras: {!! json_encode($tipo_compras->toArray()) !!},
                     categoriaSelect: {{$pedido->tipo_categoria_id}},
+                    proyectoPedido: {{$pedido->proyecto_id}},
 
                     //ITEMS ENTREGA
                     cantItemEntrega: {{count($pedido->items_entrega)}},

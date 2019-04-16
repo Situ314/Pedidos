@@ -47,7 +47,11 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="motivo" class="control-label"><i class="fa fa-home"></i> Proyecto</label>
-                            <p>{{$pedido->proyecto->nombre}}</p>
+                            @if(count($pedido->proyecto->padre)>0)
+                                <p>{{$pedido->proyecto->padre->nombre}} &#10148 {{$pedido->proyecto->nombre}}</p>
+                            @else
+                                <p>{{$pedido->proyecto->nombre}}</p>
+                            @endif
                         </div>
 
                     </div>
@@ -164,7 +168,8 @@
                     proy: {!! json_encode($proyectos->toArray()) !!},
                     emp: {{ $salida->proyecto->empresa_id }},
                     pr: {{ $pedido->proyecto->id }},
-                    ped: {{ $pedido->id }}
+                    ped: {{ $pedido->id }},
+                    tipo_compras: {!! json_encode($tipo_compras->toArray()) !!}
                 }
             ]
         };

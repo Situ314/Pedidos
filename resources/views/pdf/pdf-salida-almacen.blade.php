@@ -10,8 +10,10 @@
             <th width="8%;">Empresa</th>
             <td width="18%;">{{ $salida->proyecto->empresa->nombre }}</td>
             <th rowspan="2" class="text-center" width="30%;" style="vertical-align: middle; font-size: 16px; background-color: #c0e674;">SALIDA DE ALMACEN</th>
-            <th width="4%;">N°</th>
-            <td colspan="3" width="15%;" class="text-center">N° {{ $salida->id }}</td>
+            <th width="6%;">Nº</th>
+            <td width="4%;">{{ $salida->id }}</td>
+            <th width="6%;">Cod.</th>
+            <td width="8%;">{{ $salida->pedido->codigo }}</td>
         </tr>
         <tr>
             <th>O.T. <span style="font-weight: normal;">{{ $salida->num_ot }}</span></th>
@@ -33,7 +35,11 @@
         </tr>
         <tr>
             <td colspan="9" style="font-weight: bold;">
-                Proyecto: <span style="font-weight: normal;">{{ $salida->proyecto->nombre }}</span>
+                @if($salida->proyecto->padre != null)
+                    Proyecto: <span style="font-weight: normal;">{{ $salida->proyecto->padre->nombre }} > {{ $salida->proyecto->nombre }}</span>
+                @else
+                    Proyecto: <span style="font-weight: normal;">{{ $salida->proyecto->nombre }}</span>
+                @endif
             </td>
         </tr>
         </tbody>
