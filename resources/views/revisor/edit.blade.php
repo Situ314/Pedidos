@@ -62,8 +62,8 @@
                             <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Volver</a>
                         </div>
                         <div class="pull-right">
-                            {{--<button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>--}}
-                            {{--<button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>--}}
+                            <button type="button" class="btn btn-danger-custom" onclick="javascript:modalDevolver(1);"><i class="fa fa-close"></i> Rechazar</button>
+                            <button type="button" class="btn btn-primary-custom" onclick="javascript:modalDevolver(2);"><i class="fa fa-eye"></i> Observar</button>
                             <button type="submit" class="btn btn-success"><i class="fa fa-arrow-right"></i> Aprobar</button>
                         </div>
                     </div>
