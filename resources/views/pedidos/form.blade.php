@@ -14,7 +14,7 @@
             @php $bandera = true; @endphp
             @php $array_empresas = []; @endphp
             <div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <label for="empresa_id" class="control-label">* Empresa</label>
                         <select name="empresa_id" required class="js-placeholder-single">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <label for="proyecto_id" class="control-label">* Proyecto</label>
                         {{Form::select('proyecto_id', array(null), null, ['class' => 'js-placeholder-single', 'required', 'disabled'])}}
@@ -57,29 +57,66 @@
                         @endif
                     </div>
                 </div>
+
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="oficina_id" class="control-label">* Oficina</label>
+                        {{Form::select('oficina_id', $oficinas->pluck('direccion','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+                        @if ($errors->has('oficina_id'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('oficina_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
             </div>
         @else
             <div class="form-group">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label for="empresa_id" class="control-label"><i class="fa fa-bank"></i> Empresa: </label>
                     <p>{{ \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa->nombre }}</p>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label for="proyecto_id" class="control-label"><i class="fa fa-bank"></i> Proyecto: </label>
                     <p>{{ \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->nombre }}</p>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="oficina_id" class="control-label">* Oficina</label>
+                        {{Form::select('oficina_id', $oficinas->pluck('direccion','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+                        @if ($errors->has('oficina_id'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('oficina_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <input name="proyecto_id" hidden value="{{\Illuminate\Support\Facades\Auth::user()->empleado->sol_proyecto_id}}">
         @endif
     @else
         <div class="form-group">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <label for="empresa_id" class="control-label"><i class="fa fa-bank"></i> Empresa: </label>
                 <p>{{ \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->empresa->nombre }}</p>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <label for="proyecto_id" class="control-label"><i class="fa fa-bank"></i> Proyecto: </label>
                 <p>{{ \Illuminate\Support\Facades\Auth::user()->empleado->proyecto->nombre }}</p>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="oficina_id" class="control-label">* Oficina</label>
+                    {{Form::select('oficina_id', $oficinas->pluck('direccion','id'), null, ['class' => 'js-placeholder-single', 'required'])}}
+                    @if ($errors->has('oficina_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('oficina_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
         </div>
         <input name="proyecto_id" hidden value="{{\Illuminate\Support\Facades\Auth::user()->empleado->sol_proyecto_id}}">
@@ -89,7 +126,7 @@
 
 <div class="form-group">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-style: solid; background-color: #d2dfeb; border-color: #2a3f54; font-size: 14px;">
-        <p style="color: red;"><b>NOTA: En el campo <i>(* Motivo de Pedido)</i> debe escribir la empresa y proyecto por el cual se realizara el requerimiento</b></p>
+        <p style="color: red;"><b>NOTA: Si no tiene habilitada la opción de elegir la empresa y/o   proyecto para la cual desea realizar el pedido, comuníquese con el Área de Sistemas al número de soporte (1610).</b></p>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <label for="motivo" class="control-label">* Motivo de Pedido</label>

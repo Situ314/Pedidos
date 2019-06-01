@@ -18,6 +18,11 @@ $( document ).ready(function(){
     setInterval(setTabsCantidad, 5000);
 });
 
+$('#modalDocumentos').on('hidden.bs.modal', function () {
+    // do something…
+    $('#filepdf').hide();
+});
+
 $('.js-placeholder-single').select2({
     allowClear: true,
     placeholder: "Seleccione...",
@@ -123,8 +128,10 @@ function actualizarTabla(response, estado) {
             case 5://AU
             case 8://REVISOR AF
             case 9://WATCHER
+            case 10: //REVISOR TIC
+            case 11: //RESPONSABLE TIC
                 if(estado == 4 || estado == 5|| estado ==8)
-                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Num. Solicitud' +
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>#' +
                         '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
                 else
@@ -135,7 +142,7 @@ function actualizarTabla(response, estado) {
             case 6://US
             case 7://R.ENT.
                 if(estado == 4 || estado == 5|| estado ==8)
-                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Num. Solicitud</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
+                    head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>#</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
                 else
                     head += '<table class="table"><thead><tr><th>#</th><th>Codigo</th><th>Empresa</th><th>Proyecto</th><th>Asignado a:</th><th>Creado en</th><th>Opciones</th></tr></thead>'+
@@ -143,12 +150,13 @@ function actualizarTabla(response, estado) {
 
                 break;
         }
+
+
         for(var i=0;i<response.length;i++){
             switch (parseInt(variables.uR)){
                 case 1://R
                 case 2://AD
                 case 9://WATCHER
-
                     //************************************OPCIONES
                     var opciones = "";
                     switch (parseInt(estado)){
@@ -166,9 +174,14 @@ function actualizarTabla(response, estado) {
                             break;
                         case 4:
                         case 5:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 6:
                         case 7:
@@ -176,9 +189,14 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 8:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 9:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -220,9 +238,14 @@ function actualizarTabla(response, estado) {
                     }
                     if(estado == 4 || estado == 5|| estado ==8){
 
+                        if(response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TICS #' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].salidas_almacen[0].num_solicitud+'</td>' +
+                            '<td>'+salida+'</td>' +
                             '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
                             '<td>'+padre+'</td>' +
                             '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
@@ -268,9 +291,14 @@ function actualizarTabla(response, estado) {
                             break;
                         case 4:
                         case 5:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 6:
                         case 7:
@@ -278,9 +306,14 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 8:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 9:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -382,7 +415,7 @@ function actualizarTabla(response, estado) {
                             if(bool_asignado_opciones){
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                     '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                    '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                     '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             }else{
                                 opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -442,7 +475,7 @@ function actualizarTabla(response, estado) {
                                     case 4: //PENULTIMO ESTADO - PARCIAL
                                         opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                             '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                            '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                            '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                             '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                                         break;
                                 }
@@ -470,10 +503,16 @@ function actualizarTabla(response, estado) {
                     if(response[i].proyecto_empresa.padre != null){
                         padre = response[i].proyecto_empresa.padre.nombre+" &#10148 "+response[i].proyecto_empresa.nombre;
                     }
-                    if(estado == 4 || estado == 5|| estado ==8)
+                    if(estado == 4 || estado == 5|| estado ==8){
+
+                        if(response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TICs # ' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+
                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].salidas_almacen[0].num_solicitud+'</td>' +
+                            '<td>'+salida+'</td>' +
                             '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
                             '<td>'+padre+'</td>' +
                             '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
@@ -483,6 +522,7 @@ function actualizarTabla(response, estado) {
                             opciones+
                             '</div></td>'+
                             '</tr>';
+                    }
                     else
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
@@ -515,9 +555,14 @@ function actualizarTabla(response, estado) {
                             break;
                         case 4:
                         case 5:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 6:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>';
@@ -531,9 +576,14 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 8:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 9:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -575,10 +625,14 @@ function actualizarTabla(response, estado) {
                         empresa = response[i].proyecto_empresa.empresa.nombre
                     }
 
-                    if(estado == 4 || estado == 5|| estado ==8)
+                    if(estado == 4 || estado == 5|| estado ==8){
+                        if(response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TIC #' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].salidas_almacen[0].num_solicitud+'</td>' +
+                            '<td>'+salida+'</td>' +
                             '<td>'+proyecto+'</td>' +
                             '<td>'+empresa+'</td>' +
                             '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
@@ -588,6 +642,7 @@ function actualizarTabla(response, estado) {
                             opciones+
                             '</div></td>'+
                             '</tr>';
+                    }
                     else
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
@@ -618,9 +673,14 @@ function actualizarTabla(response, estado) {
                             break;
                         case 4:
                         case 5:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 6:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -632,9 +692,14 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 8:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 9:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -670,18 +735,24 @@ function actualizarTabla(response, estado) {
                     }
                     //************************************CUERPO
                     console.log('OPCIONES'+opciones);
-                    if(estado == 4 || estado == 5|| estado ==8)
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].salidas_almacen[0].num_solicitud+'</td>' +
-                            '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
-                            '<td>'+response[i].proyecto_empresa.nombre+'</td>' +
-                            '<td>'+responsable+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
+                    if(estado == 4 || estado == 5|| estado ==8) {
+                        if (response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TIC # ' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+
+                        body += '<tr><th scope="row">' + (i + 1) + '</th>' +
+                            '<td>' + response[i].codigo + '</td>' +
+                            '<td>' + salida + '</td>' +
+                            '<td>' + response[i].proyecto_empresa.empresa.nombre + '</td>' +
+                            '<td>' + response[i].proyecto_empresa.nombre + '</td>' +
+                            '<td>' + responsable + '</td>' +
+                            '<td>' + response[i].created_at + '</td>' +
                             '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
+                            opciones +
+                            '</div></td>' +
                             '</tr>';
+                    }
                     else
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
@@ -718,7 +789,12 @@ function actualizarTabla(response, estado) {
                             break;
                         case 4:
                         case 5:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
@@ -734,9 +810,14 @@ function actualizarTabla(response, estado) {
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 8:
-                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
-                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                            if(response[i].tipo_categoria_id == '20')
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            else
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
                             break;
                         case 9:
                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -779,19 +860,26 @@ function actualizarTabla(response, estado) {
                         empresa = response[i].proyecto_empresa.empresa.nombre
                     }
 
-                    if(estado == 4 || estado == 5|| estado ==8)
-                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
-                            '<td>'+response[i].codigo+'</td>' +
-                            '<td>'+response[i].salidas_almacen[0].num_solicitud+'</td>' +
-                            '<td>'+proyecto+'</td>' +
-                            '<td>'+empresa+'</td>' +
-                            '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
-                            '<td>'+responsable+'</td>' +
-                            '<td>'+response[i].created_at+'</td>' +
+                    if(estado == 4 || estado == 5|| estado ==8) {
+
+                        if (response[i].salidas_almacen_tic[0] != null)
+                            salida = response[i].salidas_almacen_tic[0].num_solicitud;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+
+                        body += '<tr><th scope="row">' + (i + 1) + '</th>' +
+                            '<td>' + response[i].codigo + '</td>' +
+                            '<td>' + salida + '</td>' +
+                            '<td>' + proyecto + '</td>' +
+                            '<td>' + empresa + '</td>' +
+                            '<td>' + response[i].solicitante_empleado.empleado.nombres + ' ' + response[i].solicitante_empleado.empleado.apellido_1 + ' ' + response[i].solicitante_empleado.empleado.apellido_2 + '</td>' +
+                            '<td>' + responsable + '</td>' +
+                            '<td>' + response[i].created_at + '</td>' +
                             '<td><div class="btn-group" role="group">' +
-                            opciones+
-                            '</div></td>'+
+                            opciones +
+                            '</div></td>' +
                             '</tr>';
+                    }
                     else
                         body+='<tr><th scope="row">'+(i+1)+'</th>' +
                             '<td>'+response[i].codigo+'</td>' +
@@ -807,6 +895,289 @@ function actualizarTabla(response, estado) {
 
 
                     //************************************
+                    break;
+                case 10://REVISOR TICSZ
+
+                    //************************************OPCIONES
+                    var opciones = "";
+                    switch (parseInt(estado)){
+                        case 1:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 2:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.asignadorTicEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 3:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 4:
+                        case 5:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 6:
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 9:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 10:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[i].id)+'" title="Asignar pedido '+response[i].codigo+'" onclick="asignarPedido('+response[i].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 11:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                        }
+                    }
+                    var padre = response[i].proyecto_empresa.nombre;
+                    if(response[i].proyecto_empresa.padre != null){
+                        padre = response[i].proyecto_empresa.padre.nombre+" &#10148 "+response[i].proyecto_empresa.nombre;
+                    }
+                    if(estado == 4 || estado == 5|| estado ==8) {
+                        if (response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TIC # ' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+
+                        body += '<tr><th scope="row">' + (i + 1) + '</th>' +
+                            '<td>' + response[i].codigo + '</td>' +
+                            '<td>' + salida + '</td>' +
+                            '<td>' + response[i].proyecto_empresa.empresa.nombre + '</td>' +
+                            '<td>' + response[i].proyecto_empresa.nombre + '</td>' +
+                            '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
+                            '<td>' + responsable + '</td>' +
+                            '<td>' + response[i].created_at + '</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            opciones +
+                            '</div></td>' +
+                            '</tr>';
+                    }
+                    else
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                            '<td>'+padre+'</td>' +
+                            '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
+                            '<td>'+responsable+'</td>' +
+                            '<td>'+response [i].created_at+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            opciones+
+                            '</div></td>'+
+                            '</tr>';
+                    //************************************
+                    break;
+                case 11://RESPONSABLE TICS
+
+                    //************************************ASIGNADO
+                    var bool_asignado_opciones = false;
+                    var responsable = "SIN ENCARGADO";
+                    if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                        for(var j=0;j<response[i].asignados_nombres.length;j++){
+                            responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                            if(response[i].asignados_nombres[j].id==variables.uI)
+                                bool_asignado_opciones = true;
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                            if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+                        }
+                    }
+                    //************************************
+
+                    //************************************OPCIONES
+                    var opciones = "";
+
+                    switch (parseInt(estado)){
+                        case 1:
+                        case 2:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 3:
+                            if(bool_asignado_opciones){
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<a class="btn btn-primary-custom" target="_blank" href="'+rutas.imprimirTic.replace(':id',response[i].id)+'" title="Imprimir pedido '+response[i].codigo+'"><i class="fa fa-print"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 4:
+                            if(bool_asignado_opciones){
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasTic('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<a class="btn btn-primary-custom" target="_blank" href="'+rutas.imprimirTic.replace(':id',response[i].id)+'" title="Imprimir pedido '+response[i].codigo+'"><i class="fa fa-print"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 5:
+                            if(bool_asignado_opciones){
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-primary-custom" target="_blank" href="'+rutas.imprimirTic.replace(':id',response[i].id)+'" title="Imprimir pedido '+response[i].codigo+'"><i class="fa fa-print"></i></a>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasTic('+response[i].id+', 5);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 6:
+                            if(bool_asignado_opciones){
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 7:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 8:
+                            if(bool_asignado_opciones){
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-primary-custom" target="_blank" href="'+rutas.imprimirTic.replace(':id',response[i].id)+'" title="Imprimir pedido '+response[i].codigo+'"><i class="fa fa-print"></i></a>'+
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 9:
+                            if(bool_asignado_opciones){
+                                var penultimo_estado =  response[i].estados_pedido[response[i].estados_pedido.length-2].estado_id;
+                                for(var k=response[i].estados_pedido.length-1;k>0;k--){
+                                    if(response[i].estados_pedido[k].estado_id!=9){
+                                        penultimo_estado = response[i].estados_pedido[k].estado_id;
+                                        break;
+                                    }
+                                }
+                                switch (parseInt(penultimo_estado)){
+                                    case 3: //PENULTIMO ESTADO - ASIGNADO
+                                        opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                            '<a class="btn btn-success-custom" href="'+rutas.verificacionResponsable.replace(':id',response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                            '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                        break;
+                                    case 4: //PENULTIMO ESTADO - PARCIAL
+                                        opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>'+
+                                            '<button type="button" class="btn btn-warning-custom" onclick="verSalidasTic('+response[i].id+', 4);" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                            '<a href="'+rutas.salidasEdit.replace(':id',response[i].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                            '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                        break;
+                                }
+                            }else{
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            }
+                            break;
+                        case 10:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                        case 11:
+                            opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                            break;
+                    }
+                    if(response[i].documentos.length > 0){
+                        opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                    }
+                    //************************************
+
+                    //************************************CUERPO
+                    var padre = response[i].proyecto_empresa.nombre;
+                    if(response[i].proyecto_empresa.padre != null){
+                        padre = response[i].proyecto_empresa.padre.nombre+" &#10148 "+response[i].proyecto_empresa.nombre;
+                    }
+                    var salida = "";
+
+
+                    if(estado == 4 || estado == 5|| estado ==8){
+                        if(response[i].salidas_almacen_tic[0] != null)
+                            salida = 'TIC # ' + response[i].salidas_almacen_tic[0].num_ticket;
+                        else
+                            salida = response[i].salidas_almacen[0].num_solicitud;
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+salida+'</td>' +
+                            '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                            '<td>'+padre+'</td>' +
+                            '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
+                            '<td>'+responsable+'</td>' +
+                            '<td>'+response[i].created_at+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            opciones+
+                            '</div></td>'+
+                            '</tr>';
+                    }
+                    else
+                        body+='<tr><th scope="row">'+(i+1)+'</th>' +
+                            '<td>'+response[i].codigo+'</td>' +
+                            '<td>'+response[i].proyecto_empresa.empresa.nombre+'</td>' +
+                            '<td>'+padre+'</td>' +
+                            '<td>'+response[i].solicitante_empleado.empleado.nombres+' '+response[i].solicitante_empleado.empleado.apellido_1+' '+response[i].solicitante_empleado.empleado.apellido_2+'</td>' +
+                            '<td>'+responsable+'</td>' +
+                            '<td>'+response[i].created_at+'</td>' +
+                            '<td><div class="btn-group" role="group">' +
+                            opciones+
+                            '</div></td>'+
+                            '</tr>';
+                    //************************************
+
                     break;
             }
         }
@@ -835,7 +1206,7 @@ function verItems(id) {
 
     var imp_sol = rutas.impSol;
     var imp_ent = rutas.impEnt;
-
+    var imp_tic= rutas.imprimirTic;
     $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -853,7 +1224,6 @@ function verItems(id) {
         var contItemsPedidos = 1;
         if(response.items_pedido.length>0 || response.items_temp_pedido.length>0){
 
-
             var bodyItems = '';
             for(var i=0;i<response.items_temp_pedido.length;i++){
 
@@ -869,8 +1239,6 @@ function verItems(id) {
                         else
                             tipo_compra = '<label class="label label-primary">'+response.items_temp_pedido[i].tipo_compra.nombre+'</label>';
                     }
-
-
 
                     bodyItems += '<tr><th scope="row">'+contItemsPedidos+'</th>' +
                         '<td>'+response.items_temp_pedido[i].item.nombre+'</td>' +
@@ -980,6 +1348,7 @@ function verItems(id) {
         var tableItemsEntregado='';
 
         if(response.items_entrega.length!=0){
+            $('#btnImprimirItemsEntregar').show();
             var bodyItemsEntregar = '';
 
             for(var i=0;i<response.items_entrega.length;i++){
@@ -1017,6 +1386,11 @@ function verItems(id) {
                 '</table>';
         }else{
             tableItemsEntregado = '<p>Falta verificación</p>';
+            $('#btnImprimirItemsEntregar').hide();
+        }
+
+        if(response.tipo_categoria_id == '20'){
+            $('#btnImprimirItemsEntregar').hide();
         }
 
         $('#panel-body-items-entregado').empty();
@@ -1025,6 +1399,9 @@ function verItems(id) {
         $('#verItemsPedidoModal').modal('show');
 
         $('#btnImprimirItemsSolicitados').prop('href',imp_sol.replace(':id',id));
+        if(response.tipo_categoria_id == '20')
+            $('#btnImprimirItemsSolicitados').prop('href',imp_tic.replace(':id',id));
+
         $('#btnImprimirItemsEntregar').prop('href',imp_ent.replace(':id',id));
 
     });
@@ -1142,8 +1519,8 @@ function verSalidas(id, estado) {
                         '<thead><tr><th colspan="3">DOCUMENTO</th></tr></thead>' +
                         '<tbody>' +
                             '<td><input name="documento" type="file" required></td>' +
-                            '<td><button type="submit" class="btn btn-default"><i class="fa fa-upload"> Subir Archivo</i></button></td>' +
-                            '<td><a href="'+rutas.pdf.replace(':id',response[i].id)+'" target="_blank" class="btn btn-info-custom"><i class="fa fa-print"> Imprimir</i></a></td>' +
+                            '<td><button type="submit" class="btn btn-default"><i class="fa fa-upload"> </i> Subir Archivo</button></td>' +
+                            '<td><a href="'+rutas.pdf.replace(':id',response[i].id)+'" target="_blank" class="btn btn-info-custom"><i class="fa fa-print"> </i> Imprimir</a></td>' +
                         '</tbody>'+
                     '</table>'+
 
@@ -1210,10 +1587,152 @@ function verSalidas(id, estado) {
                 $('#btnCompletarPedido').remove();
 
                 $('#formCompletarPedidoEntregado').prop("action", rutas.comP.replace(':id',id));
+                $('#formCompletarPedidoEntregadoTic').prop("action", rutas.comP.replace(':id',id));
 
                 $('#footerModalSalidaPedido').prepend(
-                    '<a id="btnCompletarSalida" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-info-custom"><i class="fa fa-check"></i> Completar Salidas</a>'+
-                    '<button id="btnCompletarPedido" data-toggle="modal" data-dismiss="modal" data-target="#modalEntregarPedido" type="button" class="btn btn-success-custom pull-left"><i class="fa fa-check-square-o"></i> Completar Pedido</button>'
+                    '<a id="btnCompletarSalida" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-success-custom"><i class="fa fa-check"></i> Completar Salidas</a>'+
+                    '<button id="btnCompletarPedido" data-toggle="modal" data-dismiss="modal" data-target="#modalEntregarPedido" type="button" class="btn btn-info-custom pull-left"><i class="fa fa-check-square-o"></i> Completar Pedido</button>'
+                );
+            }else{
+                $('#btnCompletarSalida').remove();
+                $('#btnCompletarPedido').remove();
+            }
+        }
+
+        $('#accordionSalidaItems').append(
+            panelSalida
+        );
+
+        $('#verSalidasPedidoModal').modal('show');
+    });
+}
+
+function verSalidasTic(id, estado) {
+    var route = rutas.salidasTic;
+    var token = rutas.token;
+
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        data:{
+            id: id
+        },
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (response){
+        $('#accordionSalidaItems').empty();
+        var panelSalida = "";
+        for(var i=0; i<response.length ; i++){
+            var tableBody = "";
+
+            for(var j=0; j<response[i].salida_items_tic.length ;j++){
+                var obs = "";
+
+                if(response[i].salida_items_tic[j].observacion != null){
+                    obs = response[i].salida_items_tic[j].observacion;
+                }
+                tableBody+=
+                    '<tr>' +
+                    '<td>'+(j+1)+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].item_pedido_entregado.item.nombre+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].cantidad+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].item_pedido_entregado.item.unidad.nombre+'</td>'+
+                    '<td>'+obs+'</td>'+
+                    '</tr>';
+
+            }
+
+            //TRATAMIENTO DE DOCUMENTO
+            var spanDoc = "";
+            var formInputDoc = "";
+
+            if(response[i].documento == null){
+                spanDoc = '<label class="label label-danger pull-right">S/D</label>';
+                formInputDoc =
+                    '<form action="'+rutas.docStor+'" method="POST" enctype="multipart/form-data">' +
+
+                    '<input name="salida_id" value="'+response[i].id+'" hidden>'+
+                    '<input type="hidden" name="_token" value="'+rutas.token+'">'+
+
+                    '<table class="table">' +
+                    '<thead><tr><th colspan="3">DOCUMENTO</th></tr></thead>' +
+                    '<tbody>' +
+                    '<td><input name="documento" type="file" required></td>' +
+                    '<td><button type="submit" class="btn btn-default"><i class="fa fa-upload"> </i> Subir Archivo</button></td>' +
+                    '<td><a href="'+rutas.pdf.replace(':id',response[i].id)+'" target="_blank" class="btn btn-info-custom"><i class="fa fa-print"> </i> Imprimir</a></td>' +
+                    '</tbody>'+
+                    '</table>'+
+
+                    '</form>';
+            }else{
+                var documento = response[i].documento.nombre;
+                var extension = documento.replace(/^.*\./, '');
+
+                switch (extension){
+                    case 'pdf':
+                        formInputDoc = '<iframe src="/js/ViewerJS/?zoom=page-width#/documento/'+response[i].documento.id+'/archivo" width="100%" height="600" allowfullscreen webkitallowfullscreen></iframe>';
+                        break;
+                    case "png":
+                    case "PNG":
+                    case "jpeg":
+                    case "jpg":
+                    case "JPG":
+                        formInputDoc = '<img src="'+rutas.docGet.replace(':id',response[i].documento.id)+'" style="width: 100%;">';
+                        break;
+                }
+
+                spanDoc = '<label class="label label-success pull-right">C/D</label>';
+            }
+            //*********************************************************
+
+            panelSalida+=
+                '<div class="panel-items-listado">'+
+                '<a class="panel-heading" role="tab" data-toggle="collapse" data-parent="#accordion" href="#salida_'+response[i].id+'" aria-expanded="true" aria-controls="collapseOne">'+
+                '<h4 class="panel-title">Salida N°: '+response[i].id+' '+spanDoc+'</h4>'+
+                '</a>'+
+                '<div id="salida_'+response[i].id+'" class="panel-collapse collapse" role="tabpanel">'+
+                '<div class="panel-body">'+
+
+                '<div class="table-responsive">'+
+                '<table class="table table-bordered table-responsive">'+
+                '<thead>'+
+                '<tr>'+
+                '<th colspan="5">ITEMS ENTREGADOS</th>'+
+                '</tr>'+
+                '<tr>'+
+                '<th width="4%;">Item</th>'+
+                '<th>Detalle</th>'+
+                '<th width="6%;">Cantidad</th>'+
+                '<th width="10%;">U.M.</th>'+
+                '<th>Observación</th>'+
+                '</tr>'+
+                '</thead>'+
+                '<tbody>'+
+                tableBody+
+                '</tbody>'+
+                '</table>'+
+                '</div>'+
+
+                '<div class="row">' +
+                formInputDoc+
+                '</div>'+
+
+                '</div>'+
+                '</div>'+
+                '</div>';
+
+            if(estado==4){
+                $('#btnCompletarSalida').remove();
+                $('#btnCompletarPedido').remove();
+
+                $('#formCompletarPedidoEntregado').prop("action", rutas.comP.replace(':id',id));
+                $('#formCompletarPedidoEntregadoTic').prop("action", rutas.comP.replace(':id',id));
+
+                $('#footerModalSalidaPedido').prepend(
+                    '<a id="btnCompletarSalida" href="'+rutas.salidasEdit.replace(':id',response[i].pedido_id)+'" class="btn btn-success-custom"><i class="fa fa-check"></i> Completar Salidas</a>'+
+                    '<button id="btnCompletarPedido" data-toggle="modal" data-dismiss="modal" data-target="#modalEntregarPedido" type="button" class="btn btn-info-custom pull-left"><i class="fa fa-check-square-o"></i> Completar Pedido</button>'
                 );
             }else{
                 $('#btnCompletarSalida').remove();
@@ -1254,23 +1773,8 @@ function buscarPedido() {
             dataType: 'JSON',
             beforeSend: function(e){
                 $('#contenido-tab').empty();
-                $('#contenido-tab').append('<div class="input-group col-md-12"><div class="col-md-3">' +
-                    '<select id="selectTipo" class="form-control js-placeholder-single">' +
-                    '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
-                    '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
-                    '<option value="item">BÚSQUEDA POR ITEMS</option>' +
-                    '</select>'+
-                    '</div>' +
-                    '<div class="col-md-9">' +
-                    '<div class="input-group">' +
-                    '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
-                    '<span class="input-group-btn">' +
-                    '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
-                    '</span>'+
-                    '</div>' +
-                    '</div></div>');
                 $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
-                    '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
+                    '<i class="fa fa-spin fa-spinner"></i><strong> Buscando</strong> pedidos...'+
                     '</div>');
             }
         }).done(function (response){
@@ -1286,6 +1790,9 @@ function buscarPedido() {
                 case 4://RE
                 case 5://AU
                 case 9://WATCHE
+                case 8:
+                case 10:
+                case 11:
                     head += '<table class="table"><thead><tr><th>#</th><th>Codigo' +
                         '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Creado en</th><th>Estado</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
@@ -1322,7 +1829,6 @@ function buscarPedido() {
                 switch (parseInt(variables.uR)){
                     case 1://R
                     case 2://AD
-                    case 9://WATCHER
                         var opciones = "";
                         switch ( parseInt(response[index].estados_pedido_detalle[response[index].estados_pedido_detalle.length - 1].estado_id)){
 
@@ -1376,8 +1882,70 @@ function buscarPedido() {
                                 estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
                                 break;
                         }
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
+                        break;
+                    case 9://WATCHER
+                        var opciones = "";
+                        switch ( parseInt(response[index].estados_pedido_detalle[response[index].estados_pedido_detalle.length - 1].estado_id)){
+
+                            case 1://INICIAL
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"> '+ estado_nombre +'</label>';
+                                break;
+                            case 2://AUTORIZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[index].id)+'" title="Asignar pedido '+response[index].codigo+'" onclick="asignarPedido('+response[index].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 3://ASIGNADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-user"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 4://PARCIAL
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning">'+ estado_nombre +'</label>';
+                                break;
+                            case 5://ENTREGADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-paper-plane"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 6://OBSERVADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-eye"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 7://RECHAZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-danger">'+ estado_nombre +'</label>';
+                                break;
+                            case 8://FINALIZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 9://EN ESPERA
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
+                                break;
+                        }
+                        if(response[index].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[index].id+');" title="Ver documentos '+response[index].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         break;
                     case 3://AS
+                    case 10:
                         var opciones = "";
                         switch ( parseInt(response[index].estados_pedido_detalle[response[index].estados_pedido_detalle.length - 1].estado_id)){
 
@@ -1436,6 +2004,7 @@ function buscarPedido() {
                         }
                         break;
                     case 4://RE
+                    case 11:
                         var opciones = "";
                         //************************************ASIGNADO
                         var bool_asignado_opciones = false;
@@ -1486,7 +2055,7 @@ function buscarPedido() {
                                 if(bool_asignado_opciones){
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                         '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[index].id+', 4);" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                         '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
                                 }else{
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -1550,7 +2119,7 @@ function buscarPedido() {
                                         case 4: //PENULTIMO ESTADO - PARCIAL
                                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[index].id+', 4);" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                                '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                                '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
                                             break;
                                     }
@@ -1676,6 +2245,103 @@ function buscarPedido() {
                                 estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
                                 break;
                         }
+                        break;
+                        //REVISOR AF
+                        case 8:
+                        //************************************OPCIONES
+                        var opciones = "";
+                        switch (parseInt(estado)){
+                            case 1:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[index].id)+'" title="Verificar pedido '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 2:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAF.replace(":id",response[index].id)+'" title="Verificar Activos Fijos de pedido '+response[i].codigo+'"><i class="fa fa-tags"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 3:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 4:
+                            case 5:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 6:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>';
+                                if(variables.uI==response[index].solicitante_id){
+                                    opciones+='<a href="'+rutas.editPedido.replace(":id",response[index].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>';
+                                }
+                                opciones+='<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 7:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 8:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 9:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 10:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                            case 11:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAF.replace(":id",response[index].id)+'" title="Verificar Activos Fijos de pedido '+response[index].codigo+'"><i class="fa fa-tags"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                break;
+                        }
+                        if(response[index].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[index].id+');" title="Ver documentos '+response[index].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
+                        //************************************
+                        var responsable = "SIN ENCARGADO";
+                        if(response[index].asignados_nombres!=null && response[index].asignados_nombres.length > 0){
+                            for(var j=0;j<response[index].asignados_nombres.length;j++){
+                                responsable=response[index].asignados_nombres[j].empleado_nombres.nombres;
+                                if(response[index].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                    responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                                if(response[index].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                    responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                                if(response[index].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                    responsable+=' '+response[index].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                            }
+                        }
+                        //************************************CUERPO
+                        var proyecto = "SIN PROYECTO";
+                        var empresa = "SIN EMPRESA";
+                        if(response[index].proyecto_empresa!=null){
+                            proyecto = response[index].proyecto_empresa.nombre;
+                            empresa = response[index].proyecto_empresa.empresa.nombre
+                        }
+
+                            body+='<tr><th scope="row">'+(index+1)+'</th>' +
+                                '<td>'+response[index].codigo+'</td>' +
+                                '<td>'+proyecto+'</td>' +
+                                '<td>'+empresa+'</td>' +
+                                '<td>'+response[index].solicitante_empleado.empleado.nombres+' '+response[index].solicitante_empleado.empleado.apellido_1+' '+response[index].solicitante_empleado.empleado.apellido_2+'</td>' +
+                                '<td>'+responsable+'</td>' +
+                                '<td>'+response[index].created_at+'</td>' +
+                                '<td><div class="btn-group" role="group">' +
+                                opciones+
+                                '</div></td>'+
+                                '</tr>';
+
+
+                        //************************************
                         break;
                 }
 
@@ -1753,23 +2419,9 @@ function buscarPedidoXItem() {
             dataType: 'JSON',
             beforeSend: function(e){
                 $('#contenido-tab').empty();
-                $('#contenido-tab').append(
-                    '<div class="input-group col-md-12"><div class="col-md-3">' +
-                    '<select id="selectTipo" class="form-control js-placeholder-single">' +
-                    '<option value="" disabled selected>Seleccione tipo de búsqueda...</option>'+
-                    '<option value="columnas">BÚSQUEDA POR COLUMNAS</option>' +
-                    '<option value="item">BÚSQUEDA POR ITEMS</option>' +
-                    '</select>'+
-                    '</div>' +
-                    '<div class="col-md-9">' +
-                    '<input id="txtBuscarPedido" style="height: 34px !important;" value="'+texto+'" type="text" class="form-control" placeholder=" Buscar...">'+
-                    '<span class="input-group-btn">' +
-                    '<button class="btn btn-default" type="button" onclick="tipoBusqueda();"><i class="fa fa-search"></i></button>' +
-                    '</span>'+
-                    '</div>' +
-                    '</div>');
+
                 $('#contenido-tab').append('<div class="alert alert-warning alert-dismissible fade in" role="alert">'+
-                    '<i class="fa fa-spin fa-spinner"></i><strong> Cargando</strong> pedidos...'+
+                    '<i class="fa fa-spin fa-spinner"></i><strong> Buscando</strong> pedidos...'+
                     '</div>');
             }
         }).done(function (response){
@@ -1785,6 +2437,9 @@ function buscarPedidoXItem() {
                 case 4://RE
                 case 5://AU
                 case 9://WATCHER
+                case 8: //AF
+                case 10: //REV TICS
+                case 11: //RESP TICS
                     head += '<table class="table"><thead><tr><th>#</th><th>Codigo' +
                         '</th><th>Empresa</th><th>Proyecto</th><th>Solicitante:</th><th>Asignado a:</th><th>Items</th><th>Estado</th><th>Opciones</th></tr></thead>'+
                         '<tbody>';
@@ -1822,7 +2477,6 @@ function buscarPedidoXItem() {
                 switch (parseInt(variables.uR)){
                     case 1://R
                     case 2://AD
-                    case 9://WATCHER
                         var opciones = "";
                         // console.log("--------->"+parseInt(response[index].estados[response[index].estados.length - 1].id));
                         switch (parseInt(response[index].estados[response[index].estados.length - 1].id)){
@@ -1877,8 +2531,71 @@ function buscarPedidoXItem() {
                                 estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
                                 break;
                         }
+                        if(response[index].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[index].id+');" title="Ver documentos '+response[index].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
+                        break;
+                    case 9://WATCHER
+                        var opciones = "";
+                        // console.log("--------->"+parseInt(response[index].estados[response[index].estados.length - 1].id));
+                        switch (parseInt(response[index].estados[response[index].estados.length - 1].id)){
+
+                            case 1://INICIAL
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"> '+ estado_nombre +'</label>';
+                                break;
+                            case 2://AUTORIZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.asignadorEdit.replace(":id",response[index].id)+'" title="Asignar pedido '+response[index].codigo+'" onclick="asignarPedido('+response[index].id+');"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 3://ASIGNADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-user"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 4://PARCIAL
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning">'+ estado_nombre +'</label>';
+                                break;
+                            case 5://ENTREGADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-paper-plane"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 6://OBSERVADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-eye"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 7://RECHAZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-danger">'+ estado_nombre +'</label>';
+                                break;
+                            case 8://FINALIZADO
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizadoTic('+response[index].id+');" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 9://EN ESPERA
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
+                                break;
+                        }
+                        if(response[index].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[index].id+');" title="Ver documentos '+response[index].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
                         break;
                     case 3://AS
+                    case 10://AS
                         var opciones = "";
                         switch (parseInt(response[index].estados[response[index].estados.length - 1].id)){
 
@@ -1937,6 +2654,7 @@ function buscarPedidoXItem() {
                         }
                         break;
                     case 4://RE
+                    case 11:
                         var opciones = "";
                         //************************************ASIGNADO
                         var bool_asignado_opciones = false;
@@ -1987,7 +2705,7 @@ function buscarPedidoXItem() {
                                 if(bool_asignado_opciones){
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                         '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[index].id+', 4);" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                        '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                        '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                         '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
                                 }else{
                                     opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>' +
@@ -2051,7 +2769,7 @@ function buscarPedidoXItem() {
                                         case 4: //PENULTIMO ESTADO - PARCIAL
                                             opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[index].id+');" title="Ver lista '+response[index].codigo+'"><i class="fa fa-list-alt"></i></button>'+
                                                 '<button type="button" class="btn btn-warning-custom" onclick="verSalidas('+response[index].id+', 4);" title="Ver salidas del pedido '+response[index].codigo+'"><i class="fa fa-sign-out"></i></button>'+
-                                                '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar pedido '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                                '<a href="'+rutas.salidasEdit.replace(':id',response[index].id)+'" class="btn btn-success-custom" title="Completar salidas '+response[index].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
                                                 '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[index].id+');"><i class="fa fa-header"></i></button>';
                                             break;
                                     }
@@ -2177,6 +2895,101 @@ function buscarPedidoXItem() {
                                 estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
                                 break;
                         }
+                        break;
+                    case 8:
+                        //REVISOR AF
+
+                        //************************************OPCIONES
+                        var opciones = "";
+                        var i = index;
+                        switch (parseInt(response[index].estados[response[index].estados.length - 1].id)){
+                            case 1:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAutorizador.replace(":id",response[i].id)+'" title="Verificar pedido '+response[i].codigo+'"><i class="fa fa-check-square-o"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"> '+ estado_nombre +'</label>';
+                                break;
+                            case 2:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAF.replace(":id",response[i].id)+'" title="Verificar Activos Fijos de pedido '+response[i].codigo+'"><i class="fa fa-tags"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 3:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-info"><i class="fa fa-user"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 4:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning">'+ estado_nombre +'</label>';
+
+                                break;
+                            case 5:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-paper-plane"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 6:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>';
+                                if(variables.uI==response[i].solicitante_id){
+                                    opciones+='<a href="'+rutas.editPedido.replace(":id",response[i].id)+'" class="btn btn-success-custom" title="Editar pedido"><i class="fa fa-edit"></i></a>';
+                                }
+                                opciones+='<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-warning"><i class="fa fa-eye"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 7:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-danger">'+ estado_nombre +'</label>';
+                                break;
+                            case 8:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-warning-custom" onclick="verSalidasFinalizado('+response[i].id+');" title="Ver salidas del pedido '+response[i].codigo+'"><i class="fa fa-sign-out"></i></button>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-check"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 9:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-success"><i class="fa fa-clock-o"></i> '+ estado_nombre +'</label>';
+                                break;
+                            case 10:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-primary"> '+ estado_nombre +'</label>';
+                                break;
+                            case 11:
+                                opciones = '<button type="button" class="btn btn-info-custom" onclick="verItems('+response[i].id+');" title="Ver lista '+response[i].codigo+'"><i class="fa fa-list-alt"></i></button>' +
+                                    '<a class="btn btn-success-custom" href="'+rutas.verificacionAF.replace(":id",response[i].id)+'" title="Verificar Activos Fijos de pedido '+response[i].codigo+'"><i class="fa fa-tags"></i></a>'+
+                                    '<button type="button" class="btn btn-default" title="Ver historial" onclick="verProgreso('+response[i].id+');"><i class="fa fa-header"></i></button>';
+                                estado+='<label class="label label-primary"> '+ estado_nombre +'</label>';
+                                break;
+                        }
+                        if(response[i].documentos.length > 0){
+                            opciones += '<button type="button" class="btn btn-primary-custom" onclick="verDocumentos('+response[i].id+');" title="Ver documentos '+response[i].codigo+'"><i class="fa fa-book"></i></button>';
+                        }
+                        //************************************
+                        var responsable = "SIN ENCARGADO";
+                        if(response[i].asignados_nombres!=null && response[i].asignados_nombres.length > 0){
+                            for(var j=0;j<response[i].asignados_nombres.length;j++){
+                                responsable=response[i].asignados_nombres[j].empleado_nombres.nombres;
+                                if(response[i].asignados_nombres[j].empleado_nombres.apellido_1!=null)
+                                    responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_1;
+
+                                if(response[i].asignados_nombres[j].empleado_nombres.apellido_2!=null)
+                                    responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_2+' ';
+
+                                if(response[i].asignados_nombres[j].empleado_nombres.apellido_3!=null)
+                                    responsable+=' '+response[i].asignados_nombres[j].empleado_nombres.apellido_3+' ';
+
+                            }
+                        }
+
+                        //************************************
                         break;
                 }
 
@@ -2281,25 +3094,75 @@ function verDocumentos(id) {
         },
         dataType: 'JSON',
         beforeSend: function(e){
+        },
+        error: function(e){
+            $('#modalErrorDocumento').modal('show');
         }
     }).done(function (response){
-        console.log(response);
+        console.log(response.error);
         var tr = '';
-        for(var i=0 ; i<response.length ;i++){
-            var descargar = rutas.descDoc;
-            descargar = descargar.replace(':id',response[i].id);
-            tr+='<tr>'+
+        if(response.error == 'error_documentos' && response.error!=null){
+            tr+='<tr><td colspan="4"><div id="advertencia" class="alert alert-danger alert-dismissible fade in" role="alert">' +
+                'No se encontraron los documentos asignados a este pedido. Por favor comuníquese con el Área de Sistemas al <strong>teléfono de soporte (1610)</strong>, atenderemos su solicitud a la brevedad posibe.' +
+                '</div></td></tr>';
+        }else{
+            for(var i=0 ; i<response.length ;i++){
+                var descargar = rutas.descDoc;
+                descargar = descargar.replace(':id',response[i].id);
+                tr+='<tr>'+
                     '<th scope="row">'+(i+1)+'</th>'+
                     '<td>'+response[i].nombre+'</td>'+
                     '<td>'+getReadableFileSizeString(response[i].size)+'</td>'+
-                    '<td><a href="'+descargar+'" class="btn btn-success-custom" title="Descargar '+response[i].nombre+'"><i class="fa fa-download"></i></a></td>'+
-                '</tr>';
+                    '<td><div class="btn-group" role="group"><a href="'+descargar+'" class="btn btn-success-custom" title="Descargar '+response[i].nombre+'"><i class="fa fa-download"></i></a>' +
+                    '<button title="Ver '+response[i].nombre+'" onclick="mostrarArchivo(\''+response[i].ubicacion+'\',\''+response[i].nombre+'\','+response[i].id+')" class="btn btn-warning-custom"><i class="fa fa-eye"></i></button>' +
+                    '</div></td>'+
+                    '</tr>';
+
+
+            }
+            // $('#tbodyDoc').empty();
+            // $('#tbodyDoc').append(tr);
         }
         $('#tbodyDoc').empty();
         $('#tbodyDoc').append(tr);
         $('#modalDocumentos').modal('show');
     });
 
+}
+
+function mostrarArchivo(response, nombre, id) {
+
+    console.log(rutas.docGet.replace(':id',id));
+    var documento = nombre;
+    var extension = documento.replace(/^.*\./, '');
+    console.log(extension);
+   $('#filepdf').empty();
+    $('#filepdf').toggle();
+    switch (extension){
+        case 'pdf':
+            PDFObject.embed(rutas.docGet.replace(':id',id), "#filepdf");
+            break;
+        case "png":
+        case "PNG":
+        case "jpeg":
+        case "jpg":
+        case "JPG":
+            imagen = '<img src="'+rutas.docGet.replace(':id',id)+'" style="width: 100%;">';
+            $('#filepdf').append(imagen);
+            break;
+        default:
+            advertencia = '<div id="advertencia" class="alert alert-info alert-dismissible fade in" role="alert">No se puede visualizar el archivo porque no está en formato PDF ni es una imagen. Por favo descarguelo para poder verlo en su computadora.</div>';
+            $('#filepdf').append(advertencia);
+            break;
+    }
+
+//    PDFObject.embed('storage/'+response, "#filepdf");
+   // PDFObject.embed('storage/'+ubicacion, "#filepdf");
+}
+
+function mostrarArchivoSalida(id) {
+    $('#salpdf'+id).toggle();
+    PDFObject.embed(rutas.docGet.replace(':id',id), "#salpdf"+id);
 }
 
 function verSalidasFinalizado(id) {
@@ -2344,14 +3207,18 @@ function verSalidasFinalizado(id) {
 
             if(response[i].documento == null){
                 spanDoc = '<label class="label label-danger pull-right">S/D</label>';
+                fila = '<th colspan="5">ITEMS ENTREGADOS </th>';
             }else{
+                fila = '<th colspan="5">ITEMS ENTREGADOS <button onclick="mostrarArchivoSalida('+response[i].documento.id+')" class="btn btn-default pull-right"><i class="fa fa-eye"></i> Ver Archivo</button></th>';
                 var documento = response[i].documento.nombre;
                 var extension = documento.replace(/^.*\./, '');
 
                 switch (extension){
                     case 'pdf':
-                        formInputDoc = '<iframe src="/js/ViewerJS/?zoom=page-width#/documento/'+response[i].documento.id+'/archivo" width="100%" height="600" allowfullscreen webkitallowfullscreen></iframe>';
-                        break;
+                        console.log('PDFFFF');
+                        formInputDoc = '<div id="salpdf'+response[i].documento.id+'" hidden></div>';
+
+                       break;
                     case "png":
                     case "PNG":
                     case "jpeg":
@@ -2377,7 +3244,7 @@ function verSalidasFinalizado(id) {
                 '<table class="table table-bordered table-responsive">'+
                     '<thead>'+
                         '<tr>'+
-                            '<th colspan="5">ITEMS ENTREGADOS</th>'+
+                            fila+
                             '</tr>'+
                             '<tr>'+
                             '<th width="4%;">Item</th>'+
@@ -2404,6 +3271,124 @@ function verSalidasFinalizado(id) {
 
                 $('#btnCompletarSalida').remove();
                 $('#btnCompletarPedido').remove();
+
+        }
+
+        $('#accordionSalidaItems').append(
+            panelSalida
+        );
+
+        $('#verSalidasPedidoModal').modal('show');
+        PDFObject.embed(rutas.docGet.replace(':id',response[i].documento.id), "#salpdf");
+    });
+}
+
+function verSalidasFinalizadoTic(id) {
+    var route = rutas.salidasTic;
+    var token = rutas.token;
+    console.log("SALIDA FINALIZADO SADSADSA: "+route);
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        data:{
+            id: id
+        },
+        dataType: 'JSON',
+        beforeSend: function(e){
+        }
+    }).done(function (response){
+        console.log("SALIDA FINALIZADO: "+response);
+        $('#accordionSalidaItems').empty();
+        var panelSalida = "";
+        for(var i=0; i<response.length ; i++){
+            var tableBody = "";
+
+            for(var j=0; j<response[i].salida_items_tic.length ;j++){
+                var obs = "";
+
+                if(response[i].salida_items_tic[j].observacion != null){
+                    obs = response[i].salida_items_tic[j].observacion;
+                }
+                tableBody+=
+                    '<tr>' +
+                    '<td>'+(j+1)+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].item_pedido_entregado.item.nombre+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].cantidad+'</td>'+
+                    '<td>'+response[i].salida_items_tic[j].item_pedido_entregado.item.unidad.nombre+'</td>'+
+                    '<td>'+obs+'</td>'+
+                    '</tr>';
+            }
+
+            //TRATAMIENTO DE DOCUMENTO
+            var spanDoc = "";
+            var formInputDoc = "";
+            var fila = "";
+            if(response[i].documento == null){
+                spanDoc = '<label class="label label-danger pull-right">S/D</label>';
+                fila = '<th colspan="5">ITEMS ENTREGADOS </th>';
+            }else{
+                fila = '<th colspan="5">ITEMS ENTREGADOS <button onclick="mostrarArchivoSalida('+response[i].documento.id+')" class="btn btn-default pull-right"><i class="fa fa-eye"></i> Ver Archivo</button></th>';
+                var documento = response[i].documento.nombre;
+                var extension = documento.replace(/^.*\./, '');
+
+                switch (extension){
+                    case 'pdf':
+                        // formInputDoc = '<iframe src="/js/ViewerJS/?zoom=page-width#/documento/'+response[i].documento.id+'/archivo" width="100%" height="600" allowfullscreen webkitallowfullscreen></iframe>';
+                        formInputDoc = '<div id="salpdf'+response[i].documento.id+'" hidden></div>';
+                        break;
+                    case "png":
+                    case "PNG":
+                    case "jpeg":
+                    case "jpg":
+                    case "JPG":
+                        formInputDoc = '<img src="'+rutas.docGet.replace(':id',response[i].documento.id)+'" style="width: 100%;">';
+                        break;
+                }
+
+                spanDoc = '<label class="label label-success pull-right">C/D</label>';
+            }
+            //*********************************************************
+
+            panelSalida+=
+                '<div class="panel-items-listado">'+
+                '<a class="panel-heading" role="tab" data-toggle="collapse" data-parent="#accordion" href="#salida_'+response[i].id+'" aria-expanded="true" aria-controls="collapseOne">'+
+                '<h4 class="panel-title">Salida N°: '+response[i].id+' '+spanDoc+'</h4>'+
+                '</a>'+
+                '<div id="salida_'+response[i].id+'" class="panel-collapse collapse" role="tabpanel">'+
+                '<div class="panel-body">'+
+
+                '<div class="table-responsive">'+
+                '<table class="table table-bordered table-responsive">'+
+                '<thead>'+
+                '<tr>'+
+                fila+
+                '</tr>'+
+                '<tr>'+
+                '<th width="4%;">Item</th>'+
+                '<th>Detalle</th>'+
+                '<th width="6%;">Cantidad</th>'+
+                '<th width="10%;">U.M.</th>'+
+                '<th>Observación</th>'+
+                '</tr>'+
+                '</thead>'+
+                '<tbody>'+
+                tableBody+
+                '</tbody>'+
+                '</table>'+
+                '</div>'+
+
+                '<div class="row">' +
+                formInputDoc+
+                '</div>'+
+
+                '</div>'+
+                '</div>'+
+                '</div>';
+
+
+            $('#btnCompletarSalida').remove();
+            $('#btnCompletarPedido').remove();
 
         }
 

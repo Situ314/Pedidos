@@ -10,11 +10,13 @@ use App\Empresa;
 use App\Encargado;
 use App\Estado;
 use App\EstadoPedido;
+use App\EstadoTic;
 use App\Item;
 use App\ItemPedido;
 use App\ItemTemporal;
 use App\ItemTemporalPedido;
 use App\Mail\NotificacionResponsable;
+use App\Oficina;
 use App\Pedido;
 use App\Proyecto;
 use App\Responsable;
@@ -58,6 +60,22 @@ class PedidosController extends Controller
     }
 
     /**
+     * Display a listing of the resource of AUTORIZADOR.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_aut()
+    {
+        $pedidos = Pedido::all();
+        $estados = Estado::all();
+        $usuarios = User::all();
+
+        return view('pedidos.index-autorizador')
+            ->withPedidos($pedidos)
+            ->withEstados($estados)
+            ->withUsuarios($usuarios);
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -90,13 +108,15 @@ class PedidosController extends Controller
         $tipo_compras = TipoCompra::all();
         /*$tipos = TipoDocumento::where('id','>',1)
             ->get();*/
-
+        $oficinas = Oficina::where('estado','=','Activo')
+            ->get();
 //        dd($areas->pluck('nombre','id'));
         return view('pedidos.create')
             ->withTipos($tipos)
             ->withCategroias($categorias)
             ->withUnidades($unidades)
             ->withItems($items)
+            ->withOficinas($oficinas)
             ->withTipoCompras($tipo_compras);
     }
 
@@ -111,10 +131,11 @@ class PedidosController extends Controller
 //        dd($request->all());
         return DB::transaction(function () use ($request) {
             $array_pedido = [
-                'codigo'=>$this->codigo_correlativo($request->proyecto_id),
+                'codigo'=>$this->codigo_correlativo($request->proyecto_id, $request->tipo_cat_id),
                 'num_solicitud'=>null,
                 'area_id'=>$request->area_id,
                 'proyecto_id'=>$request->proyecto_id,
+                'oficina_id'=>$request->oficina_id,
                 'tipo_categoria_id'=>$request->tipo_cat_id,
                 'solicitante_id'=>Auth::id()
             ];
@@ -137,7 +158,8 @@ class PedidosController extends Controller
                         'cantidad'=>$request->cantidad[$i],
                         'pedido_id'=>$pedido->id,
                         'item_temp_id'=>$item_pedido->id,
-                        'tipo_compra_id'=>$request->tipo_compra_id[$i]
+                        'tipo_compra_id'=>$request->tipo_compra_id[$i],
+                        'observaciones'=>$request->observacion[$i]
                     ];
 
 //                    dd($array_item__temp_pedido);
@@ -150,7 +172,8 @@ class PedidosController extends Controller
                         'precio_unitario'=>$item->precio_unitario,
                         'pedido_id'=>$pedido->id,
                         'item_id'=>$request->item_id[$aux],
-                        'tipo_compra_id'=>$request->tipo_compra_id[$i]
+                        'tipo_compra_id'=>$request->tipo_compra_id[$i],
+                        'observaciones'=>$request->observacion[$i]
                     ];
                     $item_pedido = new ItemPedido($array_item_pedido);
                     $item_pedido->save();
@@ -175,7 +198,7 @@ class PedidosController extends Controller
 
             //AGREGANDO ESTADO
             $estado = null;
-            if(Auth::user()->rol_id < 5 || Auth::user()->rol_id == 7){ //SI MENOR A AUTORIZADOR O RESPONSABLE DE ENTR.
+            if(Auth::user()->rol_id < 5 || Auth::user()->rol_id == 7 || Auth::user()->rol_id >= 10){ //SI MENOR A AUTORIZADOR O RESPONSABLE DE ENTR.
                 $estado = 2;
             }else{
                 $estado = 1;
@@ -215,48 +238,72 @@ class PedidosController extends Controller
         return $letras.'-'.$numeros;
     }
 
-    function codigo_correlativo($proyecto){
-        $proyecto = Proyecto::find($proyecto);
+    function codigo_correlativo($proyecto, $tipo_categoria){
 
-        $empresa = Empresa::find($proyecto->empresa_id);
+            $proyecto = Proyecto::find($proyecto);
 
-        $letras = substr($empresa->nombre,0,3);
+            $empresa = Empresa::find($proyecto->empresa_id);
 
-        if($empresa->id == 4)
-            $letras = 'LPL';
+            $letras = substr($empresa->nombre,0,3);
 
-        if($empresa->id == 1)
-            $letras = 'PRAG';
+            if($empresa->id == 4)
+                $letras = 'LPL';
 
-        $gestion = Carbon::now()->year;
+            if($empresa->id == 1)
+                $letras = 'PRAG';
 
-        $gestion = substr($gestion,2,2);
+            $gestion = Carbon::now()->year;
 
-        $proyectos = Proyecto::where('empresa_id','LIKE',$empresa->id)->pluck('id');
+            $gestion = substr($gestion,2,2);
 
-        $ultimo_pedido = Pedido::whereIn('proyecto_id',$proyectos)
-                        ->orderBy('id','DESC')
-                        ->first();
+            $proyectos = Proyecto::where('empresa_id','LIKE',$empresa->id)->pluck('id');
+//            dd($proyectos);
+        if($tipo_categoria != '20'){
+            $ultimo_pedido = Pedido::whereIn('proyecto_id',$proyectos)
+                ->where('tipo_categoria_id','NOT LIKE','20')
+                ->orderBy('id','DESC')
+                ->first();
 
 //        dd($ultimo_pedido);
-        if($ultimo_pedido != null){
-            $partes_pedido = explode('-',$ultimo_pedido->codigo);
+            if($ultimo_pedido != null){
+                $partes_pedido = explode('-',$ultimo_pedido->codigo);
 
-            if(count($partes_pedido)>2 && $gestion == $partes_pedido[1]){
-                $nuevo =  str_pad($partes_pedido[2]+1, 4, '0', STR_PAD_LEFT);
-                //            dd($nuevo);
-            }else{
-                $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
-                //            dd($nuevo);
+                if(count($partes_pedido)>2 && $gestion == $partes_pedido[1]){
+                    $nuevo =  str_pad($partes_pedido[2]+1, 4, '0', STR_PAD_LEFT);
+                    //            dd($nuevo);
+                }else{
+                    $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
+                    //            dd($nuevo);
+                }
             }
-        }
-        else
-            $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
+            else
+                $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
 //        dd($partes_pedido);
 
+            $enviar = $letras.'-'.$gestion.'-'.$nuevo;
+        }else{
+            $ultimo_pedido = Pedido::whereIn('proyecto_id',$proyectos)
+                ->where('tipo_categoria_id','LIKE','20')
+                ->orderBy('id','DESC')
+                ->first();
+        //dd($ultimo_pedido);
+            if($ultimo_pedido != null){
+                $partes_pedido = explode('-',$ultimo_pedido->codigo);
 
+                if(count($partes_pedido)>2 && $gestion == $partes_pedido[2]){
+                    $nuevo =  str_pad($partes_pedido[3]+1, 4, '0', STR_PAD_LEFT);
+                    //            dd($nuevo);
+                }else{
+                    $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
+                    //            dd($nuevo);
+                }
+            }
+            else
+                $nuevo = str_pad('1', 4, '0', STR_PAD_LEFT);
+//        dd($partes_pedido);
+            $enviar = $letras.'-TIC-'.$gestion.'-'.$nuevo;
+        }
 
-        $enviar = $letras.'-'.$gestion.'-'.$nuevo;
 //        dd($enviar);
         return $enviar;
     }
@@ -304,6 +351,8 @@ class PedidosController extends Controller
         $items = Item::all();
         $tipo_compras = TipoCompra::all();
 //        dd($documentos);
+        $estados_tic = EstadoTic::all();
+
         return view('pedidos.edit')
             ->withTipos($tipos)
             ->withCategroias($categorias)
@@ -311,7 +360,8 @@ class PedidosController extends Controller
             ->withItems($items)
             ->withDocumentos($documentos)
             ->withTipoCompras($tipo_compras)
-            ->withPedido($pedido);
+            ->withPedido($pedido)
+            ->withEstadotic($estados_tic);
     }
 
     /**
@@ -590,6 +640,10 @@ class PedidosController extends Controller
                             ->where('tipo_compra_id','=','1')
                             ->get();
 
+                        $pedidos_tipo_tics = Pedido::select('id')
+                            ->where('tipo_categoria_id','=','20')
+                            ->get();
+
                         $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                             ->select('t1.pedido_id as id')
                             ->leftJoin('estados_pedidos as t2',function ($join){
@@ -599,17 +653,22 @@ class PedidosController extends Controller
                             ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                             ->whereNotIn('pedidos.id',$pedidos_con_items_AF)
                             ->whereNotIn('pedidos.id',$pedidos_con_items_temporales_AF)
+                            ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
                             ->whereNull('t2.id')
                             ->where('t1.estado_id','=',$request->estado_id);
                         break;
                     default: //LOS DEMAS ESTADOS
+                        $pedidos_tipo_tics = Pedido::select('id')
+                            ->where('tipo_categoria_id','=','20')
+                            ->get();
+
                         $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                             ->select('t1.pedido_id as id')
                             ->leftJoin('estados_pedidos as t2',function ($join){
                                 $join->on('t1.pedido_id', '=', 't2.pedido_id')
                                     ->on('t1.id', '<', 't2.id');
                             })
-
+                            ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
                             ->whereNull('t2.id')
                             ->where('t1.estado_id','=',$request->estado_id);
                 }
@@ -617,17 +676,40 @@ class PedidosController extends Controller
                 break;
             case 4: //RESPONSABLE
                 //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
-                $pedidos_asignados_array = DB::table('asignaciones as t1')
-                    ->select('t1.pedido_id')
-                    ->leftJoin('asignaciones as t2',function ($join){
-                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
-                            ->on('t1.id', '<', 't2.id');
-                    })
-                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
-                    ->where('t1.asignado_id','=',Auth::id())
-                    ->orWhere('pedidos.solicitante_id','=',Auth::id())
-                    ->whereNull('t2.id');
+                $pedidos_asignados_array = Asignacion::where('asignado_id','like',Auth::id())
+                    ->pluck('pedido_id')
+                    ->toArray();
 
+                $pedidos_asignados_arrayP = Pedido::where('solicitante_id','LIKE',Auth::id())
+                    ->pluck('id')
+                    ->toArray();
+//                $pedidos_asignados_array = DB::table('asignaciones as t1')
+//                    ->select('t1.pedido_id')
+////                    ->leftJoin('asignaciones as t2',function ($join){
+////                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+////                            ->on('t1.id', '<', 't2.id');
+////                    })
+////                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+//                    ->where('t1.asignado_id','=',Auth::id())
+//                    ->pluck();
+////                    ->orWhere('pedidos.solicitante_id','=',Auth::id())
+////                    ->whereNull('t2.id');
+//
+//                $pedidos_asignados_arrayP = DB::table('pedidos as t1')
+//                    ->select('t1.id')
+////                    ->leftJoin('asignaciones as t2',function ($join){
+////                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+////                            ->on('t1.id', '<', 't2.id');
+////                    })
+////                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+////                    ->where('t1.asignado_id','=',Auth::id())
+//                    ->Where('t1.solicitante_id','=',Auth::id())
+//                    ->pluck();
+//                    ->whereNull('t2.id');
+
+                $mezcla = array_merge($pedidos_asignados_array,$pedidos_asignados_arrayP);
+
+//                dd($mezcla);
                 //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
                 switch (intval($request->estado_id)){
                     case 2: //AUTORIZADO
@@ -650,12 +732,12 @@ class PedidosController extends Controller
                                     ->on('t1.id', '<', 't2.id');
                             })
                             ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
-                            ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+                            ->whereIn('t1.pedido_id',$mezcla)
+//                            ->orWhere('pedidos.solicitante_id','=',Auth::id())
                             ->whereNull('t2.id')
                             ->where('t1.estado_id','=',$request->estado_id);
                         break;
                 }
-
                 break;
             case 5: //AUTORIZADOR
                 //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
@@ -735,6 +817,9 @@ class PedidosController extends Controller
                     ->where('tipo_compra_id','=','1')
                     ->get();
 
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
                 switch (intval($request->estado_id)){
                     case 1: //INICIAL
                         //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
@@ -774,6 +859,7 @@ class PedidosController extends Controller
                                 $query->whereIn('pedidos.id',$pedidos_con_items_AF)
                                     ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
                             })
+                            ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
 //                            ->whereIn('pedidos.id',$pedidos_con_items_AF)
 //                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF)
                             ->whereNull('t2.id')
@@ -790,10 +876,81 @@ class PedidosController extends Controller
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','=','20')
                     ->whereNull('t2.id')
-                    ->where('t1.estado_id','=',$request->estado_id);
+                    ->where('t1.estado_id','=','8');
                 break;
+            case 10: //REVISOR TICS
 
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                switch (intval($request->estado_id)){
+                    default: //LOS DEMAS ESTADOS
+//                        dd($pedidos_con_items_AF);
+                        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                            ->select('t1.pedido_id as id')
+                            ->leftJoin('estados_pedidos as t2',function ($join){
+                                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                                    ->on('t1.id', '<', 't2.id');
+                            })
+                            ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                            ->where(function ($query) use ($pedidos_tipo_tics){
+                                $query->whereIn('pedidos.id',$pedidos_tipo_tics);
+                            })
+//                            ->whereIn('pedidos.id',$pedidos_con_items_AF)
+//                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF)
+                            ->whereNull('t2.id')
+                            ->where('t1.estado_id','=',$request->estado_id);
+//                        dd($estados_pedidos_id_array->toSql());
+                        break;
+                }
+                break;
+            case 11: //RESPONSABLE TICS
+                //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
+                $pedidos_asignados_array = DB::table('asignaciones as t1')
+                    ->select('t1.pedido_id')
+                    ->leftJoin('asignaciones as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('t1.asignado_id','=',Auth::id())
+                    ->orWhere('pedidos.solicitante_id','=',Auth::id())
+                    ->whereNull('t2.id');
+
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                switch (intval($request->estado_id)){
+                    case 2: //AUTORIZADO
+                        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                            ->select('t1.pedido_id as id')
+                            ->leftJoin('estados_pedidos as t2',function ($join){
+                                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                                    ->on('t1.id', '<', 't2.id');
+                            })
+                            ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                            ->where('pedidos.solicitante_id',Auth::id())
+                            ->whereNull('t2.id')
+                            ->where('t1.estado_id','=',$request->estado_id);
+                        break;
+                    default: //LOS DEMAS ESTADOS
+                        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                            ->select('t1.pedido_id as id')
+                            ->leftJoin('estados_pedidos as t2',function ($join){
+                                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                                    ->on('t1.id', '<', 't2.id');
+                            })
+                            ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                            ->whereIn('t1.pedido_id',$pedidos_asignados_array)
+                            ->whereNull('t2.id')
+                            ->where('t1.estado_id','=',$request->estado_id);
+                        break;
+                }
+
+                break;
         }
 
 //        if($request->estado_id == '7' || $request->estado_id == '8'){
@@ -807,10 +964,39 @@ class PedidosController extends Controller
             $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
                 ->orderBy('id','desc')
                 ->with(['asignados_nombres','estados_pedido','proyecto_empresa',
-                    'documentos','solicitante_empleado','salidas_almacen'])
+                    'documentos','solicitante_empleado','salidas_almacen','salidas_almacen_tic'])
 //            ->whereYear('created_at','>','2018')
                 ->get();
 //        }
+
+
+        return Response::json(
+            $pedidos
+        );
+    }
+
+    //METODO QUE DEVUELVE LOS PEDIDOS DEPENDIENDO DEL ESTADO
+    public function postPedidosAutorizador(Request $request){
+
+        $usuarios_responsable_array = Responsable::select('solicitante_id')
+            ->where('autorizador_id','=',Auth::id())
+            ->get();
+
+        $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+            ->select('t1.pedido_id as id')
+            ->leftJoin('estados_pedidos as t2',function ($join){
+                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                    ->on('t1.id', '<', 't2.id');
+            })
+            ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
+            ->whereNull('t2.id')
+            ->where('t1.estado_id','=',$request->estado_id);
+
+        $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
+            ->orderBy('id','desc')
+            ->with(['asignados_nombres','estados_pedido','proyecto_empresa',
+                'documentos','solicitante_empleado','salidas_almacen','salidas_almacen_tic'])
+            ->get();
 
 
         return Response::json(
@@ -945,7 +1131,7 @@ class PedidosController extends Controller
         $pedidos = Pedido::whereIn('pedidos.id',$estados_pedidos_id_array)
             ->orderBy('id','desc')
             ->with(['asignados_nombres','estados_pedido','proyecto_empresa',
-                'documentos','solicitante_empleado','salidas_almacen'])
+                'documentos','solicitante_empleado','salidas_almacen','salidas_almacen_tic'])
             ->whereYear('created_at','=',$request->gestion)
             ->get();
 
@@ -1152,7 +1338,6 @@ class PedidosController extends Controller
         switch (Auth::user()->rol_id){
             case 1: //ROOT
             case 2: //ADMIN
-            case 9: //ADMIN
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -1164,14 +1349,34 @@ class PedidosController extends Controller
                     ->groupBy('t1.estado_id')
                     ->get();
                 break;
-            case 3: //ASIGNADOR
-//
+            case 9: //ADMIN
                 $cantidad = DB::table('estados_pedidos as t1')
                     ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
                     ->leftJoin('estados_pedidos as t2',function ($join){
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','=','20')
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
+                break;
+            case 3: //ASIGNADOR
+//
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
+                    ->where('t1.estado_id','NOT LIKE','1')
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->get();
@@ -1193,14 +1398,6 @@ class PedidosController extends Controller
                     ->groupBy('t1.estado_id')
                     ->first();
 
-//                dd($cantidad_inicial);
-//                foreach ($cantidad as $c){
-//                    if($c->estado_id == 1){
-//                        $c->cantidad = $cantidad_inicial;
-//                        break;
-//                    }
-//                }
-
                 $pedidos_con_items_AF = ItemPedido::select('pedido_id')
                     ->where('tipo_compra_id','=','1')
                     ->orWhere('tipo_compra_id','=','2')
@@ -1220,23 +1417,24 @@ class PedidosController extends Controller
                     ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                     ->whereNotIn('pedidos.id',$pedidos_con_items_AF)
                     ->whereNotIn('pedidos.id',$pedidos_con_items_temporales_AF)
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
                     ->where('t1.estado_id','=','2')
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->first();
 //dd($cantidad_AF->cantidad);
-                if(count($cantidad_inicial)>0)
-                    $cantidad[0]->cantidad = $cantidad_inicial->cantidad;
+//                if(count($cantidad_inicial)>0)
+//                    $cantidad[0]->cantidad = $cantidad_inicial->cantidad;
+//                else
+//                    $cantidad[0]->cantidad = 0;
+
+                if(count($cantidad_AF)>0 && $cantidad[0]->estado_id = '2')
+                    $cantidad[0]->cantidad = $cantidad_AF->cantidad;
                 else
                     $cantidad[0]->cantidad = 0;
-
-                if(count($cantidad_AF)>0)
-                    $cantidad[1]->cantidad = $cantidad_AF->cantidad;
-                else
-                    $cantidad[1]->cantidad = 0;
-//                dd($cantidad);
                 break;
             case 4:
+            case 11:
                 $array_search = [];
 
                 //CASO EN EL QUE LOS PEDIDOS SEAN SUYOS
@@ -1276,7 +1474,6 @@ class PedidosController extends Controller
                             ->on('t1.id', '<', 't2.id');
                     })
                     ->whereIn('t1.pedido_id',$array_search)
-
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->get();
@@ -1298,7 +1495,6 @@ class PedidosController extends Controller
                             ->on('t1.id', '<', 't2.id');
                     })
                     ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
-                    ->where('pedidos.deleted_at','=',null)
                     ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
@@ -1316,6 +1512,7 @@ class PedidosController extends Controller
                     })
                     ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                     //                    ->where('t1.user_id',Auth::id())
+                    ->where('pedidos.deleted_at','=',null)
                     ->where('pedidos.solicitante_id',Auth::id())
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
@@ -1344,6 +1541,11 @@ class PedidosController extends Controller
                         array_push($array_search, $pedido->pedido_id);
                 }
 
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+
                 $pedidos_con_items_AF = ItemPedido::select('pedido_id')
                     ->where('tipo_compra_id','=','1')
                     ->get();
@@ -1363,7 +1565,7 @@ class PedidosController extends Controller
                         $query->whereIn('pedidos.id',$pedidos_con_items_AF)
                             ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
                     })
-//                    ->whereIn('pedidos.id',$pedidos_con_items_AF)
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
                     ->orWhere('t1.estado_id','=','11')
                     ->whereNull('t2.id');
 
@@ -1378,7 +1580,7 @@ class PedidosController extends Controller
                         $join->on('t1.pedido_id', '=', 't2.pedido_id')
                             ->on('t1.id', '<', 't2.id');
                     })
-                    ->whereIn('t1.pedido_id',$array_search)
+                    ->whereIn('t1.pedido_id',$pedidos_id_af_array)
                     ->whereNull('t2.id')
                     ->groupBy('t1.estado_id')
                     ->get();
@@ -1387,8 +1589,53 @@ class PedidosController extends Controller
                 echo $cantidad;
                 exit();
                 break;
+            case 10: //REVISOR TICS
+
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $cantidad = DB::table('estados_pedidos as t1')
+                    ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->whereIn('t1.pedido_id',$pedidos_tipo_tics)
+                    ->whereNull('t2.id')
+                    ->groupBy('t1.estado_id')
+                    ->get();
+
+
+                break;
+
         }
 
+
+        return Response::json(
+            $cantidad
+        );
+    }
+
+    public function postCantidadAut(){
+
+        $usuarios_responsable_array = Responsable::select('solicitante_id')
+            ->where('autorizador_id','=',Auth::id())
+            ->get();
+
+
+        $cantidad = DB::table('estados_pedidos as t1')
+            ->select('t1.estado_id',DB::raw('count(*) as cantidad'))
+            ->leftJoin('estados_pedidos as t2',function ($join){
+                $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                    ->on('t1.id', '<', 't2.id');
+            })
+            ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+            ->where('pedidos.deleted_at','=',null)
+            ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
+            ->whereNull('t2.id')
+            ->groupBy('t1.estado_id')
+            ->get();
 
         return Response::json(
             $cantidad
@@ -1420,7 +1667,7 @@ class PedidosController extends Controller
             case 1: //ROOT
             case 2: //ADMIN
             case 3: //ASIGNADOR
-            case 9: //WATCHER
+//            case 9: //WATCHER
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -1431,6 +1678,7 @@ class PedidosController extends Controller
                     ->whereNull('t2.id');
                 break;
             case 4: //RESPONSABLE
+            case 11: //RESPONSABLE TICS
                 //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
                 $pedidos_asignados_array = DB::table('asignaciones as t1')
                     ->select('t1.pedido_id')
@@ -1472,7 +1720,6 @@ class PedidosController extends Controller
                 break;
             case 6: //USUARIO
             case 7: //RESPONSABLE DE ENTREGA
-
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -1481,6 +1728,59 @@ class PedidosController extends Controller
                     })
                     ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                     ->where('pedidos.solicitante_id',Auth::id())
+                    ->whereNull('t2.id');
+                break;
+            case 8:
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $pedidos_con_items_AF = ItemPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_con_items_temporales_AF = ItemTemporalPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where(function ($query) use ($pedidos_con_items_AF,$pedidos_con_items_temporales_AF){
+                        $query->whereIn('pedidos.id',$pedidos_con_items_AF)
+                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
+                    })
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
+//                            ->whereIn('pedidos.id',$pedidos_con_items_AF)
+//                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF)
+                    ->whereNull('t2.id');
+
+                break;
+            case 10: //REVISOR TICS
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','20')
+                    ->whereNull('t2.id');
+                break;
+            case 9: //WATCHER
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','20')
                     ->whereNull('t2.id');
                 break;
         }
@@ -1553,7 +1853,7 @@ class PedidosController extends Controller
             case 1: //ROOT
             case 2: //ADMIN
             case 3: //ASIGNADOR
-            case 9: //WATCHER
+//            case 9: //WATCHER
                 $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
                     ->select('t1.pedido_id as id')
                     ->leftJoin('estados_pedidos as t2',function ($join){
@@ -1563,7 +1863,8 @@ class PedidosController extends Controller
 
                     ->whereNull('t2.id');
                 break;
-            case 4: //RESPONSABLE
+            case 4:
+            case 11://RESPONSABLE
                 //OBTENIENDO PEDIDOS ASIGNADOS CUYO RESPONSABLE FUE EL ULTIMO USUARIO DEL PEDIDO
                 $pedidos_asignados_array = DB::table('asignaciones as t1')
                     ->select('t1.pedido_id')
@@ -1616,6 +1917,58 @@ class PedidosController extends Controller
                     ->where('pedidos.solicitante_id',Auth::id())
                     ->whereNull('t2.id');
                 break;
+            case 8:
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $pedidos_con_items_AF = ItemPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_con_items_temporales_AF = ItemTemporalPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where(function ($query) use ($pedidos_con_items_AF,$pedidos_con_items_temporales_AF){
+                        $query->whereIn('pedidos.id',$pedidos_con_items_AF)
+                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
+                    })
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
+//                            ->whereIn('pedidos.id',$pedidos_con_items_AF)
+//                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF)
+                    ->whereNull('t2.id');
+
+                break;
+            case 10: //RESPONSABLE TICS
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','20')
+                    ->whereNull('t2.id');
+                break;
+            case 9: //WATCHER
+                $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where('pedidos.tipo_categoria_id','20')
+                    ->whereNull('t2.id');
         }
 
 
@@ -1690,9 +2043,11 @@ class PedidosController extends Controller
             case 1: //ROOT
             case 2: //ADMIN
             case 3: //ASIGNADOR
+            case 10:
                 $pedido_verificado = $pedido;
                 break;
-            case 4: //RESPONSABLE
+            case 4:
+            case 11://RESPONSABLE
                 $pedido_verificado = Pedido::leftJoin('asignaciones','asignaciones.pedido_id','=','pedidos.id')
                     ->where(function ($query) use ($id){
                         $query->where('pedidos.id','=',$id);
@@ -1717,6 +2072,37 @@ class PedidosController extends Controller
                 $pedido_verificado = Pedido::where('id','=',$id)
                     ->where('solicitante_id','=',Auth::id())
                     ->get();
+                break;
+            case 8:
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $pedidos_con_items_AF = ItemPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_con_items_temporales_AF = ItemTemporalPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $pedido_verificado = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where(function ($query) use ($pedidos_con_items_AF,$pedidos_con_items_temporales_AF){
+                        $query->whereIn('pedidos.id',$pedidos_con_items_AF)
+                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
+                    })
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
+                    ->orWhere('pedidos.solicitante_id','LIKE',Auth::id())
+                    ->whereNull('t2.id')
+                    ->get();
+
                 break;
         }
 
@@ -1732,6 +2118,19 @@ class PedidosController extends Controller
         }
     }
 
+    public function getPedidoImprimirItemsSolicitadosTic($id){
+        //VERIFICAR PEDIDO
+        $pedido = Pedido::find($id);
+        $pedido_verificado = null;
+
+        $pdf = \PDF::loadView('pdf.pdf-items-solicitados-tic', array(
+            'pedido'=>$pedido
+        ));
+
+        return $pdf->stream('Dispositivos solicitados '.$id.'.pdf');
+
+    }
+
     public function getPedidoImprimirItemsEntregados($id){
 
         //VERIFICAR PEDIDO
@@ -1742,9 +2141,11 @@ class PedidosController extends Controller
             case 1: //ROOT
             case 2: //ADMIN
             case 3: //ASIGNADOR
+            case 10:
                 $pedido_verificado = $pedido;
                 break;
-            case 4: //RESPONSABLE
+            case 4:
+            case 11: //RESPONSABLE
                 $pedido_verificado = Pedido::leftJoin('asignaciones','asignaciones.pedido_id','=','pedidos.id')
                     ->where(function ($query) use ($id){
                         $query->where('pedidos.id','=',$id);
@@ -1769,6 +2170,38 @@ class PedidosController extends Controller
                 $pedido_verificado = Pedido::where('id','=',$id)
                     ->where('solicitante_id','=',Auth::id())
                     ->get();
+                break;
+            case 8:
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                //PREGUNTANDO LOS ESTADOS - DEVUELVEN VALORES REALES
+                $pedidos_con_items_AF = ItemPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_con_items_temporales_AF = ItemTemporalPedido::select('pedido_id')
+                    ->where('tipo_compra_id','=','1')
+                    ->get();
+
+                $pedidos_tipo_tics = Pedido::select('id')
+                    ->where('tipo_categoria_id','=','20')
+                    ->get();
+
+                $pedido_verificado = DB::table('estados_pedidos as t1')
+                    ->select('t1.pedido_id as id')
+                    ->leftJoin('estados_pedidos as t2',function ($join){
+                        $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                            ->on('t1.id', '<', 't2.id');
+                    })
+                    ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
+                    ->where(function ($query) use ($pedidos_con_items_AF,$pedidos_con_items_temporales_AF){
+                        $query->whereIn('pedidos.id',$pedidos_con_items_AF)
+                            ->orWhereIn('pedidos.id',$pedidos_con_items_temporales_AF);
+                    })
+                    ->whereNotIn('pedidos.id',$pedidos_tipo_tics)
+                    ->orWhere('pedidos.solicitante_id','LIKE',Auth::id())
+                    ->whereNull('t2.id')
+                    ->get();
+
                 break;
         }
 

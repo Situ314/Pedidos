@@ -8,11 +8,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Entregar Pedido</h4>
             </div>
-
-            {{ Form::open( array('route' => ['responsable.completar', ':id'], 'method' => 'GET','class' => 'form-horizontal', 'id'=>'formCompletarPedidoEntregado') ) }}
-
+            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4)
+                {{ Form::open( array('route' => ['responsable.completar', ':id'], 'method' => 'GET','class' => 'form-horizontal', 'id'=>'formCompletarPedidoEntregado') ) }}
+            @else
+                {{ Form::open( array('route' => ['responsable.completarTic', ':id'], 'method' => 'GET','class' => 'form-horizontal', 'id'=>'formCompletarPedidoEntregadoTic') ) }}
+            @endif
             <div class="modal-body">
-                <p><b>Al darle click en <i>Completar Pedido</i> el pedido autmaticaménte pasara a <i>Entregado</i> y los items que no tuvieron una salida sera eliminados</b></p>
+                <p><b>Al darle click en <i>Completar Pedido</i> el pedido autmaticaménte pasara a <i>Finalizado</i> y los items que no tuvieron una salida sera eliminados</b></p>
 
                 <div class="form-group">
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -29,9 +31,6 @@
                 </div>
 
             </div>
-
-
-
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success-custom"><i class="fa fa-arrow-right"></i> Completar Pedido </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>

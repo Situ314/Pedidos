@@ -15,7 +15,7 @@ class CheckAsignador
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->rol_id > 3){
+        if($request->user()->rol_id > 3 && $request->user()->rol_id != 10){
             return redirect()->back()
                 ->withErrors(array('error'=>'No cuenta con los suficientes privilegios para ingresar'));
         }

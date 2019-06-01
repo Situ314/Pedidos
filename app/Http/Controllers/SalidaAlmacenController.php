@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Categoria;
 use App\Empleado;
 use App\Empresa;
+use App\EstadoTic;
 use App\Item;
+use App\Oficina;
 use App\Pedido;
 use App\Proyecto;
 use App\SalidaAlmacen;
+use App\SalidaAlmacenTic;
 use App\TipoCategoria;
 use App\Unidad;
 use App\TipoCompra;
@@ -25,7 +28,7 @@ class SalidaAlmacenController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('resp',['except'=>'postSalidaItems']);
+        $this->middleware('resp',['except'=>['postSalidaItems', 'postSalidaItemsTic']]);
     }
     /**
      * Display a listing of the resource.
@@ -110,14 +113,25 @@ class SalidaAlmacenController extends Controller
         $resp_entrega = User::where('rol_id','=',7)
             ->get();
 
+        $users_tic = User::where('rol_id','=',11)
+            ->get();
+
         $tipo_compras = TipoCompra::all();
 
         $empresas = Empresa::all();
         $proyectos = Proyecto::all();
-
         $salida = SalidaAlmacen::where('pedido_id','=',$id)
             ->first();
 
+        if(Auth::user()->rol_id == 11){
+            $salida = SalidaAlmacenTic::where('pedido_id','=',$id)
+                ->first();
+        }
+
+        $estados_tic = EstadoTic::all();
+
+        $oficinas = Oficina::where('estado','=','Activo')
+            ->get();
         //FILTRAR A EMPLEADOS A TRAVES DE SU CARGO - CHOFER, COURRIER, ETC
         $empleados = Empleado::all();
 
@@ -126,6 +140,7 @@ class SalidaAlmacenController extends Controller
             ->withCategroias($categorias)
             ->withUnidades($unidades)
             ->withItems($items)
+            ->withResponsablestic($users_tic)
 
             ->withPedido($pedido)
             ->withResponsables($users)
@@ -135,7 +150,9 @@ class SalidaAlmacenController extends Controller
             ->withEmpresas($empresas)
             ->withProyectos($proyectos)
 
-            ->withSalida($salida);
+            ->withSalida($salida)
+            ->withOficinas($oficinas)
+            ->withEstadotic($estados_tic);
     }
 
     /**
@@ -191,16 +208,45 @@ class SalidaAlmacenController extends Controller
         );
     }
 
+    public function postSalidaItemsTic(Request $request){
+       // dd($request->all());
+        $salidas = SalidaAlmacenTic::where('pedido_id','=',$request->id)
+            ->get();
+        foreach ($salidas as $salida){
+            foreach ($salida->salida_items_tic as $salita_item){
+                $salita_item->item_pedido_entregado->item->unidad;
+            }
+            $salida->documento;
+            $salida->pedido;
+        }
+
+        return Response::json(
+            $salidas
+        );
+    }
+
     public function pdfSalida($id){
-        $salida = SalidaAlmacen::find($id);
+        if(Auth::user()->rol_id == 11 || Auth::user()->rol_id == 10){
+            $salida = SalidaAlmacenTic::find($id);
+
+            $pdf = \PDF::loadView('pdf.pdf-salida-almacen-tic', array(
+                'salida'=>$salida
+            ));
+
+            return $pdf->stream('Entrega Equipo Computacion'.$salida->id.'.pdf');
+        }
+        else{
+            $salida = SalidaAlmacen::find($id);
 
 //        dd($salida);
 //        return view('pdf.pdf-salida-almacen')->with('salida',$salida);
 
-        $pdf = \PDF::loadView('pdf.pdf-salida-almacen', array(
-            'salida'=>$salida
-        ));
+            $pdf = \PDF::loadView('pdf.pdf-salida-almacen', array(
+                'salida'=>$salida
+            ));
 
-        return $pdf->stream('Salida Almacen'.$salida->id.'.pdf');
+            return $pdf->stream('Salida Almacen'.$salida->id.'.pdf');
+        }
+
     }
 }

@@ -21,6 +21,12 @@ $( document ).ready(function() {
     $('.items-select2').prop('disabled', true);
 
     // getEmpresas();
+    $('input').on('keydown', function(event) {
+        var x = event.which;
+        if (x === 13) {
+            event.preventDefault();
+        }
+    });
 
     getUnidades();
     getTipoCompras();
@@ -29,6 +35,15 @@ $( document ).ready(function() {
     $('select[name=tipo_cat_id]').change(function () {
         var selected_op = $(this).find('option:selected').val();
         if(typeof selected_op != "undefined"){
+
+            if(selected_op == '20'){
+                console.log("TIPOOOOO"+selected_op);
+                $('td[id=td_obs]').show();
+                $('th[id=th_obs]').show();
+            }else{
+                $('td[id=td_obs]').hide();
+                $('th[id=th_obs]').hide();
+            }
             // var categorias = config.variables[0].categorias;
             var items = config.variables[0].items;
             // options_categorias = "";
@@ -212,7 +227,22 @@ function getTipoCompras() {
 var auxU = 1;
 function agregarItem() {
     var tr = "<tr>";
+    var selected_op = $('select[name=tipo_cat_id]').find('option:selected').val();
+    console.log(selected_op);
+    if(selected_op == '20'){
         tr+="<th scope='row'>"+(auxU+1)+"</th>"+
+            // "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
+            "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase' onkeyup='javascript:buscarItem(this.value,"+auxU+");'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required onchange='javascript:cambiarUnidad("+auxU+");'>"+options_items+"</select></td>"+
+            "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' min='0.1' required></td>"+
+            "<td><input name='txtUnidad[]' id='txtUnidad"+auxU+"' class='hidden'/><select name='unidad_id[]' id='unidad_id"+auxU+"' class='js-placeholder-single' required disabled onchange='javascript:cambiarTextoUnidad("+auxU+");'>"+option_unidades+"</select></td>"+
+            "<td><input name='tipoCompra[]' id='txtTipoCompra"+auxU+"' class='hidden'/><select name='tipo_compra_id[]' id='tipo_compra_id"+auxU+"' class='js-placeholder-single' required onchange='javascript:cambiarTextoTipoCompra("+auxU+");'>"+option_tipo_compras+"</select></td>"+
+            "<td width=\"30%\"><input name='observacion[]' id='txtObs"+auxU+"' type='text' style=\"text-transform:uppercase\" class='form-control input-hg-12 items-txt text-uppercase'></td>"+
+            "<td>" +
+            "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");' title='Editar item "+(auxU+1)+"'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
+            "<a class='eliminar' onclick='javascript:eliminarFila(this);' title='Eliminar item "+(auxU+1)+"'><i class='fa fa-close'></i></a>"+
+            "</td>";
+    }else{
+        tr+="<th scope='row'>"+(auxU+1)+"<input name='observacion[]' id=\"txtObs\" type='text' style=\"text-transform:uppercase\" class='form-control input-hg-12 hidden'></th>"+
             // "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required>"+options_categorias+"</select></td>"+
             "<td id='td"+auxU+"' data-content='0'><input name='txtItem[]' id='txtItem"+auxU+"' type='text' class='form-control input-hg-12 hidden items-txt text-uppercase' onkeyup='javascript:buscarItem(this.value,"+auxU+");'><select name='item_id[]' id='item_id"+auxU+"' class='items-select2' required onchange='javascript:cambiarUnidad("+auxU+");'>"+options_items+"</select></td>"+
             "<td><input name='cantidad[]' type='number' step='0.1' class='form-control input-hg-12' min='0.1' required></td>"+
@@ -222,6 +252,8 @@ function agregarItem() {
             "<a class='editar btnCambiarEditSelect' onclick='javascript:editarCampo("+auxU+");' title='Editar item "+(auxU+1)+"'><i id='i"+auxU+"' class='fa fa-edit'></i></a>" +
             "<a class='eliminar' onclick='javascript:eliminarFila(this);' title='Eliminar item "+(auxU+1)+"'><i class='fa fa-close'></i></a>"+
             "</td>";
+    }
+
     tr += "</tr>";
     $('#tbodyItems').append(tr);
 
@@ -339,16 +371,17 @@ function agregarDocumento() {
         $('table#tableDoc').removeClass('hidden');
     }
 
+    $('#advertencia_size').hide();
     var tr = '<tr>' +
         '<td scope="row" width="2%;">'+auxD+'</td>'+
         '<td><input name="doc[]" id="inputFile'+auxD+'" class="hidden" onchange="mostrarNombre(this, '+auxD+');" type="file"><p id="fileName'+auxD+'"></p></td>'+
         '<td><p id="fileSize'+auxD+'"></p></td>'+
         '<td><a class="eliminar" onclick="eliminarFila(this);"><i class="fa fa-close"></i></a></td>'+
         '</tr>';
+
     $('tbody#tbodyDoc').append(tr);
 
     $('#inputFile'+auxD).trigger('click');
-    // var filename = $('#inputFile'+auxD).val().split('\\').pop();
 
     auxD++;
 }
@@ -358,7 +391,13 @@ function mostrarNombre(obj, id) {
     console.log(obj.files);
     console.log(obj.files.item(0).name);
     console.log(obj.files.item(0).size);
-    console.log(getReadableFileSizeString(obj.files.item(0).size));
-    $('#fileName'+id).text( obj.files.item(0).name );
-    $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) );
+    if(obj.files.item(0).size > 5e+7){
+        $('#advertencia_size').show();
+        eliminarFila(obj);
+    }else{
+        console.log(getReadableFileSizeString(obj.files.item(0).size));
+        $('#fileName'+id).text( obj.files.item(0).name );
+        $('#fileSize'+id).text( getReadableFileSizeString(obj.files.item(0).size) );
+    }
+
 }

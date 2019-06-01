@@ -9,7 +9,7 @@
 <title>Pedidos </title>
 <link rel="icon" href="{!! asset('images/tepco_ico.ico') !!}"/>
 <link href="/css/style.css" rel="stylesheet">
-<link href="http://localhost:5004/bootstrap.css" rel="stylesheet">
+{{--<link href="http://localhost:5004/bootstrap.css" rel="stylesheet">--}}
 
 <style>
     @-webkit-keyframes argh-my-eyes {
@@ -33,6 +33,8 @@
         99% { background-color: #6a0d02; }
         100% { background-color: #2a3f54; }
     }
+
+    .pdfobject-container { height: 60rem; border: 1rem solid rgba(0,0,0,.1); }
 </style>
 <!-- Bootstrap -->
 {{ Html::style('css/bootstrap.min.css') }}

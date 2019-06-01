@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody id="tbodyItems">
-    @php $auxItem=0;@endphp
+    @php $auxItem=0; $contadorTic=0;@endphp
     @foreach($pedido->items_entrega as $item)
         <tr>
             <th scope="row" width="2%;">{{($loop->iteration)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>

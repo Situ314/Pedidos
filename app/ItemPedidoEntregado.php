@@ -18,10 +18,15 @@ class ItemPedidoEntregado extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad', 'precio_unitario', 'pedido_id', 'item_id'
+        'cantidad', 'precio_unitario', 'observaciones', 'pedido_id', 'item_id'
     ];
 
     public function item(){
         return $this->belongsTo('App\Item','item_id','id');
+    }
+
+    public function setObservacionesAttribute($value)
+    {
+        $this->attributes['observaciones'] = strtoupper($value);
     }
 }

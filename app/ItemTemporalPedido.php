@@ -18,7 +18,7 @@ class ItemTemporalPedido extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad', 'pedido_id', 'item_temp_id', 'tipo_compra_id'
+        'cantidad', 'observaciones', 'pedido_id', 'item_temp_id', 'tipo_compra_id'
     ];
 
     public function item(){
@@ -31,5 +31,10 @@ class ItemTemporalPedido extends Model
 
     public function control_stock(){
         return $this->hasMany('App\ControlStock','items_temporales_pedidos_id','id');
+    }
+
+    public function setObservacionesAttribute($value)
+    {
+        $this->attributes['observaciones'] = strtoupper($value);
     }
 }

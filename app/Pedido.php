@@ -21,10 +21,10 @@ class Pedido extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'proyecto_id', 'tipo_categoria_id', 'solicitante_id', 'solicitud_id'
+        'codigo', 'proyecto_id', 'oficina_id', 'tipo_categoria_id', 'solicitante_id', 'solicitud_id'
     ];
 
-    public function solicitante(){
+        public function solicitante(){
         return $this->hasOne('App\User','id','solicitante_id');
     }
 
@@ -90,6 +90,15 @@ class Pedido extends Model
             ->with('salida_items');
     }
 
+    public function salidas_almacen_tic(){
+        return $this->hasMany('App\SalidaAlmacenTic','pedido_id','id');
+    }
+
+    public function salidas_almacen_items_tic(){
+        return $this->hasMany('App\SalidaAlmacenTic','pedido_id','id')
+            ->with('salida_items_tic');
+    }
+
     public function documentos(){
         return $this->hasMany('App\Documentos','pedido_id','id');
     }
@@ -103,5 +112,9 @@ class Pedido extends Model
         return $this->belongsToMany('App\User','asignaciones','pedido_id','asignado_id')
             ->withTrashed()
             ->with('empleado_nombres');
+    }
+
+    public function oficina(){
+        return $this->belongsTo('App\Oficina','oficina_id','id');
     }
 }

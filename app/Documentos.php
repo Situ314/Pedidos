@@ -20,11 +20,15 @@ class Documentos extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'mime', 'ubicacion', 'salida_id', 'pedido_id', 'tipo_documento_id'
+        'nombre', 'mime', 'ubicacion', 'salida_id', 'salida_tic_id', 'pedido_id', 'tipo_documento_id'
     ];
 
     public function salida(){
         return $this->belongsTo('App\SalidaAlmacen','salida_id','id');
+    }
+
+    public function salida_tic(){
+        return $this->belongsTo('App\SalidaAlmacenTic','salida_tic_id','id');
     }
 
     public function setUbicacionAttribute($archivo){

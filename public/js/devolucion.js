@@ -53,3 +53,45 @@ function modalDevolver(opt) {
     }
     $('#modalDevolucion').modal('show');
 }
+
+function modalDevolverTic(){
+    $('#modalDevolucionTicHeader').removeClass('modal-header-primary');
+    $('#modalDevolucionTicHeader').removeClass('modal-header-danger');
+    $('#modalDevolucionTicHeader').removeClass('modal-header-warning');
+    $('#modalDevolucionTicHeader').removeClass('modal-header-danger');
+
+    $('#modalDevolucionTicTitle').empty();
+
+    $('#btnAceptarDevolucionTic').removeClass('btn-primary-custom');
+    $('#btnAceptarDevolucionTic').removeClass('btn-danger-custom');
+    $('#btnAceptarDevolucionTic').removeClass('btn-warning-custom');
+
+    $('#modalDevolucionTicHeader').addClass('modal-header-primary');
+    $('#modalDevolucionTicTitle').append('<i class="fa fa-laptop"></i> Derivar a TIC\'s');
+
+    $('#btnAceptarDevolucionTic').addClass('btn-primary-custom');
+    $('#btnAceptarDevolucionTic').text("Devolver a Control de TIC's");
+
+    $('#modalDevolucionTic').modal('show');
+}
+
+function modalDevolverM(){
+    $('#modalDevolucionMHeader').removeClass('modal-header-primary');
+    $('#modalDevolucionMHeader').removeClass('modal-header-danger');
+    $('#modalDevolucionMHeader').removeClass('modal-header-warning');
+    $('#modalDevolucionMHeader').removeClass('modal-header-danger');
+
+    $('#modalDevolucionMTitle').empty();
+
+    $('#btnAceptarDevolucionM').removeClass('btn-primary-custom');
+    $('#btnAceptarDevolucionM').removeClass('btn-danger-custom');
+    $('#btnAceptarDevolucionM').removeClass('btn-warning-custom');
+
+    $('#modalDevolucionMHeader').addClass('modal-header-primary');
+    $('#modalDevolucionMTitle').append('<i class="fa fa-undo"></i> Derivar a Tepco');
+
+    $('#btnAceptarDevolucionM').addClass('btn-primary-custom');
+    $('#btnAceptarDevolucionM').text("Enviar a Tepco");
+
+    $('#modalDevolucionM').modal('show');
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Asignacion;
 use App\Categoria;
 use App\EstadoPedido;
+use App\EstadoTic;
 use App\Item;
 use App\ItemPedido;
 use App\ItemPedidoEntregado;
@@ -54,6 +55,21 @@ class AsignacionesController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'item_id' => 'required',
+        ];
+
+        $customMessages = [
+            'required' => 'Debe haber por lo menos UN ITEM para ser asignado'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+//
+//        $this->validate($request, [
+//            'item_id' => 'required',
+//            'item_id_edit' => 'required'
+//        ]);
+
 //        dd($request->all());
         try{
             $pedido = Pedido::find($request->pedido_id);
@@ -88,6 +104,7 @@ class AsignacionesController extends Controller
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
+                            'observaciones'=>$request->observaciones[$i],
                             'pedido_id'=>$request->pedido_id,
                             'item_id'=>$item->id
                         ];
@@ -107,6 +124,7 @@ class AsignacionesController extends Controller
 
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
+                            'observaciones'=>$request->observaciones[$i],
                             'pedido_id'=>$request->pedido_id,
                             'item_id'=>$request->item_id[$aux_item_pedido]
                         ];
@@ -130,6 +148,7 @@ class AsignacionesController extends Controller
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
+                            'observaciones'=>$request->observaciones[$i],
                             'pedido_id'=>$request->pedido_id,
                             'item_id'=>$item->id
                         ];
@@ -147,6 +166,7 @@ class AsignacionesController extends Controller
                         //ITEM REGISTRADO EN PEDIDO A ENTREGAR
                         $array_item_pedido_entregado = [
                             'cantidad'=>$request->cantidad[$i],
+                            'observaciones'=>$request->observaciones[$i],
                             'pedido_id'=>$request->pedido_id,
                             'item_id'=>$request->item_id[$aux_item_pedido]
                         ];
@@ -166,7 +186,7 @@ class AsignacionesController extends Controller
             $asignado = new Asignacion($array_asignacion);
             $asignado->save();
 
-            $motivo = null;
+            $motivo = "PEDIDO ASIGNADO";
             if($request->motivo != ""){
                 $motivo = strtoupper($request->motivo);
             }
@@ -272,6 +292,7 @@ class AsignacionesController extends Controller
 //        }
 
 //        dd($usuarios->all());
+        $estados_tic = EstadoTic::all();
 
         return view('asignador.edit')
             ->withTipos($tipos)
@@ -280,7 +301,32 @@ class AsignacionesController extends Controller
             ->withItems($items)
             ->withUsers($usuarios)
             ->withPedido($pedido)
-            ->withTipoCompras($tipo_compras);
+            ->withTipoCompras($tipo_compras)
+            ->withEstadotic($estados_tic);
+    }
+
+    public function edit_tic($id)
+    {
+        $pedido = Pedido::find($id);
+
+        $tipos = TipoCategoria::orderBy('nombre');
+        $categorias = Categoria::all();
+        $unidades = Unidad::all();
+        $items = Item::all();
+        $usuarios = User::all()
+            ->where('rol_id','=',11);
+        $tipo_compras = TipoCompra::all();
+
+        $estados_tic = EstadoTic::all();
+        return view('asignador.edit-tic')
+            ->withTipos($tipos)
+            ->withCategroias($categorias)
+            ->withUnidades($unidades)
+            ->withItems($items)
+            ->withUsers($usuarios)
+            ->withPedido($pedido)
+            ->withTipoCompras($tipo_compras)
+            ->withEstadotic($estados_tic);
     }
 
     /**

@@ -70,14 +70,29 @@ Route::group(['middleware' => 'auth'],  function (){
         'as'=>'pedidos.estados.gestion'
     ]);
 
+    Route::post('post.pedidos.autorizador',[
+        'uses'=>'PedidosController@postPedidosAutorizador',
+        'as'=>'pedidos.estados.autorizador'
+    ]);
+
     Route::get('post.2018',[
         'uses'=>'PedidosController@index_2018',
         'as'=>'pedidos.index2k18'
     ]);
 
+    Route::get('pedidos.index.aut',[
+        'uses'=>'PedidosController@index_aut',
+        'as'=>'pedidos.index.aut'
+    ]);
+
     Route::post('post.pedidos.cantidad',[
         'uses'=>'PedidosController@postCantidad',
         'as'=>'pedidos.cantidad'
+    ]);
+
+    Route::post('post.pedidos.cantidad.aut',[
+        'uses'=>'PedidosController@postCantidadAut',
+        'as'=>'pedidos.cantidad.aut'
     ]);
 
     Route::post('post.pedidos.item',[
@@ -110,6 +125,11 @@ Route::group(['middleware' => 'auth'],  function (){
         'as'=>'impimir.pedido.solicitados'
     ]);
 
+    Route::get('/imprimir/{id}/imprimir-sol-tic',[
+        'uses'=>'PedidosController@getPedidoImprimirItemsSolicitadosTic',
+        'as'=>'impimir.pedido.solicitados.tic'
+    ]);
+
     Route::get('/imprimir/{id}/imprimir-ent',[
         'uses'=>'PedidosController@getPedidoImprimirItemsEntregados',
         'as'=>'impimir.pedido.entregados'
@@ -139,6 +159,10 @@ Route::group(['middleware' => 'auth'],  function (){
     //******************************************************ASIGNADOR
     Route::resource('/asignaciones','AsignacionesController');
 
+    Route::get('/asignaciones/{id}/tic',[
+        'uses'=>'AsignacionesController@edit_tic',
+        'as'=>'asignaciones.edit.tic'
+    ]);
     //******************************************************VERIFICACION
     Route::resource('/verificacion','VerificacionController');
 
@@ -163,7 +187,15 @@ Route::group(['middleware' => 'auth'],  function (){
     //******************************************************DEVOLUCION
     Route::resource('/devolucion','DevolucionesController');
 
+    Route::post('/devolucion.Tic/',[
+        'uses'=>'DevolucionesController@updateTic',
+        'as'=>'devolucion.tic'
+    ]);
 
+    Route::post('/devolucion.Tepco/',[
+        'uses'=>'DevolucionesController@updateTepco',
+        'as'=>'devolucion.tepco'
+    ]);
     //******************************************************RESPONSABLE
     Route::resource('/responsable','ResponsableController');
 
@@ -172,9 +204,19 @@ Route::group(['middleware' => 'auth'],  function (){
         'as'=>'pedidos.proceso'
     ]);
 
+    Route::put('/responsable.update.tic/{id}',[
+        'uses'=>'ResponsableController@update_tic',
+        'as'=>'responsable.update.tic'
+    ]);
+
     Route::get('/responsable/{id}/completar',[
         'uses'=>'ResponsableController@getCompletarPedido',
         'as'=>'responsable.completar'
+    ]);
+
+    Route::get('/responsable/{id}/completarTic',[
+        'uses'=>'ResponsableController@getCompletarPedidoTic',
+        'as'=>'responsable.completarTic'
     ]);
     //******************************************************
 
@@ -195,6 +237,11 @@ Route::group(['middleware' => 'auth'],  function (){
     Route::post('/post.salida',[
         'uses'=>'SalidaAlmacenController@postSalidaItems',
         'as'=>'salida.alm'
+    ]);
+
+    Route::post('/post.salida.tic',[
+        'uses'=>'SalidaAlmacenController@postSalidaItemsTic',
+        'as'=>'salida.alm.tic'
     ]);
 
     Route::get('/pdfSalidaAlmacen/{id}',[

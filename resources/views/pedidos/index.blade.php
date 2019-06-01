@@ -25,7 +25,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Lista de Pedidos</h3>
+                <h3>Lista de Pedidos <small>({{\Illuminate\Support\Facades\Auth::user()->rol->nombre}})</small></h3>
             </div>
 
             {{--<div class="title_right">
@@ -54,6 +54,7 @@
                         <div class="" role="tabpanel" data-example-id="togglable-tabs">
                             <ul id="myTab" class="nav nav-pills nav-pills-index">
                                 @php
+                                if(\Illuminate\Support\Facades\Auth::user()->rol_id != 9){
                                     switch (\Illuminate\Support\Facades\Auth::user()->rol_id){
                                         case 1:
                                             $auxObs = 0;
@@ -71,6 +72,7 @@
                                         case 3:
 
                                             foreach ($estados as $estado){
+                                             if($estado->id>=2){
                                                  if($estado->id != 10){
                                                     if($estado->id == 3){
                                                         echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
@@ -80,6 +82,7 @@
                                                     }else{
                                                     echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
                                                     }
+                                                 }
                                                  }
                                             }
                                             break;
@@ -131,21 +134,21 @@
                                             break;
                                         case 8:
                                         foreach ($estados as $estado){
-                                        if($estado->id != 10){
-                                            if($estado->id == 3){
-                                                echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
-                                            }
-                                             if($estado->id == 2){
-                                                    echo '<li role= "presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
-                                                    }else{
-                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
-                                                    }
+                                         if($estado->id>=2){
+                                            if($estado->id != 10){
+                                                if($estado->id == 3){
+                                                    echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                                }
+                                                 if($estado->id == 2){
+                                                        echo '<li role= "presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                        }else{
+                                                            echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                        }
+                                                }
                                             }
                                         }
-
                                         break;
                                         case 9:
-
                                             foreach ($estados as $estado){
                                                  if($estado->id != 10){
                                                     if($estado->id == 3){
@@ -159,7 +162,38 @@
                                                  }
                                             }
                                          break;
+                                         case 10:
+
+                                            foreach ($estados as $estado){
+                                                if($estado->id>=2){
+                                                     if($estado->id != 10){
+                                                        if($estado->id == 3){
+                                                            echo '<li role= "presentation" class=""><a href="#tab10" id="10-tab" role="tab" data-toggle="tab" aria-expanded="true">'.'REVISADO (AF)'.' <span id="10-tab-cantidad" class="badge">0</span></a></li>';
+                                                        }
+                                                        if($estado->id == 2){
+                                                        echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                        }else{
+                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                        }
+                                                     }
+                                                 }
+                                            }
+                                        break;
+                                        case 11:
+                                            foreach ($estados as $estado){
+                                                if($estado->id>=2){
+                                                    if($estado->id == 2){
+                                                        echo '<li role="presentation" class="active"><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }else{
+                                                        echo '<li role="presentation" class=""><a href="#tab'.$estado->id.'" id="'.$estado->id.'-tab" role="tab" data-toggle="tab" aria-expanded="true">'.$estado->nombre.' <span id="'.$estado->id.'-tab-cantidad" class="badge">0</span></a></li>';
+                                                    }
+                                                }
+                                            }
+                                            break;
                                     }
+                                }else{
+                                    echo '<li role="presentation" class="active"><a href="#tab8" id="8-tab" role="tab" data-toggle="tab" aria-expanded="true"> PEDIDOS FINALIZADOS <span id="8-tab-cantidad" class="badge">0</span></a></li>';
+                                }
                                 @endphp
                                 <li role="presentation" class="pull-right">
                                     <a href="#busqueda-tab" id="busqueda-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-search"></i> BUSQUEDA</a>
@@ -189,6 +223,7 @@
 
 @section('footerScripts')
     @parent
+    <script src="/js/pdfobject/pdfobject.js"></script>
     <script type="text/javascript">
             var rutas = {
                 pedidos: "{{route('pedidos.estados')}}",
@@ -203,14 +238,18 @@
                 verificacionAutorizador: "{{route('autorizador.show',['id'=>':id'])}}",
                 verificacionResponsable: "{{route('responsable.edit',['id'=>':id'])}}",
                 asignadorEdit: "{{route('asignaciones.edit',['id'=>':id'])}}",
+                asignadorTicEdit: "{{route('asignaciones.edit.tic',['id'=>':id'])}}",
                 verificacionAF:  "{{route('revisor.edit',['id'=>':id'])}}",
+
 
                 //PEDIDOS IMPRESION
                 impSol: "{{route('impimir.pedido.solicitados',':id')}}",
+                imprimirTic:  "{{route('impimir.pedido.solicitados.tic',':id')}}",
                 impEnt: "{{route('impimir.pedido.entregados',':id')}}",
 
                 //SALIDAS
                 salidas: "{{route('salida.alm')}}",
+                salidasTic: "{{route('salida.alm.tic')}}",
                 salidasEdit: "{{route('salidas.edit',['id'=>':id'])}}",
                 pdf: "{{route('salidas.pdf',['id'=>':id'])}}",
 
@@ -223,6 +262,7 @@
 
                 //COMP.P
                 comP: "{{route('responsable.completar',['id'=>':id'])}}",
+                comPTic: "{{route('responsable.completarTic',['id'=>':id'])}}",
                 token: "{{Session::token()}}"
             };
         var variables = {

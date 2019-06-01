@@ -28,4 +28,13 @@ class EstadoPedido extends Model
     public function estado(){
         return $this->hasOne('App\Estado','id','estado_id');
     }
+
+    public function pedido(){
+        return $this->hasOne('App\Pedido','id','pedido_id');
+    }
+
+    public function setMotivoAttribute($value)
+    {
+        $this->attributes['motivo'] = strtoupper($value);
+    }
 }

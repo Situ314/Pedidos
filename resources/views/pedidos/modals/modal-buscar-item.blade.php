@@ -15,6 +15,12 @@
                       <button class="btn btn-default" onclick="buscarItemCategoria();" type="button"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
+                <div id="advertencia" hidden class="alert alert-danger alert-dismissible fade in" role="alert">
+                    {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>--}}
+                    {{--</button>--}}
+                    No se puede agregar el item porque no pertenece a la misma categoría.
+                </div>
+                {{--<p id="advertencia" hidden style="color: darkred"> No se puede agregar el item porque no pertenece a la misma categoría. </p>--}}
                 <div id="contenido-busqueda"></div>
             </div>
             <div class="modal-footer">

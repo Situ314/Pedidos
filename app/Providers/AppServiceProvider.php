@@ -19,6 +19,7 @@ use App\Responsable;
 use App\SalidaAlmacen;
 use App\SalidaItem;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -153,6 +154,8 @@ class AppServiceProvider extends ServiceProvider
             $this->UpdateLog($usu,"users");
         });
         //**************************************
+
+        Carbon::setLocale('es');
     }
 
     /**

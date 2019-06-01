@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel fixed_height_260">
+            <div class="x_panel">
                 <div class="x_title">
                     <h2>Pedido <small>Datos del pedido</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -45,10 +45,16 @@
 
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <p><b><i class="fa fa-briefcase"></i> Oficina: </b></p>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <p>{{$pedido->oficina->direccion}}</p>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <p><b><i class="fa fa-user"></i> Solicitante: </b></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <p>{{$pedido->solicitante->empleado->nombres}}</p>
+                            <p>{{$pedido->solicitante->empleado->nombres}} {{$pedido->solicitante->empleado->apellido_1}} {{$pedido->solicitante->empleado->apellido_2}}</p>
                         </div>
                     </div>
                 </div>
@@ -76,7 +82,7 @@
                                             <a>{{$estado->nombre}}</a>
                                         </h2>
                                         <div class="byline">
-                                            <span>{{$pedido->estados_pedido[$loop->index]->created_at}}</span> por <a>{{$pedido->estados_pedido[$loop->index]->usuario->empleado->nombres}}</a>
+                                            <span>{{$pedido->estados_pedido[$loop->index]->created_at}}</span> por <a>{{$pedido->estados_pedido[$loop->index]->usuario->empleado->nombres}} {{$pedido->estados_pedido[$loop->index]->usuario->empleado->apellido_1}} {{$pedido->estados_pedido[$loop->index]->usuario->empleado->apellido_2}}</a>
                                         </div>
                                         @php
                                             $motivo = null;
@@ -125,6 +131,9 @@
                             <th>Cantidad</th>
                             <th>Unidad</th>
                             <th>Tipo de Compra</th>
+                            @if($pedido->tipo_categoria_id == '20')
+                                <th>Especificaciones</th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody>
@@ -140,6 +149,9 @@
                                 @else
                                     <td><p>SIN REGISTRO DE TIPO DE COMPRA</p></td>
                                 @endif
+                                @if($pedido->tipo_categoria_id == '20')
+                                    <td><p>{{$item->observaciones}}</p></td>
+                                @endif
                             </tr>
                         @endforeach
                         @foreach($pedido->items_pedido as $item)
@@ -152,6 +164,9 @@
                                     <td><p>{{$item->tipo_compra->nombre}}</p></td>
                                 @else
                                     <td><p>SIN REGISTRO DE TIPO DE COMPRA</p></td>
+                                @endif
+                                @if($pedido->tipo_categoria_id == '20')
+                                    <td><p>{{$item->observaciones}}</p></td>
                                 @endif
                             </tr>
                         @endforeach

@@ -186,7 +186,11 @@
                                     <td>{{$pedido->codigo}}</td>
                                     <td>{{$pedido->proyecto_empresa->empresa->nombre}}</td>
                                     <td>{{$pedido->solicitante_empleado->empleado->nombres}} {{$pedido->solicitante_empleado->empleado->apellido_1}} {{$pedido->solicitante_empleado->empleado->apellido_2}}</td>
-                                    <td> # {{$pedido->salidas_almacen->first()->num_solicitud}}</td>
+                                    @if($pedido->salidas_almacen->first() != null)
+                                        <td> # {{$pedido->salidas_almacen->first()->num_solicitud}}</td>
+                                    @else
+                                        <td> # 1</td>
+                                    @endif
                                     <td>{{$pedido->created_at}}</td>
                                     <td><span class="label {{$label}}">{{$diff}}</span></td>
                                 </tr>

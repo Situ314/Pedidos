@@ -122,6 +122,8 @@ class RevisorController extends Controller
         $motivo = null;
         if($request->motivo != ""){
             $motivo = strtoupper($request->motivo);
+        }else{
+            $motivo = "REVISADO POR EL ENCARGADO DE ACTIVOS FIJOS";
         }
 
         $array_estado_pedido = [
@@ -133,7 +135,7 @@ class RevisorController extends Controller
         $estado_pedido = new EstadoPedido($array_estado_pedido);
         $estado_pedido->save();
 
-        Session::flash('success', "Pedido revisado correctamente...");
+        Session::flash('success', "Pedido con el código ".$estado_pedido->pedido->codigo." revisado correctamente...");
         return redirect()->action('PedidosController@index');
     }
 

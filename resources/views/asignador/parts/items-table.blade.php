@@ -8,6 +8,7 @@
         <th>Unidad</th>
         <th>Tipo</th>
         <th>Tipo de Compra</th>
+        <th>Especificaciones</th>
         <th>Opciones</th>
     </tr>
     </thead>
@@ -17,8 +18,8 @@
         <tr>
             <th scope="row" width="2%;">{{($auxItem+1)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
             <td id="td{{$auxItem}}" data-content="1"><input name='txtItem[]' id="txtItem{{$auxItem}}" type='text' class='form-control input-hg-12 items-txt text-uppercase' value="{{$item->item->nombre}}">{{ Form::select('item_id[]', array(null), null, ['class'=>'items-select2 items-temp-select2 hidden','required', 'id'=>'item_id'.$auxItem.'', 'onchange'=>'javascript:cambiarUnidad('.$auxItem.');']) }}</td>
-            <td>{{ Form::number('cantidad[]', $item->cantidad, ['class'=>'form-control input-hg-12', 'step'=>'0.1','required'=>'true']) }}</td>
-            @if($item->control_stock!="" && $item->tipo_compra!=null)
+            <td width="10%">{{ Form::number('cantidad[]', $item->cantidad, ['class'=>'form-control input-hg-12', 'step'=>'0.1','required'=>'true']) }}</td>
+            @if($item->control_stock!="" && $item->tipo_compra!=null  && $pedido->tipo_categoria_id != 20)
                 @if($item->tipo_compra->id == '3')
                     <td><label class="label label-info">NO CORRESPONDE</label></td>
                 @else
@@ -38,6 +39,7 @@
             @else
                 <td><label class="label label-info">S/R</label></td>
             @endif
+            <td width="30%">{{ Form::text('observaciones[]', $item->observaciones, ['class'=>'form-control input-hg-12 text-uppercase', 'step'=>'0.1']) }}</td>
             <td><a class='eliminar' onclick='javascript:eliminarFila(this);'><i class='fa fa-close'></i></a></td>
         </tr>
         @php $auxItem++; @endphp
@@ -47,7 +49,7 @@
             <th scope="row" width="2%;">{{($auxItem+1)}}<input name="item_id_edit[]" value="{{$item->id}}" hidden></th>
             <td id="td{{$auxItem}}" data-content="0"><input name='txtItem[]' id="txtItem{{$auxItem}}" type='text' class='form-control input-hg-12 hidden items-txt text-uppercase'>{{ Form::select('item_id[]', array(null), null, ['class'=>'items-select2','required', 'id'=>'item_id'.$auxItem.'', 'onchange'=>'javascript:cambiarUnidad('.$auxItem.');']) }}</td>
             <td>{{ Form::number('cantidad[]', $item->cantidad, ['class'=>'form-control input-hg-12', 'step'=>'0.1','required'=>'true']) }}</td>
-            @if($item->control_stock!="" && $item->tipo_compra!=null)
+            @if($item->control_stock!="" && $item->tipo_compra!=null && $pedido->tipo_categoria_id != 20)
                 @if($item->tipo_compra->id == '3')
                     <td><label class="label label-info">NO CORRESPONDE</label></td>
                 @else
@@ -67,6 +69,7 @@
             @else
                 <td><label class="label label-info">S/R</label></td>
             @endif
+            <td width="30%">{{ Form::text('observaciones[]', $item->observaciones, ['class'=>'form-control input-hg-12 text-uppercase', 'step'=>'0.1']) }}</td>
             <td><a class='eliminar' onclick='javascript:eliminarFila(this);'><i class='fa fa-close'></i></a></td>
         </tr>
         @php $auxItem++; @endphp

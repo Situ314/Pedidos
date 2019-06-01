@@ -87,14 +87,15 @@
 					</span>
 
                     {{ csrf_field() }}
+
                 <div class="wrap-input100 validate-input">
                     <input class="input100" type="text" name="username" id="username" required autofocus>
+                    <span class="focus-input100" data-placeholder="Usuario"></span>
                     @if ($errors->has('username'))
                         <span class="help-block">
                             <strong>{{ $errors->first('username') }}</strong>
-                        </span>
+                    </span>
                     @endif
-                    <span class="focus-input100" data-placeholder="Usuario"></span>
                 </div>
 
                 <div class="wrap-input100 validate-input">

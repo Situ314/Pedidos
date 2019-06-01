@@ -144,6 +144,7 @@
                                 <li>
                                     <a href="{{route('reporte.general')}}"> Reporte General</a>
                                 </li>
+
                                 <li>
                                     <a href="{{route('reporte.items')}}"> Reportes de Items</a>
                                 </li>
@@ -157,7 +158,12 @@
                             @if(\Illuminate\Support\Facades\Auth::user()->rol_id != 9)
                                 <li><a href="{{route('pedidos.create')}}">Crear</a></li>
                             @endif
-                            <li><a href="{{route('pedidos.index')}}">Listado</a></li>
+                            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 3 || \Illuminate\Support\Facades\Auth::user()->rol_id == 8 || \Illuminate\Support\Facades\Auth::user()->rol_id == 10)
+                                <li><a href="{{route('pedidos.index.aut')}}"> Listado (Autorizador)</a></li>
+                                <li><a href="{{route('pedidos.index')}}">Listado ({{ucfirst(strtolower(\Illuminate\Support\Facades\Auth::user()->rol->nombre))}})</a></li>
+                            @else
+                                <li><a href="{{route('pedidos.index')}}"> Listado</a></li>
+                            @endif
                         </ul>
                     </li>
                     @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4 || \Illuminate\Support\Facades\Auth::user()->rol_id == 7)
@@ -165,7 +171,16 @@
                             <a href="{{ route('responsable.index') }}"><i class="fa fa-print"></i> Impresiones</a>
                         </li>
                     @endif
-
+                    {{--@if(\Illuminate\Support\Facades\Auth::user()->rol_id == 3 || \Illuminate\Support\Facades\Auth::user()->rol_id == 8 || \Illuminate\Support\Facades\Auth::user()->rol_id == 10)--}}
+                        {{--<li>--}}
+                            {{--<a><i class="fa fa-eye"></i> Ver como <span class="fa fa-chevron-down">--}}
+                        {{--</span></a>--}}
+                            {{--<ul class="nav child_menu">--}}
+                                {{--<li><a href="{{route('pedidos.index.aut')}}"> AUTORIZADOR</a></li>--}}
+                                {{--<li><a href="{{route('pedidos.index')}}"> {{\Illuminate\Support\Facades\Auth::user()->rol->nombre}}</a></li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
+                    {{--@endif--}}
                     {{--<li>--}}
                         {{--<a><i class="fa fa-calendar"></i> Gestiones <span class="fa fa-chevron-down">--}}
                         {{--</span></a>--}}

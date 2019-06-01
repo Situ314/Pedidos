@@ -202,11 +202,11 @@ function actualizarTablaFiltro(response){
                 '  </tr>';
         }
 
-        table=
-            head+
-            body+
-            '</tbody>'+
-            '</table>';
+                table=
+                    head+
+                    body+
+                    '</tbody>'+
+                    '</table>';
     }else{
         table += '<div class="alert alert-info alert-dismissible fade in" role="alert">'+
             '<strong><i class="fa fa-check"></i></strong> No hay registros que cumplan con los filtros solicitados'+

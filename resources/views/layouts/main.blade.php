@@ -39,6 +39,7 @@
         rutas:[
             {
                 getCantidades: "{{route('pedidos.cantidad')}}",
+                getCantidadesAu: "{{route('pedidos.cantidad.aut')}}",
                 postAutorizadores: "{{route('dash.mis.aut')}}",
                 token: "{{Session::token()}}"
             }

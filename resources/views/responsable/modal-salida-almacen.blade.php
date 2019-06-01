@@ -15,12 +15,20 @@
                         <tr>
                             <th width="10%;">Empresa</th>
                             <td colspan="3"><p id="txtEmpresaSalida"></p></td>
-                            <th rowspan="2" class="text-center" style="vertical-align: middle; font-size: 20px;">SALIDA DE ALMACEN</th>
+                            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4)
+                                <th rowspan="2" class="text-center" style="vertical-align: middle; font-size: 20px;">SALIDA DE ALMACEN</th>
+                            @else
+                                <th rowspan="2" class="text-center" style="vertical-align: middle; font-size: 20px;">INFORME ENTREGA</th>
+                            @endif
                             <th width="4%;">N°</th>
                             <td colspan="3"><span id="txtNum"></span></td>
                         </tr>
                         <tr>
-                            <th>O.T.<td>
+                            @if(\Illuminate\Support\Facades\Auth::user()->rol_id == 4)
+                                <th>O.T.<td>
+                            @else
+                                <th># Ticket<td>
+                            @endif
                                 <p id="txtOTSalida" style="font-weight: normal !important;"></p>
                             </td>
                             <td style="font-weight: bold;"># Pedido</td>

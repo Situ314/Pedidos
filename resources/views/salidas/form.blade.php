@@ -11,14 +11,14 @@
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <label for="motivo" class="control-label"><i class="fa fa-list-ol"></i> Numero OT</label>
-        @if($salida->num_ot != null)
-            <p>{{$salida->num_ot}}</p>
-            <input name="num_ot" hidden value="{{$salida->num_ot}}">
-        @else
-            <p>SIN NUMERO</p>
-            <input name="num_ot" hidden value="">
-        @endif
+            <label for="motivo" class="control-label"><i class="fa fa-list-ol"></i> Numero OT</label>
+            @if($salida->num_ot != null)
+                <p>{{$salida->num_ot}}</p>
+                <input name="num_ot" hidden value="{{$salida->num_ot}}">
+            @else
+                <p>SIN NUMERO</p>
+                <input name="num_ot" hidden value="">
+            @endif
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

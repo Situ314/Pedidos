@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{ Form::open( array('route' => ['pedidos.update',$pedido->id], 'files'=>true, 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask') ) }}
+    {{ Form::open( array('route' => ['pedidos.update',$pedido->id], 'files'=>true, 'method' => 'PUT','class' => 'form-horizontal form-label-left input_mask', 'autocomplete' => 'off') ) }}
 
     <div class="row">
         <div class="col-md-12 col-xs-12">
@@ -108,13 +108,13 @@
                         @include('pedidos.parts.items-table-edit')
                     </div>
                     <button id="btnAgregarItem" type="button" onclick="javascritp:agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
-                        <i class="fa fa-plus"> Agregar Item</i>
+                        <i class="fa fa-plus"> </i> Agregar Item
                     </button>
                     <br>
                     <div class="ln_solid"></div>
                     <div class="row text-center">
-                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"> Guardar</i></button>
+                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> </i> Volver</a>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"> </i> Guardar</button>
                     </div>
                 </div>
             </div>
@@ -178,6 +178,7 @@
             variables:[
                 {
                     categorias: {!! json_encode($categroias->toArray()) !!},
+                    estados_tic: {!! json_encode($estadotic->toArray()) !!},
                     unidades: {!! json_encode($unidades->toArray()) !!},
                     items: {!! json_encode($items->toArray()) !!},
                     proyectoPedido: {{$pedido->proyecto_id}},

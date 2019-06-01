@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{ Form::open( array('route' => 'pedidos.store', 'files'=>true, 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask') ) }}
+    {{ Form::open( array('route' => 'pedidos.store', 'files'=>true, 'method' => 'POST','class' => 'form-horizontal form-label-left input_mask', 'autocomplete' => 'off') ) }}
 
     <div class="row">
         <div class="col-md-12 col-xs-12">
@@ -23,7 +23,7 @@
                     @include('pedidos.form')
                 </div>
                 <div class="x_title">
-                    <h2>Documento <small>De ser necesario se debe agregar documentos</small></h2>
+                    <h2>Documento <small>De ser necesario se debe agregar documentos <strong> (el tamaño máximo permitido es 50 mb)</strong></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -33,6 +33,9 @@
                 <div class="x_content">
                     <br>
                     <button type="button" class="btn btn-success-custom" onclick="javascript:agregarDocumento();"><i class="fa fa-plus"></i> Agregar Documentos</button>
+                    <div id="advertencia_size" hidden class="alert alert-danger alert-dismissible fade in" role="alert">
+                        No se puede agregar el archivo, el tamaño máximo permitido es 50 MB.
+                    </div>
                     @include('pedidos.parts.docs-table')
                 </div>
             </div>
@@ -55,19 +58,19 @@
                     <div id="alertBuscarNombrePedido">
                     </div>
                     <br>
-                    <div class="table-responsive">
+                    <div id="contenedor-table" class="table-responsive">
                         @include('pedidos.parts.items-table')
                     </div>
                     <button id="btnAgregarItem" type="button" onclick="agregarItem();" class="btn btn-sm btn-success-custom pull-left" disabled="true" title="Primero seleccione un tipo de categoria">
-                        <i class="fa fa-plus"> Agregar Item</i>
+                        <i class="fa fa-plus"> </i> Agregar Item
                     </button>
                     <br>
                     <div class="ln_solid"></div>
                     <div class="row text-center">
-                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> Volver</i></a>
+                        <a href="{{URL::previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"> </i> Volver</a>
                         {{-- SI TIENE EMPLEADO --}}
                         @if(count(\Illuminate\Support\Facades\Auth::user()->empleado) != 0)
-                            <button type="submit" class="btn btn-success-custom"><i class="fa fa-save"> Guardar</i></button>
+                            <button type="submit" class="btn btn-success-custom"><i class="fa fa-save"> </i> Guardar</button>
                         @else
                             <button class="btn btn-success-custom" disabled="true"><i class="fa fa-save" title="No puede realizar esta accion"> Guardar</i></button>
                         @endif

@@ -19,6 +19,10 @@ var arrayMeses = {
     11: 'Diciembre'
 };
 
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
 var options_proyectos = "";
 $(document).ready(function(){
     //HABILITANDO EL iCheck
@@ -189,13 +193,22 @@ $(document).ready(function(){
         placeholder: "Seleccione courrier o delivery...",
         width: '100%'
     }).val('').trigger('change');
+
+    //ESTADO COMPRA SELECT
+    $('select[name^=estado_tic_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
+    }).val('').trigger('change');
 });
 
 function edicion(){
     auxU = parseInt(config.variables[0].cantItem);
 
     var cantItem = config.variables[0].cantItemEntrega;
+    auxTic = parseInt(config.variables[0].cantItemEntregaTic);
 
+    console.log("TIIIICS"+auxTic);
     $('.select_unidad_temp').prop('disabled',false);
 
     for(var i=0; i<cantItem ; i++){
@@ -215,7 +228,6 @@ function edicion(){
                 width: '100%'
             }).val(config.variables[0].items_entrega[i].item.unidad_id).trigger('change');
         }
-
     }
 
     //OCULTANDO EL SELECT DE CATEGORIA
@@ -226,12 +238,32 @@ function edicion(){
     //DESHABILITANDO ITEMS
     $('.items-select2').prop('disabled', true);
 
+    //OFICINA - CARGA AUTOMATICAMENTE
+    $('select[name=oficina_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione proyecto...",
+        width: '100%'
+    }).val(parseInt(config.variables[0].ofi)).trigger('change');
+
     //RESPONSABLE EN BLANCO
     $('select[name=responsable_entrega_id]').select2({
         allowClear: true,
         placeholder: "Seleccione responsable de entrega...",
         width: '100%'
+    }).val(parseInt(config.variables[0].usu)).trigger('change');
+
+    //ESTADO COMPRA SELECT
+    $('select[name^=estado_tic_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione...",
+        width: '100%'
     }).val('').trigger('change');
+    //RESPONSABLE EN BLANCO
+    // $('select[name=responsable_entrega_id]').select2({
+    //     allowClear: true,
+    //     placeholder: "Seleccione responsable de entrega...",
+    //     width: '100%'
+    // }).val('').trigger('change');
 }
 
 function modal_info(titulo, clase_header, contenido) {

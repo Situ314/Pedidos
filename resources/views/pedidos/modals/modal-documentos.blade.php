@@ -8,7 +8,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><i class="fa fa-archive"></i> Documentos</h4>
             </div>
-            <div class="modal-body">
+            <div id="body" class="modal-body">
                 <table id="tableDoc" class="table table-striped table-condensed">
                     <thead>
                         <tr>
@@ -21,6 +21,8 @@
                     <tbody id="tbodyDoc">
                     </tbody>
                 </table>
+
+                <div id="filepdf" hidden></div>
             </div>
         </div>
 

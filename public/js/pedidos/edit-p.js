@@ -4,6 +4,12 @@
 var option_unidades = "";
 var options_items = "";
 var option_tipo_compras = "";
+var option_estados_tic = "";
+
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
 $( document ).ready(function() {
     $('.js-placeholder-single').select2({
         allowClear: true,
@@ -15,11 +21,30 @@ $( document ).ready(function() {
 
     getUnidades();
     getTipoCompras();
+    getEstadosTic();
     var auxItems = false;
+
+    $('input').on('keydown', function(event) {
+        var x = event.which;
+        if (x === 13) {
+            event.preventDefault();
+        }
+    });
 
     $('select[name=tipo_cat_id]').change(function () {
         var selected_op = $('select[name=tipo_cat_id]').find('option:selected').val();
+        console.log("SELECTEEEEEED"+selected_op);
         if(typeof selected_op != "undefined"){
+
+            if(selected_op == '20'){
+                console.log("TIPOOOOO"+selected_op);
+                $('td[id=td_obs]').show();
+                $('th[id=th_obs]').show();
+            }else{
+                $('td[id=td_obs]').hide();
+                $('th[id=th_obs]').hide();
+            }
+
             var items = config.variables[0].items;
             options_items = "";
 
@@ -35,8 +60,8 @@ $( document ).ready(function() {
 
             $('.btnCambiarEditSelect').removeClass('disabled');
 
-            $('.items-select2').empty();
-            $('.items-select2').append(options_items);
+           $('.items-select2').empty();
+           $('.items-select2').append(options_items);
 
             for(var i=0;i<$('.items-select2').parent().length;i++){
 
@@ -145,7 +170,10 @@ function getEmpresas() {
 function getProyectos() {
     var selected_op = $('select[name=empresa_id]').find('option:selected').val();
     console.log(selected_op);
+
     if(typeof selected_op != "undefined" && typeof proyectos_solicitudes != 'undefined') {
+
+
 
         options_proyectos = "";
 
@@ -205,6 +233,13 @@ function getTipoCompras() {
     var tipo_compras = config.variables[0].tipo_compras;
     for(var i = 0; i<tipo_compras.length ; i++){
         option_tipo_compras += "<option value='"+tipo_compras[i].id+"'>"+tipo_compras[i].nombre+"</option>"
+    }
+}
+
+function getEstadosTic() {
+    var estados_tic = config.variables[0].estados_tic;
+    for(var i = 0; i<estados_tic.length ; i++){
+        option_estados_tic += "<option value='"+estados_tic[i].id+"'>"+estados_tic[i].nombre+"</option>"
     }
 }
 

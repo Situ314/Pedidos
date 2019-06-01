@@ -16,7 +16,7 @@ class CheckAutorizador
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->rol_id == 3 || $request->user()->rol_id == 5 || $request->user()->rol_id == 1 || $request->user()->rol_id == 2 || $request->user()->rol_id == 8){
+        if($request->user()->rol_id == 3 || $request->user()->rol_id == 5 || $request->user()->rol_id == 1 || $request->user()->rol_id == 2 || $request->user()->rol_id == 8 || $request->user()->rol_id == 10){
             return $next($request);
         }
         return redirect()->back()

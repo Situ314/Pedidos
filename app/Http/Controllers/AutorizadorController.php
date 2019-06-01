@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\DB;
 use Session;
 
 class AutorizadorController extends Controller
@@ -66,27 +67,39 @@ class AutorizadorController extends Controller
                 ->where('autorizador_id','=',Auth::id())
                 ->get();
 
-            $estados_pedidos_id_array = Pedido::select('pedidos.id')
+//            $estados_pedidos_id_array = Pedido::select('pedidos.id')
+//                ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
+//                ->where('pedidos.id','=',$id)
+//                ->whereIn('estados_pedidos.user_id',$usuarios_responsable_array)
+//                ->orWhere('estados_pedidos.user_id',Auth::id())
+//                ->get();
 
-                ->join('estados_pedidos','estados_pedidos.pedido_id','=','pedidos.id')
-
+            $estados_pedidos_id_array = DB::table('estados_pedidos as t1')
+                ->select('t1.pedido_id as id')
+                ->leftJoin('estados_pedidos as t2',function ($join){
+                    $join->on('t1.pedido_id', '=', 't2.pedido_id')
+                        ->on('t1.id', '<', 't2.id');
+                })
+                ->leftJoin('pedidos','pedidos.id','=','t1.pedido_id')
                 ->where('pedidos.id','=',$id)
-                ->whereIn('estados_pedidos.user_id',$usuarios_responsable_array)
-                ->orWhere('estados_pedidos.user_id',Auth::id())
+                ->whereIn('pedidos.solicitante_id',$usuarios_responsable_array)
+                ->whereNull('t2.id')
+                ->where('t1.estado_id','=','1')
                 ->get();
 
-
+//            dd($estados_pedidos_id_array);
             if(count($estados_pedidos_id_array)==0){
-                return redirect()->back()
+                return redirect()->action('PedidosController@index')
                     ->withErrors(array('error'=>'No puede autorizar este pedido'));
             }
+
+            $unidades = Unidad::all();
+            $pedido = Pedido::find($id);
+            return view('autorizador.verificacion')
+                ->withPedido($pedido)
+                ->withUnidades($unidades);
         }
 
-        $unidades = Unidad::all();
-        $pedido = Pedido::find($id);
-        return view('autorizador.verificacion')
-            ->withPedido($pedido)
-            ->withUnidades($unidades);
     }
 
     /**
@@ -134,7 +147,10 @@ class AutorizadorController extends Controller
         $estado_pedido->save();
 
         Session::flash('success', "Pedido ".$pedido->codigo." autorizado correctamente...");
-        return redirect()->action('PedidosController@index');
+        if(Auth::user()->rol_id == 3 || Auth::user()->rol_id == 10)
+            return redirect()->action('PedidosController@index_aut');
+        else
+            return redirect()->action('PedidosController@index');
     }
 
     /**

@@ -18,7 +18,7 @@ class ItemPedido extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad', 'precio_unitario', 'pedido_id', 'item_id', 'tipo_compra_id'
+        'cantidad', 'precio_unitario', 'observaciones', 'pedido_id', 'item_id', 'tipo_compra_id'
     ];
 
     public function item(){
@@ -31,5 +31,10 @@ class ItemPedido extends Model
 
     public function control_stock(){
         return $this->hasMany('App\ControlStock','items_pedidos_id','id');
+    }
+
+    public function setObservacionesAttribute($value)
+    {
+        $this->attributes['observaciones'] = strtoupper($value);
     }
 }

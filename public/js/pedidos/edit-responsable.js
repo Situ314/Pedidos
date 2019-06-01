@@ -16,8 +16,14 @@ var arrayMeses = {
     11: 'Diciembre'
 };
 
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
 var options_proyectos = "";
 $(document).ready(function(){
+
+    //edicion();
     //HABILITANDO EL iCheck
     $('.icheck_class').iCheck({
         checkboxClass: 'icheckbox_flat-green',
@@ -50,6 +56,7 @@ $(document).ready(function(){
             }
         }
 
+
         if($('input[name^=input_radio_entrega]').length == aux_cont){
             modal_info("<i class='fa fa-warning'></i> ADVERTENCIA","modal-header-warning","No selecciono ningun item a entregar");
         }else{
@@ -65,6 +72,7 @@ $(document).ready(function(){
                 beforeSend: function(e){
                 }
             }).done(function (response){
+                console.log(response);
                 //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
                 $('#txtEmpresaSalida').text( $('select[name=empresa_id] option:selected').text() );
                 $('#txtOTSalida').text( $('input[name=num_ot]').val() );
@@ -124,6 +132,105 @@ $(document).ready(function(){
         }
     });
 
+    //PREVENCION DE ENVIO DE FORMULARIO RESPONSABLE TIIIC
+    $("#formUpdateResponsableTic").submit(function(e, submit){
+
+        if(!submit)
+            e.preventDefault(e);
+
+        var token = config.rutas[0].token;
+        var route = config.rutas[0].salidaMax;
+
+        var aux_cont = 0;
+        for(var i=0 ; i<$('input[name^=input_radio_entrega]').length ;i++){
+            if( $('#inputRadio'+i).val()==0 ){
+                aux_cont++;
+            }
+        }
+
+        if($('input[name^=input_radio_entrega]').length == aux_cont){
+            modal_info("<i class='fa fa-warning'></i> ADVERTENCIA","modal-header-warning","No selecciono ningun item a entregar");
+        }else{
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    id: config.variables[0].ped,
+                    empresa_id: $('select[name=empresa_id] option:selected').val()
+                },
+                beforeSend: function(e){
+                }
+            }).done(function (response){
+                console.log(response);
+                //CARGANDO DATOS DE GENERALES DE SALIDA DE ALMACEN
+                $('#txtEmpresaSalidaT').text( $('select[name=empresa_id] option:selected').text() );
+                $('#txtOTSalidaT').text( $('input[name=num_ot]').val() );
+
+                $('#txtFechaSalidaT').text( moment().format('DD')+'/'+arrayMeses[moment().month()]+'/'+moment().format('YYYY') );
+                $('#txtHoraSalidaT').text( moment().format('HH::mm') );
+
+                $('#txtSolicitanteSalidaT').text( $('#txtSolicitante').text() );
+                $('#txtAreaSalidaT').text( $('input[name=area]').val().toUpperCase() );
+                $('#txtProyectoSalidaT').text( $('select[name=proyecto_id] option:selected').text() );
+
+                $('#txtResponsableSalidaT').text( $('select[name=responsable_entrega_id] option:selected').text() );
+                $('#txtCourrierSalidaT').text( $('select[name=oficina_id] option:selected').text() )
+
+                if(response.num_solicitud == null){ //ES LA PRIMERA SALIDA
+                    $('#txtNumSolicitudSalidaT').text( 1 );
+                    $('input[name=num_solicitud]').val( 1 );
+                    $('input[name=txtNum]').val( 1 );
+                }else{ //USAR EL NUMERO ANTERIOR MAS UNO
+                    $('#txtNumSolicitudSalidaT').text( (parseInt(response.num_solicitud)+1) );
+                    $('input[name=num_solicitud]').val( (parseInt(response.num_solicitud)+1) );
+                    $('input[name=txtNum]').val( (parseInt(response.num_solicitud)+1) );
+                }
+                //************************************
+
+                //CARGANDO ITEMS DE SALIDA DE ALMACEN
+                var tbody = "";
+                var aux = 1;
+
+                for(var i=0 ; i<$('input[name^=input_radio_entrega]').length ;i++){
+
+                    if( $('#inputRadio'+i).val()==1 ){
+                        console.log("input-"+i);
+                        var detalle = "";
+                        if($('#item_id'+i).length){
+                            detalle = $('#item_id'+i+' option:selected').text();
+                        }else{
+                            detalle = $('#txtItem'+i).val();
+                        }
+                        tbody += '<tr>'+
+                            '<th scope="row">'+aux+'</th>'+
+                            '<td>'+detalle+'</td>'+
+                            '<td>'+$('#inputMar'+i).val().toUpperCase()+'</td>'+
+                            '<td>'+$('#inputMod'+i).val().toUpperCase()+'</td>'+
+                            '<td>'+$('#inputSer'+i).val().toUpperCase()+'</td>'+
+                            '<td>'+$('#inputObs'+i).val().toUpperCase()+'</td>' +
+                            '</tr>';
+
+                        aux++;
+                        // console.log( $('#numCantidad'+i).val() );
+                    }
+                }
+
+                $('#tbodyItemsSalidaAlmacenT').empty();
+                $('#tbodyItemsSalidaAlmacenT').append(tbody);
+
+                //************************************
+                $('#modalSalidaAlmacenTic').modal('show');
+            });
+        }
+    });
+
+    //BOTON DE DESPLIEGUE DE MODAL DE MUESTRA DE DOCUMENTO DE SALIDA
+    $('#btnConfirmacionSalidaAlmacenT').click(function () {
+        $('#formUpdateResponsableTic').trigger('submit', [true]);
+    });
+
     //BOTON DE DESPLIEGUE DE MODAL DE MUESTRA DE DOCUMENTO DE SALIDA
     $('#btnConfirmacionSalidaAlmacen').click(function () {
         $('#formUpdateResponsable').trigger('submit', [true]);
@@ -144,8 +251,6 @@ $(document).ready(function(){
                     else
                     options_proyectos += "<option value='"+proyectos[i].id+"'>"+proyectos[i].padre.nombre+' &#10148 '+proyectos[i].nombre+"</option>";
                         // options_proyectos += '<option value="'+proyectos_s[i].id+'" data-emp="'+proyectos_s[i].empresa_id+'">'+proyectos_s[i].padre.nombre+' &#10148 '+proyectos_s[i].nombre+'</option>';
-
-
                 }
             }
 
@@ -182,18 +287,39 @@ $(document).ready(function(){
         width: '100%'
     }).val(parseInt(config.variables[0].pr)).trigger('change');
 
+    //OFICINA - CARGA AUTOMATICAMENTE
+    $('select[name=oficina_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione proyecto...",
+        width: '100%'
+    }).val(parseInt(config.variables[0].ofi)).trigger('change');
+
+    //RESPONSABLE EN BLANCO
+    $('select[name=responsable_entrega_id]').select2({
+        allowClear: true,
+        placeholder: "Seleccione responsable de entrega...",
+        width: '100%'
+    }).val(parseInt(config.variables[0].usu)).trigger('change');
+
     //COURRIER SELECT
     $('select[name=courrier_id]').select2({
         allowClear: true,
         placeholder: "Seleccione courrier o delivery...",
         width: '100%'
     }).val('').trigger('change');
+
+
+
 });
 
 function edicion(){
+    console.log("ENTRO A EDICIOOOOOOOON");
     auxU = parseInt(config.variables[0].cantItem);
 
     var cantItem = config.variables[0].cantItemEntrega;
+    console.log("cantItem "+cantItem);
+    auxU = parseInt(config.variables[0].cantItemEntrega);
+    auxTic = parseInt(config.variables[0].cantItemEntregaTic);
 
     $('.select_unidad_temp').prop('disabled',false);
 
@@ -224,12 +350,19 @@ function edicion(){
     //DESHABILITANDO ITEMS
     $('.items-select2').prop('disabled', true);
 
-    //RESPONSABLE EN BLANCO
-    $('select[name=responsable_entrega_id]').select2({
-        allowClear: true,
-        placeholder: "Seleccione responsable de entrega...",
-        width: '100%'
-    }).val('').trigger('change');
+    // //RESPONSABLE EN BLANCO
+    // $('select[name=responsable_entrega_id]').select2({
+    //     allowClear: true,
+    //     placeholder: "Seleccione responsable de entrega...",
+    //     width: '100%'
+    // }).val('').trigger('change');
+
+    //ESTADO COMPRA SELECT
+    // $('select[name^=estado_tic_id]').select2({
+    //     allowClear: true,
+    //     placeholder: "Seleccione...",
+    //     width: '100%'
+    // }).val(null).trigger('change');
 }
 
 function modal_info(titulo, clase_header, contenido) {
